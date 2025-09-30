@@ -12,7 +12,6 @@ public class VerticalRecyclingSystem
     private readonly RectTransform _content;
     private readonly RectTransform _cell;
     private readonly Vector3[] _corners = new Vector3[4];
-    private readonly Vector2 spacing;
     private readonly float _minPoolCoverage = 1.5f;
     private readonly int _minPoolSize = 10;
     private readonly float _recyclingThreshold = .2f;
@@ -34,7 +33,7 @@ public class VerticalRecyclingSystem
         _bottomMostCellColumns;
 
     public VerticalRecyclingSystem(RectTransform cell, RectTransform viewport, RectTransform content,
-        IOptimizeScrollRectDataSource dataSource, int columns, Vector2 spacing)
+        IOptimizeScrollRectDataSource dataSource, int columns)
     {
         _cell = cell;
         _viewport = viewport;
@@ -42,7 +41,6 @@ public class VerticalRecyclingSystem
         _columns = columns;
         SetDataSource(dataSource);
         _recyclableViewBounds = new Bounds();
-        this.spacing = spacing;
     }
 
     public void SetDataSource(IOptimizeScrollRectDataSource dataSource)
@@ -68,8 +66,8 @@ public class VerticalRecyclingSystem
 
         int noOfRows = (int)Mathf.Ceil((float)_cellPool.Count / (float)_columns);
 
-        float contentYSize = noOfRows * _cellHeight + (noOfRows - 1) * spacing.y;
-        float contentXSize = _columns * _cellWidth + (_columns - 1) * spacing.x;
+        float contentYSize = noOfRows * _cellHeight + (noOfRows - 1);
+        float contentXSize = _columns * _cellWidth + (_columns - 1);
 
 
         _content.sizeDelta = new Vector2(contentXSize, contentYSize);
@@ -116,7 +114,7 @@ public class VerticalRecyclingSystem
         float posX = 0;
         float posY = 0;
 
-        float totalSpacingX = (_columns - 1) * spacing.x;
+        float totalSpacingX = _columns - 1;
         _cellWidth = (_viewport.rect.width - totalSpacingX) / _columns;
 
         _cellHeight = _cell.sizeDelta.y / _cell.sizeDelta.x * _cellWidth;
@@ -125,6 +123,7 @@ public class VerticalRecyclingSystem
         int minPoolSize = Math.Min(this._minPoolSize, _dataSource.GetItemCount());
 
         // 풀 영역이 채워지고 최소 풀 크기를 만족할 때까지 셀 생성 반복
+        Debug.Log(_dataSource.GetItemCount());
         while ((poolSize < minPoolSize || currentPoolCoverage < requiredCoverage) &&
                poolSize < _dataSource.GetItemCount())
         {
@@ -135,12 +134,12 @@ public class VerticalRecyclingSystem
             _cellPool.Add(item);
             item.SetParent(_content, false);
 
-            posX = _bottomMostCellColumns * (_cellWidth + spacing.x);
+            posX = _bottomMostCellColumns * _cellWidth;
             item.anchoredPosition = new Vector2(posX, posY);
             if (++_bottomMostCellColumns >= _columns)
             {
                 _bottomMostCellColumns = 0;
-                posY -= (_cellHeight + spacing.y);
+                posY -= _cellHeight;
                 currentPoolCoverage += item.rect.height;
             }
 
@@ -200,12 +199,12 @@ public class VerticalRecyclingSystem
             {
                 n++;
                 _bottomMostCellColumns = 0;
-                posY = _cellPool[_bottomMostCellIndex].anchoredPosition.y - (_cellHeight + spacing.y);
+                posY = _cellPool[_bottomMostCellIndex].anchoredPosition.y - _cellHeight;
                 additionalRows++;
             }
 
             // 위쪽 셀을 아래로 이동
-            posX = _bottomMostCellColumns * (_cellWidth + spacing.x);
+            posX = _bottomMostCellColumns * _cellWidth;
             _cellPool[_topMostCellIndex].anchoredPosition = new Vector2(posX, posY);
 
             if (++_topMostCellColumns >= _columns)
@@ -223,7 +222,7 @@ public class VerticalRecyclingSystem
         }
 
         // Content 크기 조정(추가된 행만큼 높이 늘리기 위해)
-        _content.sizeDelta += Vector2.up * (additionalRows * (_cellHeight + spacing.y));
+        _content.sizeDelta += Vector2.up * (additionalRows * _cellHeight);
         if (additionalRows > 0)
         {
             n -= additionalRows;
@@ -257,12 +256,12 @@ public class VerticalRecyclingSystem
             {
                 n++;
                 _topMostCellColumns = _columns - 1;
-                posY = _cellPool[_topMostCellIndex].anchoredPosition.y + (_cellHeight + spacing.y);
+                posY = _cellPool[_topMostCellIndex].anchoredPosition.y + _cellHeight;
                 additionalRows++;
             }
 
             // 아래쪽 셀을 위쪽으로 이동
-            posX = _topMostCellColumns * (_cellWidth + spacing.x);
+            posX = _topMostCellColumns * _cellWidth;
             _cellPool[_bottomMostCellIndex].anchoredPosition = new Vector2(posX, posY);
 
             if (--_bottomMostCellColumns < 0)
@@ -280,7 +279,7 @@ public class VerticalRecyclingSystem
         }
 
         // Content 크기 조정(추가된 행만큼 높이 늘리기 위해)
-        _content.sizeDelta += Vector2.up * (additionalRows * (_cellHeight + spacing.y));
+        _content.sizeDelta += Vector2.up * (additionalRows * _cellHeight);
         if (additionalRows > 0)
         {
             n -= additionalRows;

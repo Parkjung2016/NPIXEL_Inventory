@@ -13,4 +13,12 @@ MonoBehaviour:
   m_Name: InventoryDataListSO
   m_EditorClassIdentifier: 
   inventoryDataList:
-  - {fileID: 11400000, guid: 07702fb799a4c9e4f912fb6679b57b00, type: 2}
+  - displayName: New PotionItemData
+    typeName: 
+    description: 
+    itemType: 0
+    iconKey: 
+    rank: 0
+    itemID: 0
+    baseAttributes: []
+    additionalAttributes: []

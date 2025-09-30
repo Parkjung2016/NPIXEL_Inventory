@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf98c1819d147ab9cde2b500f81f309, type: 3}
   m_Name: Inventory Scroll Rect Data Source SO
   m_EditorClassIdentifier: 
-  _dataLength: 150
+  _dataLength: 100
   <CellPrefab>k__BackingField: {fileID: 224182731342183468, guid: d8dab30b6d8b3dc4cb8ddf42a4d7752b, type: 3}
+  sortType: 0

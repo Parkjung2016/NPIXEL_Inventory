@@ -11,8 +11,6 @@ public class OptimizeScrollRect : ScrollRect
     }
 
     [SerializeField] private InterfaceReference<IOptimizeScrollRectDataSource> _dataSource;
-    [SerializeField] private Vector2 _spacing;
-    [SerializeField] private RectOffset _padding;
     [SerializeField] private int _segments;
 
     public VerticalRecyclingSystem RecyclingSystem => _recyclingSystem;
@@ -28,8 +26,7 @@ public class OptimizeScrollRect : ScrollRect
     private void Initialize()
     {
         _recyclingSystem =
-            new VerticalRecyclingSystem(_dataSource.Value.CellPrefab, viewport, content, _dataSource.Value, Segments,
-                _spacing);
+            new VerticalRecyclingSystem(_dataSource.Value.CellPrefab, viewport, content, _dataSource.Value, Segments);
 
         vertical = true;
         horizontal = false;

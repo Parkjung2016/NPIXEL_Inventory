@@ -34,25 +34,21 @@ public class TestInventory : MonoBehaviour
 
     private void OnGUI()
     {
-        EditorGUILayout.BeginVertical();
-        {
-            GUILayout.FlexibleSpace();
+        float buttonWidth = Screen.width * 0.2f;
+        float buttonHeight = Screen.height * 0.08f;
+        float startX = 10;
+        float startY = 10;
+        float space= 10;
+        
+        if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "AddItem"))
+            AddRandomItem();
 
-            if (GUILayout.Button("AddItem", GUILayout.Height(50)))
-                AddRandomItem();
+        startY += buttonHeight + space;
+        if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "Save"))
+            _saveManagerSO.Save();
 
-            GUILayout.Space(10);
-
-            if (GUILayout.Button("Save", GUILayout.Height(50)))
-                _saveManagerSO.Save();
-
-            GUILayout.Space(10);
-
-            if (GUILayout.Button("Load", GUILayout.Height(50)))
-                _saveManagerSO.Load();
-
-            GUILayout.FlexibleSpace();
-        }
-        EditorGUILayout.EndVertical();
+        startY += buttonHeight + space;
+        if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "Load"))
+            _saveManagerSO.Load();
     }
 }

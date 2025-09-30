@@ -16,7 +16,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
     public InventorySortType sortType;
 
-    private void OnEnable()
+    private void OnValidate()
     {
         InitData();
     }
