@@ -45,10 +45,6 @@ public abstract class UIBase : UIBehaviour
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
-            case Define.UIEvent.Drag:
-                evt.OnDragHandler -= action;
-                evt.OnDragHandler += action;
-                break;
         }
     }
 

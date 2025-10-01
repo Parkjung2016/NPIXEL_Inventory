@@ -7,8 +7,6 @@ using UnityEditor.UI;
 [CanEditMultipleObjects]
 public class OptimizeScrollRectEditor : ScrollRectEditor
 {
-    SerializedProperty _dataSource;
-
     OptimizeScrollRect _script;
 
     protected override void OnEnable()
@@ -16,16 +14,12 @@ public class OptimizeScrollRectEditor : ScrollRectEditor
         base.OnEnable();
         _script = (OptimizeScrollRect)target;
 
-        _dataSource = serializedObject.FindProperty("_dataSource");
     }
 
 
     public override void OnInspectorGUI()
     {
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(_dataSource);
         _script.Segments = EditorGUILayout.IntField("Columns", _script.Segments);
-        serializedObject.ApplyModifiedProperties();
         base.OnInspectorGUI();
     }
 }

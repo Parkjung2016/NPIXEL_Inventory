@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScrollRectDataSource
 {
+    public event Action OnUpdateItemCount;
     [SerializeField] private int dataLength;
     [field: SerializeField] public RectTransform CellPrefab { get; private set; }
 
@@ -42,6 +43,24 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
         {
             _itemDataList[i] = null;
         }
+    }
+
+    public void AddDataLength(int lengthToAdd)
+    {
+        if (lengthToAdd <= 0)
+        {
+            Debug.LogError("Length to add must be greater than zero.");
+            return;
+        }
+
+        dataLength += lengthToAdd;
+
+        for (int i = 0; i < lengthToAdd; i++)
+        {
+            _itemDataList.Add(null);
+        }
+
+        OnUpdateItemCount?.Invoke();
     }
 
     public void AddData(ItemDataBase dataToAdd)

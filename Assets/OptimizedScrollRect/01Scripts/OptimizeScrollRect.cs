@@ -10,9 +10,8 @@ public class OptimizeScrollRect : ScrollRect
         get { return _segments; }
     }
 
-    [SerializeField] private InterfaceReference<IOptimizeScrollRectDataSource> _dataSource;
+    private IOptimizeScrollRectDataSource _dataSource;
     [SerializeField] private int _segments;
-
     public VerticalRecyclingSystem RecyclingSystem => _recyclingSystem;
     private VerticalRecyclingSystem _recyclingSystem;
     private Vector2 _prevAnchoredPos;
@@ -23,19 +22,37 @@ public class OptimizeScrollRect : ScrollRect
         Initialize();
     }
 
+    public void SetDataSource(IOptimizeScrollRectDataSource dataSource)
+    {
+        _dataSource = dataSource;
+    }
+
     private void Initialize()
     {
         _recyclingSystem =
-            new VerticalRecyclingSystem(_dataSource.Value.CellPrefab, viewport, content, _dataSource.Value, Segments);
+            new VerticalRecyclingSystem(_dataSource.CellPrefab, viewport, content, _dataSource, Segments);
 
         vertical = true;
         horizontal = false;
 
         _prevAnchoredPos = content.anchoredPosition;
+        _dataSource.OnUpdateItemCount += HandleUpdateItemCount;
         onValueChanged.RemoveListener(OnValueChangedListener);
         StartCoroutine(_recyclingSystem.InitCoroutine(() =>
             onValueChanged.AddListener(OnValueChangedListener)
         ));
+    }
+
+    protected override void OnDestroy()
+    {
+        if (_dataSource != null)
+            _dataSource.OnUpdateItemCount -= HandleUpdateItemCount;
+        base.OnDestroy();
+    }
+
+    private void HandleUpdateItemCount()
+    {
+        ReloadData();
     }
 
     public void OnValueChangedListener(Vector2 normalizedPos)
@@ -47,7 +64,7 @@ public class OptimizeScrollRect : ScrollRect
 
     public void ReloadData()
     {
-        ReloadData(_dataSource.Value);
+        ReloadData(_dataSource);
     }
 
     public void ReloadData(IOptimizeScrollRectDataSource dataSource)

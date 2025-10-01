@@ -1390,6 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f27e954085449f8d5a97f9a7cf52aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 8541375154201660585}
   test: {fileID: 11400000, guid: 46ae4400942382141bf7b9a71304e0db, type: 2}
 --- !u!4 &884556622
 Transform:
@@ -2198,8 +2199,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  _dataSource:
-    underlyingValue: {fileID: 11400000, guid: 989fb222b60a0c148bf0909cbf8bf46c, type: 2}
   _segments: 6
 --- !u!1 &7354183875998591785
 GameObject:
@@ -2251,7 +2250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a60d8fe65054993829baa20093adb29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollRectDataSourceSO: {fileID: 11400000, guid: 989fb222b60a0c148bf0909cbf8bf46c, type: 2}
+  <ScrollRectDataSourceSO>k__BackingField: {fileID: 11400000, guid: 989fb222b60a0c148bf0909cbf8bf46c, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
