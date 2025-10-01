@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Reflex.Attributes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,11 @@ public class InventoryUI : UIBase
     enum Buttons
     {
         Button_ChangeSortType
+    }
+
+    enum Texts
+    {
+        Text_SortType
     }
 
     [SerializeField] private InventoryScrollRectDataSourceSO _scrollRectDataSourceSO;
@@ -23,6 +29,7 @@ public class InventoryUI : UIBase
         _scrollRectDataSourceSO.ClearData();
 
         Bind<Button>(typeof(Buttons));
+        Bind<TMP_Text>(typeof(Texts));
         GetButton((byte)Buttons.Button_ChangeSortType).onClick.AddListener(HandleClickSortButton);
     }
 
@@ -41,6 +48,8 @@ public class InventoryUI : UIBase
         {
             _itemManagerSO.OnUsedItemWithStackable += HandleUsedItemWithStackable;
         }
+
+        UpdateSortTypeText();
     }
 
     protected override void OnDestroy()
@@ -59,6 +68,12 @@ public class InventoryUI : UIBase
         }
     }
 
+    private void UpdateSortTypeText()
+    {
+        string sortTypeName = Enum.GetName(typeof(InventorySortType), _scrollRectDataSourceSO.sortType);
+        GetText((byte)Texts.Text_SortType).text = $"Sort Type: {sortTypeName}";
+    }
+
     private void HandleClickSortButton()
     {
         int current = (int)_scrollRectDataSourceSO.sortType;
@@ -66,6 +81,7 @@ public class InventoryUI : UIBase
         current = (current + 1) % Enum.GetValues(typeof(InventorySortType)).Length;
 
         _scrollRectDataSourceSO.sortType = (InventorySortType)current;
+        UpdateSortTypeText();
         _optimizeScrollRect.ReloadData();
     }
 

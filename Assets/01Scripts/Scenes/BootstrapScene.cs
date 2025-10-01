@@ -12,6 +12,7 @@ public class BootstrapScene : MonoBehaviour
     {
         await AddressableManager.LoadALlAsync<Object>("PreLoad", (key, loadCount, totalCount) =>
         {
+            PJHDebug.LogColorPart($"PreLoad Progress: {loadCount}/{totalCount}", Color.cyan, tag: "BootstrapScene");
             if (loadCount == totalCount)
             {
                 PJHDebug.LogColorPart("All PreLoad Complete", Color.green, tag: "BootstrapScene");

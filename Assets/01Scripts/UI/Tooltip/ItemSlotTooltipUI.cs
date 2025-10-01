@@ -31,13 +31,15 @@ public class ItemSlotTooltipUI : UIBase
     {
         AdditionalInfoGroup,
         InteractGroup,
-        InfoGroup
+        InfoGroup,
+        AdditionalInteractInfo,
     }
 
     enum Buttons
     {
         Button_Use,
-        Button_Cancel
+        Button_Split,
+        Button_Cancel,
     }
 
     [Inject] private GameEventChannelSO _uiEventChannelSO;
@@ -63,12 +65,19 @@ public class ItemSlotTooltipUI : UIBase
         Bind<Button>(typeof(Buttons));
         GetButton((byte)Buttons.Button_Use).onClick.AddListener(HandleClickUseButton);
         GetButton((byte)Buttons.Button_Cancel).onClick.AddListener(HandleClickCancelButton);
+        GetButton((byte)Buttons.Button_Split).onClick.AddListener(HandleClickSplitButton);
     }
 
     protected override void OnDestroy()
     {
         _uiEventChannelSO.RemoveListener<ShowItemSlotTooltipUIEvent>(HandleShowItemSlotTooltipUI);
         _uiEventChannelSO.RemoveListener<ClickItemSlotEvent>(HandleClickItemSlot);
+    }
+
+    private void HandleClickSplitButton()
+    {
+        Transform itemSplitPopupUIParentTransform = GetObject((byte)Objects.AdditionalInteractInfo).transform;
+        Managers.UI.ShowPopup<ItemSplitPopupUI>("ItemSplitPopupUI", itemSplitPopupUIParentTransform);
     }
 
     private void HandleClickCancelButton()
@@ -82,6 +91,15 @@ public class ItemSlotTooltipUI : UIBase
     private void HandleClickUseButton()
     {
         _itemManagerSO.UseItem(_currentItemData);
+        if (_currentItemData is IStackable stackable)
+        {
+            if (stackable.StackCount > 0)
+            {
+                ShowUIInfo(_currentItemData);
+                return;
+            }
+        }
+
         var evt = UIEvents.ClickItemSlot;
         evt.isClicked = false;
         evt.itemSlot = null;
@@ -177,7 +195,7 @@ public class ItemSlotTooltipUI : UIBase
         gameObject.SetActive(true);
         GetImage((byte)Images.Image_Icon).sprite = itemData.GetIcon();
         GetImage((byte)Images.Image_IconBackground).color = _itemRankColorMappingSO[itemData.rank];
-        GetText((byte)Texts.Text_DisplayName).SetText(itemData.displayName);
+        GetText((byte)Texts.Text_DisplayName).SetText(itemData.GetItemDisplayName());
         GetText((byte)Texts.Text_Description).SetText(itemData.description);
         GetText((byte)Texts.Text_Type).SetText(itemData.GetItemTypeDisplayName());
         StringBuilder baseInfo = itemData.GetBaseInfo();

@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MemoryPack;
 using UnityEditor;
 using UnityEngine;
 
 public class InventoryDataListWindow : EditorWindow
 {
+    private const float minLeftPanelWidth = 350f; // 최소 너비
+    private const float leftListTopOffset = 50;
     private static InventoryDataListSO _targetSO;
     private Vector2 _leftScrollPos;
     private Vector2 _rightScrollPos;
@@ -17,114 +16,165 @@ public class InventoryDataListWindow : EditorWindow
     private Type[] _itemTypes;
     private string[] _itemTypeNames;
     private int _selectedTypeIndex;
+    private float _leftPanelWidth; // 초기 왼쪽 패널 너비
+    private bool _isResizing = false;
+    private Rect _resizeHandle;
+    private Rect _leftListRect;
 
     [MenuItem("Tools/Inventory Data List")]
     public static void ShowWindow()
     {
-        InventoryDataListWindow window = GetWindow<InventoryDataListWindow>("Inventory Data List");
-        window.Show();
+        GetWindow<InventoryDataListWindow>("Inventory Data List").Show();
     }
 
     private void OnEnable()
     {
-        // ItemData를 상속받은 타입 모두 찾기
-        _itemTypes = Assembly.GetAssembly(typeof(ItemData))
+        _leftPanelWidth = minLeftPanelWidth;
+        _itemTypes = Assembly.GetAssembly(typeof(BaseItemDataSO))
             .GetTypes()
-            .Where(t => typeof(ItemData).IsAssignableFrom(t) && !t.IsAbstract)
+            .Where(t => typeof(BaseItemDataSO).IsAssignableFrom(t) && !t.IsAbstract)
             .ToArray();
-
         _itemTypeNames = _itemTypes.Select(t => t.Name).ToArray();
     }
 
     private void OnGUI()
     {
         EditorGUILayout.Space();
-
-        _targetSO = (InventoryDataListSO)EditorGUILayout.ObjectField("Target SO", _targetSO,
-            typeof(InventoryDataListSO), false);
+        _targetSO = (InventoryDataListSO)EditorGUILayout.ObjectField(
+            "Target SO", _targetSO, typeof(InventoryDataListSO), false);
 
         if (_targetSO == null) return;
 
         EditorGUILayout.BeginHorizontal();
+        {
+            // 좌측 패널
+            GUILayout.BeginVertical(GUILayout.Width(_leftPanelWidth));
+            {
+                DrawLeftPanel();
+            }
+            EditorGUILayout.EndVertical();
 
-        EditorGUILayout.BeginVertical(GUILayout.Width(position.width * 0.3f));
-        DrawItemList();
-        EditorGUILayout.EndVertical();
+            // --- 리사이즈 핸들 ---
+            _resizeHandle = new Rect(_leftPanelWidth, leftListTopOffset, 5f, position.height);
+            EditorGUI.DrawRect(_resizeHandle, Color.gray); // 시각적인 구분
+            EditorGUIUtility.AddCursorRect(_resizeHandle, MouseCursor.ResizeHorizontal);
 
-        EditorGUILayout.BeginVertical(GUILayout.Width(position.width * 0.7f));
-        DrawSelectedItemDetails();
-        EditorGUILayout.EndVertical();
+            HandleResize(); // 드래그 처리
 
+            // 우측 패널
+            GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
+            {
+                DrawRightPanel();
+            }
+            EditorGUILayout.EndVertical();
+        }
         EditorGUILayout.EndHorizontal();
     }
 
-    private void DrawItemList()
+    // -----------------------------
+    // 좌측 패널
+    // -----------------------------
+    private void DrawLeftPanel()
     {
         if (_targetSO.inventoryDataList == null) return;
 
         EditorGUILayout.BeginHorizontal();
+        _selectedTypeIndex = EditorGUILayout.Popup("Item Type", _selectedTypeIndex, _itemTypeNames);
+
+        Color prevColor = GUI.backgroundColor;
+        GUI.backgroundColor = Color.green;
+        if (GUILayout.Button("Add Item")) AddNewItem();
+
+        if (_selectedIndex >= 0 && _selectedIndex < _targetSO.inventoryDataList.Count)
         {
-            _selectedTypeIndex = EditorGUILayout.Popup("Item Type", _selectedTypeIndex, _itemTypeNames);
-            Color prevColor = GUI.backgroundColor;
-            GUI.backgroundColor = Color.green;
+            GUI.backgroundColor = Color.red;
+            if (GUILayout.Button("Delete Selected")) DeleteSelectedItem();
+        }
 
-            if (GUILayout.Button("Add Item"))
+        GUI.backgroundColor = prevColor;
+        EditorGUILayout.EndHorizontal();
+        _leftListRect = GUILayoutUtility.GetRect(200, position.height - leftListTopOffset);
+        GUI.Box(_leftListRect, GUIContent.none);
+
+        _leftScrollPos = GUI.BeginScrollView(_leftListRect, _leftScrollPos,
+            new Rect(0, 0, _leftListRect.width - 20, _targetSO.inventoryDataList.Count * 30));
+
+        for (int i = 0; i < _targetSO.inventoryDataList.Count; i++)
+        {
+            var item = _targetSO.inventoryDataList[i];
+            if (item == null)
             {
-                Type selectedType = _itemTypes[_selectedTypeIndex];
-                Debug.Log(selectedType);
-                ItemData newItem = (ItemData)Activator.CreateInstance(selectedType);
-                newItem.displayName = "New " + selectedType.Name;
-                newItem.uniqueID = Guid.NewGuid();
-                newItem.baseAttributes = new List<ItemAttribute>();
-                newItem.additionalAttributes = new List<ItemAttributeOverride>();
-
-                _targetSO.inventoryDataList.Add(newItem);
-                _selectedIndex = _targetSO.inventoryDataList.Count - 1;
-                EditorUtility.SetDirty(_targetSO);
+                _targetSO.inventoryDataList.RemoveAt(i);
+                continue;
             }
 
-            if (_selectedIndex >= 0 &&
-                _selectedIndex < _targetSO.inventoryDataList.Count)
-            {
-                GUI.backgroundColor = Color.red;
-                if (GUILayout.Button("Delete Selected"))
-                {
-                    _targetSO.inventoryDataList.RemoveAt(_selectedIndex);
-                    _selectedIndex = Mathf.Clamp(_selectedIndex - 1, 0, _targetSO.inventoryDataList.Count - 1);
-                    EditorUtility.SetDirty(_targetSO);
-                }
-            }
+            Rect buttonRect = new Rect(5, i * 30, _leftListRect.width - 30, 25);
+
+            if (i == _selectedIndex) GUI.backgroundColor = Color.cyan;
+
+            if (GUI.Button(buttonRect, item.GetItemData().displayName))
+                _selectedIndex = i;
 
             GUI.backgroundColor = prevColor;
         }
-        EditorGUILayout.EndHorizontal();
 
-        Rect listRect = GUILayoutUtility.GetRect(200, position.height - 50);
-        GUI.Box(listRect, GUIContent.none);
-
-        _leftScrollPos = GUI.BeginScrollView(listRect, _leftScrollPos,
-            new Rect(0, 0, listRect.width - 20, _targetSO.inventoryDataList.Count * 30));
-        {
-            for (int i = 0; i < _targetSO.inventoryDataList.Count; i++)
-            {
-                var item = _targetSO.inventoryDataList[i];
-
-                Rect buttonRect = new Rect(5, i * 30, listRect.width - 30, 25);
-
-                Color prevColor = GUI.backgroundColor;
-                if (i == _selectedIndex) GUI.backgroundColor = Color.cyan;
-                if (GUI.Button(buttonRect, item.displayName))
-                {
-                    _selectedIndex = i;
-                }
-
-                GUI.backgroundColor = prevColor;
-            }
-        }
         GUI.EndScrollView();
     }
 
-    private void DrawSelectedItemDetails()
+    private void AddNewItem()
+    {
+        Type selectedType = _itemTypes[_selectedTypeIndex];
+        BaseItemDataSO newItem = (BaseItemDataSO)ScriptableObject.CreateInstance(selectedType);
+
+        newItem.name = $"New {selectedType.Name}"; // 에셋 이름 지정
+        ItemData itemData = newItem.GetItemData();
+        itemData.displayName = selectedType.Name;
+        itemData.itemID = _targetSO.inventoryDataList.Count;
+
+        // Assets 폴더에 에셋으로 저장
+        string path = $"Assets/03SO/InventoryData/{newItem.name}_{Guid.NewGuid()}.asset";
+        AssetDatabase.CreateAsset(newItem, path);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        _targetSO.inventoryDataList.Add(newItem);
+        _selectedIndex = _targetSO.inventoryDataList.Count - 1;
+
+        EditorUtility.SetDirty(_targetSO);
+    }
+
+    private void DeleteSelectedItem()
+    {
+        if (_selectedIndex < 0 || _selectedIndex >= _targetSO.inventoryDataList.Count)
+            return;
+
+        BaseItemDataSO itemToDelete = _targetSO.inventoryDataList[_selectedIndex];
+
+        // 리스트에서 제거
+        _targetSO.inventoryDataList.RemoveAt(_selectedIndex);
+
+        // 에셋 삭제
+        if (itemToDelete != null)
+        {
+            string assetPath = AssetDatabase.GetAssetPath(itemToDelete);
+            if (!string.IsNullOrEmpty(assetPath))
+            {
+                AssetDatabase.DeleteAsset(assetPath);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
+
+        _selectedIndex = Mathf.Clamp(_selectedIndex - 1, 0, _targetSO.inventoryDataList.Count - 1);
+        EditorUtility.SetDirty(_targetSO);
+    }
+
+    private Editor _cachedEditor;
+
+    // -----------------------------
+    // 우측 패널
+    // -----------------------------
+    private void DrawRightPanel()
     {
         if (_selectedIndex < 0 || _selectedIndex >= _targetSO.inventoryDataList.Count) return;
 
@@ -132,120 +182,40 @@ public class InventoryDataListWindow : EditorWindow
 
         _rightScrollPos = EditorGUILayout.BeginScrollView(_rightScrollPos);
 
-        // --- 필드 ---
-        var fields = selectedItem.GetType()
-            .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(f => !f.IsDefined(typeof(NonSerializedAttribute)) && !f.IsDefined(typeof(MemoryPackIgnoreAttribute)))
-            .ToArray();
-
-        foreach (var field in fields)
+        if (_cachedEditor == null || _cachedEditor.target != selectedItem)
         {
-            object value = field.GetValue(selectedItem);
-            DrawField(field.FieldType, field.Name, ref value);
-            field.SetValue(selectedItem, value);
+            _cachedEditor = Editor.CreateEditor(selectedItem);
         }
 
-        // --- 프로퍼티 ---
-        var properties = selectedItem.GetType()
-            .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(p => p.CanRead && p.CanWrite)
-            .Where(p => !p.IsDefined(typeof(NonSerializedAttribute)) && !p.IsDefined(typeof(MemoryPackIgnoreAttribute)))
-            .ToArray();
-
-        foreach (var prop in properties)
-        {
-            object value = prop.GetValue(selectedItem);
-            DrawField(prop.PropertyType, prop.Name, ref value);
-            prop.SetValue(selectedItem, value);
-        }
+        _cachedEditor.OnInspectorGUI();
 
         EditorGUILayout.EndScrollView();
 
-        // SO 저장 표시
         if (GUI.changed)
             EditorUtility.SetDirty(_targetSO);
     }
 
-    // 필드/프로퍼티 타입에 따라 자동으로 EditorGUILayout 생성
-    private void DrawField(System.Type type, string name, ref object value)
-{
-    if (type == typeof(int))
-        value = EditorGUILayout.IntField(name, (int)value);
-    else if (type == typeof(float))
-        value = EditorGUILayout.FloatField(name, (float)value);
-    else if (type == typeof(string))
-        value = EditorGUILayout.TextField(name, (string)value);
-    else if (type.IsEnum)
-        value = EditorGUILayout.EnumPopup(name, (Enum)value);
-    else if (type == typeof(bool))
-        value = EditorGUILayout.Toggle(name, (bool)value);
-    else if (typeof(UnityEngine.Object).IsAssignableFrom(type))
-        value = EditorGUILayout.ObjectField(name, (UnityEngine.Object)value, type, true);
-    else if (type == typeof(Guid))
-        return; // GUID는 무시
-    else if (typeof(IList).IsAssignableFrom(type)) // 리스트 처리
+    private void HandleResize()
     {
-        var list = value as IList;
-        if (list == null)
+        var e = Event.current;
+
+        if (e.type == EventType.MouseDown && _resizeHandle.Contains(e.mousePosition))
         {
-            value = Activator.CreateInstance(type);
-            list = value as IList;
+            _isResizing = true;
+            e.Use();
         }
 
-        EditorGUILayout.LabelField(name, EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-
-        for (int i = 0; i < list.Count; i++)
+        if (_isResizing)
         {
-            object element = list[i];
-            DrawField(element.GetType(), $"Element {i}", ref element);
-            list[i] = element;
-
-            if (GUILayout.Button($"Delete Element {i}", GUILayout.Width(100)))
+            if (e.type == EventType.MouseDrag)
             {
-                list.RemoveAt(i);
-                i--;
+                _leftPanelWidth = Mathf.Clamp(e.mousePosition.x, 400f, position.width - 100f); // 최소/최대 제한
+                Repaint();
+            }
+            else if (e.type == EventType.MouseUp)
+            {
+                _isResizing = false;
             }
         }
-
-        if (GUILayout.Button($"Add Element to {name}"))
-        {
-            Type elementType = type.IsArray ? type.GetElementType() : type.GetGenericArguments()[0];
-            list.Add(Activator.CreateInstance(elementType));
-        }
-
-        EditorGUI.indentLevel--;
     }
-    else // 커스텀 클래스 처리
-    {
-        if (value == null)
-            value = Activator.CreateInstance(type);
-
-        EditorGUILayout.LabelField(name, EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-
-        var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(f => !f.IsDefined(typeof(NonSerializedAttribute)) && !f.IsDefined(typeof(MemoryPackIgnoreAttribute)));
-
-        foreach (var field in fields)
-        {
-            object fieldValue = field.GetValue(value);
-            DrawField(field.FieldType, field.Name, ref fieldValue);
-            field.SetValue(value, fieldValue);
-        }
-
-        var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(p => p.CanRead && p.CanWrite)
-            .Where(p => !p.IsDefined(typeof(NonSerializedAttribute)) && !p.IsDefined(typeof(MemoryPackIgnoreAttribute)));
-
-        foreach (var prop in properties)
-        {
-            object propValue = prop.GetValue(value);
-            DrawField(prop.PropertyType, prop.Name, ref propValue);
-            prop.SetValue(value, propValue);
-        }
-
-        EditorGUI.indentLevel--;
-    }
-}
 }

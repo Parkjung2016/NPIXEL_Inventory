@@ -15,6 +15,7 @@ public class ItemSlotUI : UIBase, ICell, IItemSlotUI
 
     enum Images
     {
+        Image_NoItemData,
         Image_Background,
         Image_Outline,
         Image_Icon,
@@ -39,14 +40,26 @@ public class ItemSlotUI : UIBase, ICell, IItemSlotUI
         Bind<GameObject>(typeof(GameObjects));
         BindEvent(GetImage((byte)Images.Image_Background).gameObject, HandleSlotClick,
             Define.UIEvent.Click);
+        BindEvent(GetImage((byte)Images.Image_NoItemData).gameObject, HandleNoItemSlotClick,
+            Define.UIEvent.Click);
         _slotTooltipHandler = GetImage((byte)Images.Image_Background).GetComponent<ItemSlotTooltipHandler>();
     }
 
     private void HandleSlotClick(PointerEventData pointerEvent)
     {
         var evt = UIEvents.ClickItemSlot;
+        if (evt.isClicked && ReferenceEquals(evt.itemSlot, this)) return;
         evt.itemSlot = this;
         evt.isClicked = true;
+        _uiEventChannelSO.RaiseEvent(evt);
+    }
+
+    private void HandleNoItemSlotClick(PointerEventData pointerEvent)
+    {
+        var evt = UIEvents.ClickItemSlot;
+        if (!evt.isClicked) return;
+        evt.itemSlot = null;
+        evt.isClicked = false;
         _uiEventChannelSO.RaiseEvent(evt);
     }
 

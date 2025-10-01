@@ -93,26 +93,42 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
                 case InventorySortType.ByName:
                 {
                     return CompareByName(a, b);
-                    break;
                 }
                 case InventorySortType.ByType:
                 {
                     return CompareByRank(a, b);
-                    break;
                 }
-                case InventorySortType.Both:
+                case InventorySortType.ByCount:
                 {
-                    int typeCompare = CompareByRank(a, b);
-                    if (typeCompare == 0)
-                        return CompareByName(a, b);
-                    return typeCompare;
-                    break;
+                    int countCompare = CompareByCount(a, b);
+                    return countCompare;
+                }
+                case InventorySortType.ByAll:
+                {
+                    int rankCompare = CompareByRank(a, b);
+                    if (rankCompare != 0) return rankCompare;
+                    int countCompare = CompareByCount(a, b);
+                    if (countCompare != 0) return countCompare;
+                    return CompareByName(a, b);
                 }
             }
 
             return 0;
         });
     }
+
+    public int GetItemCount()
+    {
+        return _dataLength;
+    }
+
+    public void SetCell(ICell cell, int index)
+    {
+        var item = cell as ItemSlotUI;
+        item.ConfigureCell(_itemDataList[index], index);
+    }
+
+    #region compare functions
 
     int CompareByName(ItemData a, ItemData b)
     {
@@ -126,14 +142,18 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
         return 0;
     }
 
-    public int GetItemCount()
+    int CompareByCount(ItemData a, ItemData b)
     {
-        return _dataLength;
+        IStackable stackableA = a as IStackable;
+        IStackable stackableB = b as IStackable;
+
+        int itemCountA = stackableA?.StackCount ?? 0;
+        int itemCountB = stackableB?.StackCount ?? 0;
+
+        // 내림차순: 큰 수 먼저
+        int countCompare = itemCountB.CompareTo(itemCountA);
+        return countCompare;
     }
 
-    public void SetCell(ICell cell, int index)
-    {
-        var item = cell as ItemSlotUI;
-        item.ConfigureCell(_itemDataList[index], index);
-    }
+    #endregion
 }

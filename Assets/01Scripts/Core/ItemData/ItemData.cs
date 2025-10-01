@@ -6,6 +6,7 @@ using PJH.Utility.Extensions;
 using PJH.Utility.Managers;
 using Reflex.Attributes;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public enum ItemRank
 {
@@ -51,7 +52,7 @@ public partial class ItemData
 
     public ItemType itemType;
 
-    public string iconKey;
+    [HideInInspector] public string iconKey;
     public ItemRank rank;
     public Guid uniqueID;
     public int itemID;
@@ -60,6 +61,20 @@ public partial class ItemData
 
     [NonSerialized] [MemoryPackIgnore] [Inject]
     private EnumStringMappingSO _enumStringMappingSO;
+
+    public virtual StringBuilder GetItemDisplayName()
+    {
+        var sb = new StringBuilder(displayName);
+        if (this is IStackable stackable)
+        {
+            sb.Append("<color=yellow>");
+            sb.Append("X");
+            sb.Append(stackable.StackCount);
+            sb.Append("</color>");
+        }
+
+        return sb;
+    }
 
     public virtual string GetItemTypeDisplayName()
     {
@@ -142,5 +157,8 @@ public partial class ItemData
 
     public virtual bool HasAdditionalInfo() => additionalAttributes.Count > 0;
 
-    public Sprite GetIcon() => AddressableManager.Load<Sprite>(iconKey);
+    public Sprite GetIcon()
+    {
+        return AddressableManager.Load<Sprite>(iconKey);
+    }
 }

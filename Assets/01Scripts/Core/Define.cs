@@ -5,10 +5,4 @@ public class Define
         Click,
         Drag,
     }
-
-    public enum MouseEvent
-    {
-        Press,
-        Click,
-    }
 }

@@ -1,0 +1,593 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Textures
+  m_EditorClassIdentifier: 
+  m_GroupName: Textures
+  m_GUID: 615ce3ca9b7e45f4d808b0decdb3091a
+  m_SerializeEntries:
+  - m_GUID: 02447ae97a9d7d35389b388108a51f5e
+    m_Address: book_brown.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 034f8863e30b728408b24938aca8b74e
+    m_Address: Falmer_Wizard_Belt_21.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05a2fbb0084a1167e853e46d75331916
+    m_Address: coin_copper.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 070cb7fe93cd810ad8db77f9a5b05f5e
+    m_Address: shoulder_pad_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 08dbd56e3f08bb143af3f8bd14f4fe6d
+    m_Address: magic_fantasy_Amulet_03.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e35fded0a8e6fb408a29d38405f8cf7
+    m_Address: golden_coins_stack_0_1.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1078ac8fd1cb5b66bad40195d627d0d4
+    m_Address: axe_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 109cd26633602e54c943d6abb3cdf171
+    m_Address: Falmer_magical_Hat_08.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11b8833576ba09446b96fd404fb664f4
+    m_Address: Dwarven_cup_01.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11d7e53308d9e454b9ca22d34a1cbe4e
+    m_Address: hammer_9.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 15f683deb85708c4295b8faf4ed7711c
+    m_Address: shoulder_pad_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16703c98e8b4d384389dda46b7d5d12a
+    m_Address: olden_treasure_map.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b605ce4efd3905d8b621544e1c932a1
+    m_Address: armor_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d085bb0d16d6fc41a9037c3afc099a8
+    m_Address: wooden_chest.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1db7178c829f10e4e9c13568974363fc
+    m_Address: Crystal_ball_01.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2318bcea9d39d9cea851ae64786a51e0
+    m_Address: axe_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2460351e12b1dca26867b61fc9ce3d7d
+    m_Address: axe_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 26f5264360368854eae1764927bf8ce5
+    m_Address: Falmer_helmet_with_horns_25.png.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2955573f5fa26e044b0dc6f447f72334
+    m_Address: just_one_wooden_plank.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2cfa0ae2e44cb3f88835bb88abd64fbd
+    m_Address: pants_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2fa576cc947810c4d86d0f0cbfe44c00
+    m_Address: three_gold_bars.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 339cc2c6b816b5b39b72d60ea93dba9e
+    m_Address: scroll_blue.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33e4c660eaa80064f8928fd5d7332313
+    m_Address: Dwarven_magical_scroll_elemental_of_magic_05.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34d2218ab0b4d3e40b00239c92994593
+    m_Address: herbs_Basil.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 374ebe0ed57485383aa9263f087830dd
+    m_Address: helmet_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b709f5dd572836dda96e05fdb0d1c73
+    m_Address: ring_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c1a17a61142d69568169110d9b82a9e
+    m_Address: potion_red.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d05a3e09a0b74e36b1fa94fb9279990
+    m_Address: ring_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e5dfd5766cd6d149a695488673cafce
+    m_Address: emerald_gem_01.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3edb92e7ae01bee4d90875a23cd95317
+    m_Address: Falmer_cuirass_105.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45b0910c62b75f9c2af6014f6f29f8ab
+    m_Address: oversleeve_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 489b404bc5e57074fa35a6194db07703
+    m_Address: Falmer_armored_boots_17.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 494bb88e341e7c44db44a102cbdcf4a1
+    m_Address: sword_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4df2cb4de68d322b2b48e909062ec7dd
+    m_Address: shoulder_pad_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f8262a99e41e314ab59f891d8321961
+    m_Address: magic_fantasy_ring_39.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 561e5bc70c5cfc0e78f526d29d5f7ab2
+    m_Address: armor_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 575f5dfa534d364d8a95aa62c625ce24
+    m_Address: sword_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 594dfead5e79f034cb71930b3e998caa
+    m_Address: Mage_Gloves.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63ec11672f5f8fc5fa0bc44f23e0d56b
+    m_Address: armor_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6556b1366ecf2cc378607c5238561531
+    m_Address: potion_green.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6584bebaf63b2a647b531ce97f4e001b
+    m_Address: magic_fantasy_ring_36.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 664752cf063362cfbad247aec3f86f94
+    m_Address: book_blue.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6940e47ce192fb8ab9ab7dd56f4616c5
+    m_Address: coin_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c30bb400cd1dd6c8b3c281dbfc2ec5c
+    m_Address: gloves_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7065cc33d10bf5e4c97cf8a77a941550
+    m_Address: Oyster_mushroom.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 714bfb5ef43682d4fac176c20e85091c
+    m_Address: Copper_Ingot.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75a5a1229889d5b4c9a8a268cc2ec723
+    m_Address: Mage_Staff_2.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b2a7b91c5f8aa7329710f0f3445de44
+    m_Address: helmet_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f3be2bac61e1e240bc008ddd878710d
+    m_Address: Falmer_Ivory.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 849bf28dc861be34f99c1515ad0b5f13
+    m_Address: Falmer_Tunics_86.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 851bcbbe8e28a1ab292fffa5feb6eed0
+    m_Address: gloves_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85d64c2bd6c1a80d1a61297a7c83c416
+    m_Address: oversleeve_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8879dafd52713ff43bec7f89d9c4a02e
+    m_Address: Falmer_helmet_with_wings_28.png.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f840e95e23b8f245b9f154700527a35
+    m_Address: Bloody__Ritual_Falmer_Axe.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9197292420fca9880a4ad8cffe6f2dcd
+    m_Address: sword_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91b1e60a55e4e8747ab3aa9a6003e685
+    m_Address: sapphire_gem_01.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92735b1ea8c5af1b3823520932cedc2f
+    m_Address: boot_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92bc953d2ce8f374cbdded612d89641b
+    m_Address: golden_key.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96d881a28b54d0d35b40ccbb9cf61b28
+    m_Address: ring_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97cbe9c1056bf94448d1bbef8e195180
+    m_Address: Bedroll.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b71100f344a941a1b28a33f158bbdb8
+    m_Address: pants_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c39af9f14f06566db9ee9d81b9fe40d
+    m_Address: shield_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0ac11ea5e3332a4baee6511e70ca46d
+    m_Address: leather_boots.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a20cd9f8b9ae93b4e9e36accee4f0fc0
+    m_Address: Falmer_Axe_74.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5483d14627742ca08e8c69a734e626c
+    m_Address: book_red.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6388dbab3f76d08892a83d91c1bdd50
+    m_Address: potion_purple.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aac570dfc486dfb2f8fb45155674076f
+    m_Address: shield_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae1e3ce429b151a46a0385b30242e30b
+    m_Address: Falmer_Shield_51.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae46534dc306ca04697f6fe12159151a
+    m_Address: Firewood.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aea2cbf1c63507a4dbe2213a48b79d90
+    m_Address: cheese.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afb00ab37fbb31142a6b74c881d7d575
+    m_Address: Dwarven_Earrings_14.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b07164769129b7d47818470b1cea1909
+    m_Address: Falmer_Tunics_74.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b173370fc043a9070a1088746d382074
+    m_Address: pants_iron 2.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7d26d30b22e5bd6da6eb78ce9d54b6b
+    m_Address: gloves_iron.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b906fea0feef57a4ab4ae21578cc1c5a
+    m_Address: sword_185.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb6cd95438ca9534899121bde771d61c
+    m_Address: Falmer__Axe_06.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd1617c05adc3e54ea2f1b31d787a95e
+    m_Address: sack_with_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c21898abbf484f9dca008f0642459cdf
+    m_Address: boot_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4acf9370c3181f98912418bb7f1b5ee
+    m_Address: potion_blue.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c79255b3645b07b4c81f297cb9cefc02
+    m_Address: Dwarven_magical_book_31.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d07b55133660a21fe8776750aa359417
+    m_Address: shield_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d893fdecf6969d14db4fce46846f4e1f
+    m_Address: Falmer_Armored_cuisses_51.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dadcb068032ff5240ae5d710d878dbcc
+    m_Address: dwarven_torch.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcaf4c3e70883730fb13caa83341c2d3
+    m_Address: scroll_red.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df95a0b1df0881490b60fc952665938a
+    m_Address: boot_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ecf0c73220e5ffc4193e8572b939c09b
+    m_Address: Falmer_Ebony_01.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eebb51ed146ae604986518702b266e26
+    m_Address: Dwarven_Tunics.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2824726399e753289ad504cf1a7bf50
+    m_Address: helmet_silver.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f43138b878c3cd640994a543986586d5
+    m_Address: Circular_Oval_Falmer_Shield_22.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5d4d8fcb473567458306c25811ba826
+    m_Address: closed_sack_02.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8a6863eff7901340866c3a2b65e8e04
+    m_Address: Whetstone.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f987e839acbf0486983570fc57ac4e72
+    m_Address: coin_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa6a9a20d1ac92e41bb2fcc4933d737b
+    m_Address: Falmer_Tunics_10.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb696ab16a924d64abde4d54c572cec0
+    m_Address: Spellbook_02.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdf1d06ccfd6a8a5fada1b0b4a2144e6
+    m_Address: oversleeve_gold.sprite
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PreLoad
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: aea3700de577cfc49ae99cec284a5490, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3cc26d0504f8c634faa6a892664b26e6, type: 2}
+    - {fileID: 11400000, guid: d8a3dc1ad5d9b1e44819158e3cdd7393, type: 2}

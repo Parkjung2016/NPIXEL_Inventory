@@ -97,7 +97,6 @@ namespace PJH.Utility.Managers
             string loadKey = key;
             if (key.Contains(".sprite"))
                 loadKey = $"{key}[{key.Replace(".sprite", "")}]";
-
             var asyncOperation = Addressables.LoadAssetAsync<T>(loadKey);
             await asyncOperation;
 

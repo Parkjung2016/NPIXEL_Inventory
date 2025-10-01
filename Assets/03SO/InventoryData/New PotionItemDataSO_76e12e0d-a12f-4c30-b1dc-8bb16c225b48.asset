@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d3b28427024e00881cf8db46e2b4b6, type: 3}
+  m_Name: New PotionItemDataSO_76e12e0d-a12f-4c30-b1dc-8bb16c225b48
+  m_EditorClassIdentifier: 
+  itemData:
+    displayName: Health Potion
+    typeName: Potion
+    description: Increase Health
+    itemType: 1
+    iconKey: potion_red.sprite
+    rank: 0
+    itemID: 1
+    baseAttributes: []
+    additionalAttributes: []
+    <MaxStackCount>k__BackingField: 10

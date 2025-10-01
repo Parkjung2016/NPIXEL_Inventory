@@ -2,5 +2,6 @@ public enum InventorySortType
 {
     ByName,
     ByType,
-    Both
+    ByCount,
+    ByAll
 }

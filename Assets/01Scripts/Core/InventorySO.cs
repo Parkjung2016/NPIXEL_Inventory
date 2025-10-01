@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using MemoryPack;
 using Reflex.Attributes;
@@ -8,6 +9,7 @@ using Reflex.Extensions;
 using Reflex.Injectors;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ZLinq;
 
 public delegate void ChangedInventoryDataEvent(List<ItemData> inventoryDataList);
 
@@ -53,11 +55,13 @@ public class InventorySO : ScriptableObject, ISaveable
         IStackable stackable = itemData as IStackable;
         if (inventoryData.currentInventoryDataList.Count > 0 && stackable != null)
         {
-            ItemData existingItem =
-                inventoryData.currentInventoryDataList.Find(item => item.itemID == itemData.itemID);
-            if (existingItem != null)
+            List<ItemData> existingItems =
+                inventoryData.currentInventoryDataList.FindAll(item => item.itemID == itemData.itemID);
+            if (existingItems != null)
             {
-                stackable = existingItem as IStackable;
+                stackable = existingItems
+                    .AsValueEnumerable().OfType<IStackable>()
+                    .FirstOrDefault(s => s.StackCount < s.MaxStackCount);
                 if (stackable != null)
                 {
                     stackable.StackCount++;
@@ -107,6 +111,7 @@ public class InventorySO : ScriptableObject, ISaveable
         }
     }
 
+    #region saveable
 
     public async UniTask<byte[]> ParsingToBytes()
     {
@@ -121,4 +126,6 @@ public class InventorySO : ScriptableObject, ISaveable
         inventoryData = await MemoryPackSerializer.DeserializeAsync<InventoryData>(stream);
         OnForceChangedInventoryData?.Invoke(inventoryData.currentInventoryDataList);
     }
+
+    #endregion
 }
