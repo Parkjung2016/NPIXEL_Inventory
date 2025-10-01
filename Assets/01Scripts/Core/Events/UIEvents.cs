@@ -7,7 +7,7 @@ public static class UIEvents
 public class ShowItemSlotTooltipUIEvent : GameEvent
 {
     public bool show;
-    public ItemData itemData;
+    public ItemDataBase itemData;
 }
 
 public class ClickItemSlotEvent : GameEvent

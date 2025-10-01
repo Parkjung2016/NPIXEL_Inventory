@@ -13,5 +13,3 @@ MonoBehaviour:
   m_Name: InventorySO
   m_EditorClassIdentifier: 
   <SaveID>k__BackingField: 0
-  inventoryData:
-    currentInventoryDataList: []

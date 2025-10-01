@@ -28,7 +28,7 @@ public class TestInventory : MonoBehaviour
 
     private void AddRandomItem()
     {
-        ItemData inventoryData = _inventoryDataListSO.GetRandomInventoryData();
+        ItemDataBase inventoryData = _inventoryDataListSO.GetRandomInventoryData();
         _inventorySO.AddItem(inventoryData);
     }
 

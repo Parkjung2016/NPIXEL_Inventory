@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a67f38898e4448783c860e369ebc2a4, type: 3}
+  m_Name: ItemDataSO_Axe
+  m_EditorClassIdentifier: 
+  itemData:
+    displayName: Axe
+    typeName: Melee Weapon
+    description: Strong Axe
+    itemID: 0
+    itemType: 0
+    iconKey: Falmer__Axe_06.sprite
+    rank: 1
+    baseAttributes:
+    - attributeName: Power
+      attributeValue: 5
+    additionalAttributes: []

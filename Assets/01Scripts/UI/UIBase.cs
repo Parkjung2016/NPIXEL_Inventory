@@ -76,6 +76,11 @@ public abstract class UIBase : UIBehaviour
         return Get<Button>(idx);
     }
 
+    protected Slider GetSlider(byte idx)
+    {
+        return Get<Slider>(idx);
+    }
+
     protected Image GetImage(byte idx)
     {
         return Get<Image>(idx);

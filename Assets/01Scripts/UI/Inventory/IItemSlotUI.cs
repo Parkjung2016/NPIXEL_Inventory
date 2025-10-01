@@ -1,4 +1,4 @@
 public interface IItemSlotUI
 {
-    public ItemData CurrentItemData { get; }
+    public ItemDataBase CurrentItemData { get; }
 }

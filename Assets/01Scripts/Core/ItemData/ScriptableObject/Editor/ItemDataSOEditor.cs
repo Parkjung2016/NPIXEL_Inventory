@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -15,7 +16,8 @@ public class BaseItemDataSOEditor : Editor
 
     private void OnEnable()
     {
-        _targetSO = (BaseItemDataSO)target;
+        if (target != null)
+            _targetSO = (BaseItemDataSO)target;
     }
 
     public override void OnInspectorGUI()
@@ -68,7 +70,7 @@ public class BaseItemDataSOEditor : Editor
 
     private void DrawRightPanel()
     {
-        ItemData itemData = _targetSO.GetItemData();
+        ItemDataBase itemData = _targetSO.GetItemData();
         // Addressable에 등록된 Sprite 가져오기
         List<AddressableAssetEntry> spriteEntries = new List<AddressableAssetEntry>();
         AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
@@ -90,7 +92,7 @@ public class BaseItemDataSOEditor : Editor
         DrawIconSelector(itemData, spriteEntries);
     }
 
-    private void DrawIconSelector(ItemData itemData, List<AddressableAssetEntry> spriteEntries)
+    private void DrawIconSelector(ItemDataBase itemData, List<AddressableAssetEntry> spriteEntries)
     {
         EditorGUILayout.LabelField("Select Icon", EditorStyles.boldLabel);
 
@@ -99,41 +101,43 @@ public class BaseItemDataSOEditor : Editor
 
         float availableWidth = EditorGUIUtility.currentViewWidth - 40f; // 여백 감안
         int iconsPerRow = Mathf.Max(1, Mathf.FloorToInt(availableWidth / (iconSize + spacing)));
-
-        int rowCount = Mathf.CeilToInt((float)spriteEntries.Count / iconsPerRow);
         _iconScrollPos = EditorGUILayout.BeginScrollView(_iconScrollPos, true, true, GUILayout.Height(200));
         {
-            for (int row = 0; row < rowCount; row++)
+            int colCount = 0;
+            EditorGUILayout.BeginHorizontal();
             {
-                EditorGUILayout.BeginHorizontal();
+                foreach (var entry in spriteEntries)
                 {
-                    for (int col = 0; col < iconsPerRow; col++)
+                    if (!entry.address.Contains(".sprite")) continue;
+                    if (!entry.AssetPath.Contains(
+                            $"{itemData.itemType}{(itemData.typeName != string.Empty ? $"/{itemData.typeName}" : "")}/"))
+                        continue;
+
+                    Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(entry.GetAssetLoadPath(true));
+                    Texture2D tex = sprite ? sprite.texture : Texture2D.whiteTexture;
+
+                    Color prevColor = GUI.backgroundColor;
+                    if (itemData.iconKey == entry.address)
+                        GUI.backgroundColor = Color.green;
+
+                    if (GUILayout.Button(tex, GUILayout.Width(iconSize), GUILayout.Height(iconSize)))
                     {
-                        int index = row * iconsPerRow + col;
-                        if (index >= spriteEntries.Count) break;
+                        itemData.iconKey = entry.address;
+                    }
 
-                        if (!spriteEntries[index].address.Contains(".sprite"))
-                            continue;
-                        Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(
-                            spriteEntries[index].GetAssetLoadPath(true));
-                        Texture2D tex = sprite ? sprite.texture : Texture2D.whiteTexture;
+                    GUI.backgroundColor = prevColor;
+                    GUILayout.Space(spacing);
 
-                        Color prevColor = GUI.backgroundColor;
-                        if (itemData.iconKey == spriteEntries[index].address)
-                            GUI.backgroundColor = Color.green;
-
-                        if (GUILayout.Button(tex, GUILayout.Width(iconSize), GUILayout.Height(iconSize)))
-                        {
-                            itemData.iconKey = spriteEntries[index].address;
-                        }
-
-                        GUI.backgroundColor = prevColor;
-                        GUILayout.Space(spacing);
+                    colCount++;
+                    if (colCount >= iconsPerRow)
+                    {
+                        colCount = 0;
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
                     }
                 }
-                EditorGUILayout.EndHorizontal();
-                GUILayout.Space(spacing);
             }
+            EditorGUILayout.EndHorizontal();
         }
 
         EditorGUILayout.EndScrollView();

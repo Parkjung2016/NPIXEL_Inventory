@@ -1,4 +1,4 @@
 ﻿public interface ICell
 {
-    public int CellIndex { get; }
+    int CellIndex { get; }
 }

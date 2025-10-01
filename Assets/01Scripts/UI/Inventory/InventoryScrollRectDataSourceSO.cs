@@ -5,14 +5,14 @@ using UnityEngine;
 [CreateAssetMenu]
 public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScrollRectDataSource
 {
-    [SerializeField] private int _dataLength;
+    [SerializeField] private int dataLength;
     [field: SerializeField] public RectTransform CellPrefab { get; private set; }
 
     private int _currentCellCount;
 
-    private List<ItemData> _itemDataList;
+    private List<ItemDataBase> _itemDataList;
 
-    public IList<ItemData> ItemDataList => _itemDataList;
+    public IList<ItemDataBase> ItemDataList => _itemDataList;
 
     public InventorySortType sortType;
 
@@ -23,8 +23,8 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
     private void InitData()
     {
-        _itemDataList = new List<ItemData>(_dataLength);
-        for (int i = 0; i < _dataLength; i++)
+        _itemDataList = new List<ItemDataBase>(dataLength);
+        for (int i = 0; i < dataLength; i++)
         {
             _itemDataList.Add(null);
         }
@@ -38,13 +38,13 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
             return;
         }
 
-        for (int i = 0; i < _dataLength; i++)
+        for (int i = 0; i < dataLength; i++)
         {
             _itemDataList[i] = null;
         }
     }
 
-    public void AddData(ItemData dataToAdd)
+    public void AddData(ItemDataBase dataToAdd)
     {
         int emptyIndex = _itemDataList.FindIndex(x => x == null);
 
@@ -59,7 +59,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
         }
     }
 
-    public void RemoveData(ItemData dataToRemove)
+    public void RemoveData(ItemDataBase dataToRemove)
     {
         int removeIndex = _itemDataList.FindIndex(data => data == dataToRemove);
         Debug.Log(removeIndex);
@@ -80,7 +80,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
         }
     }
 
-    private void SortData()
+    public void SortData()
     {
         _itemDataList.Sort((a, b) =>
         {
@@ -94,7 +94,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
                 {
                     return CompareByName(a, b);
                 }
-                case InventorySortType.ByType:
+                case InventorySortType.ByRank:
                 {
                     return CompareByRank(a, b);
                 }
@@ -119,7 +119,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
     public int GetItemCount()
     {
-        return _dataLength;
+        return dataLength;
     }
 
     public void SetCell(ICell cell, int index)
@@ -130,19 +130,19 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
     #region compare functions
 
-    int CompareByName(ItemData a, ItemData b)
+    int CompareByName(ItemDataBase a, ItemDataBase b)
     {
         return string.Compare(a.displayName, b.displayName, StringComparison.Ordinal);
     }
 
-    int CompareByRank(ItemData a, ItemData b)
+    int CompareByRank(ItemDataBase a, ItemDataBase b)
     {
         int rankCompare = b.rank.CompareTo(a.rank);
         if (rankCompare != 0) return rankCompare;
         return 0;
     }
 
-    int CompareByCount(ItemData a, ItemData b)
+    int CompareByCount(ItemDataBase a, ItemDataBase b)
     {
         IStackable stackableA = a as IStackable;
         IStackable stackableB = b as IStackable;

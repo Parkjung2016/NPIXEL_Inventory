@@ -11,7 +11,7 @@ public class OptimizeScrollRectEditor : ScrollRectEditor
 
     OptimizeScrollRect _script;
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
         _script = (OptimizeScrollRect)target;
@@ -19,10 +19,6 @@ public class OptimizeScrollRectEditor : ScrollRectEditor
         _dataSource = serializedObject.FindProperty("_dataSource");
     }
 
-    protected virtual void OnDisable()
-    {
-        base.OnDisable();
-    }
 
     public override void OnInspectorGUI()
     {

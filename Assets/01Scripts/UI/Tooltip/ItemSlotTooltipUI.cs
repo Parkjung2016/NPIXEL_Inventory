@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Cysharp.Threading.Tasks;
 using PJH.Utility;
-using PJH.Utility.Managers;
 using Reflex.Attributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class ItemSlotTooltipUI : UIBase
+public class ItemSlotTooltipUI : UIBase, IPopupParentable
 {
     enum Images
     {
@@ -42,12 +42,15 @@ public class ItemSlotTooltipUI : UIBase
         Button_Cancel,
     }
 
+    public Transform ChildPopupUIParentTransform { get; private set; }
+    public Stack<IPopupUI> ChildPopupUIStack { get; set; } = new Stack<IPopupUI>();
+
     [Inject] private GameEventChannelSO _uiEventChannelSO;
     [Inject] private ItemRankColorMappingSO _itemRankColorMappingSO;
     [Inject] private ItemManagerSO _itemManagerSO;
     private RectTransform _rectTrm;
     private Vector2 _originPivot;
-    private ItemData _currentItemData;
+    private ItemDataBase _currentItemData;
 
     private bool _lockedUpdatePosition;
 
@@ -66,6 +69,8 @@ public class ItemSlotTooltipUI : UIBase
         GetButton((byte)Buttons.Button_Use).onClick.AddListener(HandleClickUseButton);
         GetButton((byte)Buttons.Button_Cancel).onClick.AddListener(HandleClickCancelButton);
         GetButton((byte)Buttons.Button_Split).onClick.AddListener(HandleClickSplitButton);
+
+        ChildPopupUIParentTransform = GetObject((byte)Objects.AdditionalInteractInfo).transform;
     }
 
     protected override void OnDestroy()
@@ -76,8 +81,9 @@ public class ItemSlotTooltipUI : UIBase
 
     private void HandleClickSplitButton()
     {
-        Transform itemSplitPopupUIParentTransform = GetObject((byte)Objects.AdditionalInteractInfo).transform;
-        Managers.UI.ShowPopup<ItemSplitPopupUI>("ItemSplitPopupUI", itemSplitPopupUIParentTransform);
+        ItemSplitPopupUI itemSplitPopupUI =
+            Managers.UI.ShowPopup<ItemSplitPopupUI>("ItemSplitPopupUI", this);
+        itemSplitPopupUI?.SetItemData(_currentItemData);
     }
 
     private void HandleClickCancelButton()
@@ -154,8 +160,10 @@ public class ItemSlotTooltipUI : UIBase
             _lockedUpdatePosition = true;
             ShowUIInfo(evt.itemSlot.CurrentItemData);
             bool usableItem = evt.itemSlot.CurrentItemData.Usable();
+            bool splitableItem = evt.itemSlot.CurrentItemData.Splitable();
             GetObject((byte)Objects.InteractGroup).SetActive(true);
             GetButton((byte)Buttons.Button_Use).gameObject.SetActive(usableItem);
+            GetButton((byte)Buttons.Button_Split).gameObject.SetActive(splitableItem);
         }
         else
         {
@@ -172,7 +180,7 @@ public class ItemSlotTooltipUI : UIBase
         if (UIEvents.ClickItemSlot.isClicked) return;
         if (!evt.show || evt.itemData == null)
         {
-            gameObject.SetActive(false);
+            HideTooltip();
             return;
         }
 
@@ -189,7 +197,19 @@ public class ItemSlotTooltipUI : UIBase
         }
     }
 
-    private void ShowUIInfo(ItemData itemData)
+    private void HideTooltip()
+    {
+        Debug.Log(ChildPopupUIStack.Count);
+        for (int i = 0; i < ChildPopupUIStack.Count; i++)
+        {
+            IPopupUI popupUI = ChildPopupUIStack.Pop();
+            Managers.UI.ClosePopup(popupUI);
+        }
+
+        gameObject.SetActive(false);
+    }
+
+    private void ShowUIInfo(ItemDataBase itemData)
     {
         _currentItemData = itemData;
         gameObject.SetActive(true);

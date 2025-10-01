@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using PJH.Utility.Extensions;
 using UnityEngine;
 
 [CreateAssetMenu]
 public class InventoryDataListSO : ScriptableObject
 {
-    public List<BaseItemDataSO> inventoryDataList;
+    [SerializeField] private List<BaseItemDataSO> _inventoryDataList;
+    public IList<BaseItemDataSO> InventoryDataList => _inventoryDataList;
 
-    public ItemData GetRandomInventoryData()
+    public ItemDataBase GetRandomInventoryData()
     {
-        if (inventoryDataList.Count == 0) return null;
-        int randomIndex = Random.Range(0, inventoryDataList.Count);
-        return inventoryDataList[randomIndex].GetItemData();
+        if (_inventoryDataList.Count == 0) return null;
+        return _inventoryDataList.Random().GetItemData();
     }
 }

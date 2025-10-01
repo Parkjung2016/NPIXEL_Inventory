@@ -10,17 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a67f38898e4448783c860e369ebc2a4, type: 3}
-  m_Name: New ItemDataSO_82de1ebb-7a4e-448a-936e-15db54cd944a
+  m_Name: ItemDataSO_Iron Sword
   m_EditorClassIdentifier: 
   itemData:
-    displayName: Axe
+    displayName: Iron Sword
     typeName: Melee Weapon
-    description: Default Axe
+    description: used by beginners.
+    itemID: 3
     itemType: 0
-    iconKey: falmer_axe_74.sprite
+    iconKey: sword_iron.sprite
     rank: 0
-    itemID: 0
-    baseAttributes:
-    - attributeName: Power
-      attributeValue: 5
+    baseAttributes: []
     additionalAttributes: []

@@ -76,7 +76,7 @@ public class InventoryDataListWindow : EditorWindow
     // -----------------------------
     private void DrawLeftPanel()
     {
-        if (_targetSO.inventoryDataList == null) return;
+        if (_targetSO.InventoryDataList == null) return;
 
         EditorGUILayout.BeginHorizontal();
         _selectedTypeIndex = EditorGUILayout.Popup("Item Type", _selectedTypeIndex, _itemTypeNames);
@@ -85,7 +85,7 @@ public class InventoryDataListWindow : EditorWindow
         GUI.backgroundColor = Color.green;
         if (GUILayout.Button("Add Item")) AddNewItem();
 
-        if (_selectedIndex >= 0 && _selectedIndex < _targetSO.inventoryDataList.Count)
+        if (_selectedIndex >= 0 && _selectedIndex < _targetSO.InventoryDataList.Count)
         {
             GUI.backgroundColor = Color.red;
             if (GUILayout.Button("Delete Selected")) DeleteSelectedItem();
@@ -97,27 +97,30 @@ public class InventoryDataListWindow : EditorWindow
         GUI.Box(_leftListRect, GUIContent.none);
 
         _leftScrollPos = GUI.BeginScrollView(_leftListRect, _leftScrollPos,
-            new Rect(0, 0, _leftListRect.width - 20, _targetSO.inventoryDataList.Count * 30));
-
-        for (int i = 0; i < _targetSO.inventoryDataList.Count; i++)
+            new Rect(0, 0, _leftListRect.width - 20, _targetSO.InventoryDataList.Count * 30));
         {
-            var item = _targetSO.inventoryDataList[i];
-            if (item == null)
+            for (int i = 0; i < _targetSO.InventoryDataList.Count; i++)
             {
-                _targetSO.inventoryDataList.RemoveAt(i);
-                continue;
+                var item = _targetSO.InventoryDataList[i];
+                if (item == null)
+                {
+                    _targetSO.InventoryDataList.RemoveAt(i);
+                    continue;
+                }
+
+                Rect buttonRect = new Rect(5, i * 30, _leftListRect.width - 30, 25);
+
+                if (i == _selectedIndex) GUI.backgroundColor = Color.cyan;
+
+                if (GUI.Button(buttonRect, item.GetItemData().displayName))
+                {
+                    GUI.FocusControl(null);
+                    _selectedIndex = i;
+                }
+
+                GUI.backgroundColor = prevColor;
             }
-
-            Rect buttonRect = new Rect(5, i * 30, _leftListRect.width - 30, 25);
-
-            if (i == _selectedIndex) GUI.backgroundColor = Color.cyan;
-
-            if (GUI.Button(buttonRect, item.GetItemData().displayName))
-                _selectedIndex = i;
-
-            GUI.backgroundColor = prevColor;
         }
-
         GUI.EndScrollView();
     }
 
@@ -127,9 +130,9 @@ public class InventoryDataListWindow : EditorWindow
         BaseItemDataSO newItem = (BaseItemDataSO)ScriptableObject.CreateInstance(selectedType);
 
         newItem.name = $"New {selectedType.Name}"; // 에셋 이름 지정
-        ItemData itemData = newItem.GetItemData();
+        ItemDataBase itemData = newItem.GetItemData();
         itemData.displayName = selectedType.Name;
-        itemData.itemID = _targetSO.inventoryDataList.Count;
+        itemData.itemID = _targetSO.InventoryDataList.Count;
 
         // Assets 폴더에 에셋으로 저장
         string path = $"Assets/03SO/InventoryData/{newItem.name}_{Guid.NewGuid()}.asset";
@@ -137,21 +140,21 @@ public class InventoryDataListWindow : EditorWindow
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
-        _targetSO.inventoryDataList.Add(newItem);
-        _selectedIndex = _targetSO.inventoryDataList.Count - 1;
+        _targetSO.InventoryDataList.Add(newItem);
+        _selectedIndex = _targetSO.InventoryDataList.Count - 1;
 
         EditorUtility.SetDirty(_targetSO);
     }
 
     private void DeleteSelectedItem()
     {
-        if (_selectedIndex < 0 || _selectedIndex >= _targetSO.inventoryDataList.Count)
+        if (_selectedIndex < 0 || _selectedIndex >= _targetSO.InventoryDataList.Count)
             return;
 
-        BaseItemDataSO itemToDelete = _targetSO.inventoryDataList[_selectedIndex];
+        BaseItemDataSO itemToDelete = _targetSO.InventoryDataList[_selectedIndex];
 
         // 리스트에서 제거
-        _targetSO.inventoryDataList.RemoveAt(_selectedIndex);
+        _targetSO.InventoryDataList.RemoveAt(_selectedIndex);
 
         // 에셋 삭제
         if (itemToDelete != null)
@@ -165,7 +168,7 @@ public class InventoryDataListWindow : EditorWindow
             }
         }
 
-        _selectedIndex = Mathf.Clamp(_selectedIndex - 1, 0, _targetSO.inventoryDataList.Count - 1);
+        _selectedIndex = Mathf.Clamp(_selectedIndex - 1, 0, _targetSO.InventoryDataList.Count - 1);
         EditorUtility.SetDirty(_targetSO);
     }
 
@@ -176,9 +179,9 @@ public class InventoryDataListWindow : EditorWindow
     // -----------------------------
     private void DrawRightPanel()
     {
-        if (_selectedIndex < 0 || _selectedIndex >= _targetSO.inventoryDataList.Count) return;
+        if (_selectedIndex < 0 || _selectedIndex >= _targetSO.InventoryDataList.Count) return;
 
-        var selectedItem = _targetSO.inventoryDataList[_selectedIndex];
+        var selectedItem = _targetSO.InventoryDataList[_selectedIndex];
 
         _rightScrollPos = EditorGUILayout.BeginScrollView(_rightScrollPos);
 

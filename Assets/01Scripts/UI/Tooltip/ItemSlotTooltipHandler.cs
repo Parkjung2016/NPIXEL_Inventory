@@ -10,7 +10,7 @@ public class ItemSlotTooltipHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     [Inject] private GameEventChannelSO _uiEventChannelSO;
     private CancellationTokenSource _hoverCancellationTokenSource;
 
-    public ItemData CurrentItemData { get; private set; }
+    public ItemDataBase CurrentItemData { get; private set; }
 
     private async void OnEnable()
     {
@@ -25,9 +25,9 @@ public class ItemSlotTooltipHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         _uiEventChannelSO?.RemoveListener<ShowItemSlotTooltipUIEvent>(HandleShowItemSlotTooltipUI);
     }
 
-    public void SetItemData(ItemData itemData)
+    public void SetItemData(ItemDataBase itemData)
     {
-        ItemData prevItemData = CurrentItemData;
+        ItemDataBase prevItemData = CurrentItemData;
         CurrentItemData = itemData;
         if (CurrentItemData == null)
         {
@@ -106,7 +106,7 @@ public class ItemSlotTooltipHandler : MonoBehaviour, IPointerEnterHandler, IPoin
         }
     }
 
-    private void HideTooltip(ItemData prevItemData)
+    private void HideTooltip(ItemDataBase prevItemData)
     {
         DisposeHoverCancellationTokenSource();
         var showItemSlotTooltipEvt = UIEvents.ShowItemSlotTooltip;

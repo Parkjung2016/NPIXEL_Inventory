@@ -1,9 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+public interface IPopupParentable
+{
+    Transform ChildPopupUIParentTransform { get; }
+    Stack<IPopupUI> ChildPopupUIStack { get; set; }
+}
 
 public interface IPopupUI
 {
-    public GameObject GameObject { get; }
-    public string PopupUIName { get; }
-    public void OpenPopup();
-    public void ClosePopup();
+    GameObject GameObject { get; }
+    bool AllowDuplicates { get; }
+    void OpenPopup();
+    void ClosePopup();
 }

@@ -2,7 +2,7 @@
 
 public interface IOptimizeScrollRectDataSource
 {
-    public RectTransform CellPrefab { get; }
+    RectTransform CellPrefab { get; }
     int GetItemCount();
     void SetCell(ICell cell, int index);
 }

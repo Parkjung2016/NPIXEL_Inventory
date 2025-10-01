@@ -13,7 +13,7 @@ public static class OptimizeScrollViewEditorTool
 
         if (!selected || !(selected.transform is RectTransform))
         {
-            selected = GameObject.FindObjectOfType<Canvas>().gameObject;
+            selected = Object.FindAnyObjectByType<Canvas>().gameObject;
         }
 
         if (!selected) return;

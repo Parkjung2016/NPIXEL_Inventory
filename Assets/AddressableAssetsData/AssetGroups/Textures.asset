@@ -33,12 +33,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 070cb7fe93cd810ad8db77f9a5b05f5e
-    m_Address: shoulder_pad_iron.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 08dbd56e3f08bb143af3f8bd14f4fe6d
     m_Address: magic_fantasy_Amulet_03.sprite
     m_ReadOnly: 0
@@ -71,12 +65,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 11d7e53308d9e454b9ca22d34a1cbe4e
     m_Address: hammer_9.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 15f683deb85708c4295b8faf4ed7711c
-    m_Address: shoulder_pad_gold.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -213,12 +201,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4df2cb4de68d322b2b48e909062ec7dd
-    m_Address: shoulder_pad_silver.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f8262a99e41e314ab59f891d8321961
     m_Address: magic_fantasy_ring_39.sprite
     m_ReadOnly: 0
@@ -279,12 +261,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7065cc33d10bf5e4c97cf8a77a941550
-    m_Address: Oyster_mushroom.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 714bfb5ef43682d4fac176c20e85091c
     m_Address: Copper_Ingot.sprite
     m_ReadOnly: 0
@@ -299,12 +275,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b2a7b91c5f8aa7329710f0f3445de44
     m_Address: helmet_gold.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7f3be2bac61e1e240bc008ddd878710d
-    m_Address: Falmer_Ivory.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -521,12 +491,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df95a0b1df0881490b60fc952665938a
     m_Address: boot_gold.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ecf0c73220e5ffc4193e8572b939c09b
-    m_Address: Falmer_Ebony_01.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad

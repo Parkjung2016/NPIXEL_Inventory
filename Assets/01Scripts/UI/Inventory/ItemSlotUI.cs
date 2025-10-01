@@ -31,7 +31,7 @@ public class ItemSlotUI : UIBase, ICell, IItemSlotUI
     private Image _itemImage;
     private ItemSlotTooltipHandler _slotTooltipHandler;
     public int CellIndex { get; private set; }
-    public ItemData CurrentItemData => _slotTooltipHandler.CurrentItemData;
+    public ItemDataBase CurrentItemData => _slotTooltipHandler.CurrentItemData;
 
     public override void Init()
     {
@@ -63,7 +63,7 @@ public class ItemSlotUI : UIBase, ICell, IItemSlotUI
         _uiEventChannelSO.RaiseEvent(evt);
     }
 
-    public virtual void SetItemData(ItemData itemData)
+    public virtual void SetItemData(ItemDataBase itemData)
     {
         _slotTooltipHandler.SetItemData(itemData);
         bool isEmptyItemData = itemData == null;
@@ -92,7 +92,7 @@ public class ItemSlotUI : UIBase, ICell, IItemSlotUI
     }
 
 
-    public void ConfigureCell(ItemData itemData, int cellIndex)
+    public void ConfigureCell(ItemDataBase itemData, int cellIndex)
     {
         CellIndex = cellIndex;
         SetItemData(itemData);

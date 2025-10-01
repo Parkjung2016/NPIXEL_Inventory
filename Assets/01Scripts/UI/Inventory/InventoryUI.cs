@@ -17,7 +17,7 @@ public class InventoryUI : UIBase
         Text_SortType
     }
 
-    [SerializeField] private InventoryScrollRectDataSourceSO _scrollRectDataSourceSO;
+    [SerializeField] private InventoryScrollRectDataSourceSO scrollRectDataSourceSO;
     [Inject] private ItemManagerSO _itemManagerSO;
     [Inject] private InventorySO _inventorySO;
     private OptimizeScrollRect _optimizeScrollRect;
@@ -26,7 +26,7 @@ public class InventoryUI : UIBase
     public override void Init()
     {
         _optimizeScrollRect = GetComponent<OptimizeScrollRect>();
-        _scrollRectDataSourceSO.ClearData();
+        scrollRectDataSourceSO.ClearData();
 
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Text>(typeof(Texts));
@@ -70,55 +70,56 @@ public class InventoryUI : UIBase
 
     private void UpdateSortTypeText()
     {
-        string sortTypeName = Enum.GetName(typeof(InventorySortType), _scrollRectDataSourceSO.sortType);
+        string sortTypeName = Enum.GetName(typeof(InventorySortType), scrollRectDataSourceSO.sortType);
         GetText((byte)Texts.Text_SortType).text = $"Sort Type: {sortTypeName}";
     }
 
     private void HandleClickSortButton()
     {
-        int current = (int)_scrollRectDataSourceSO.sortType;
+        int current = (int)scrollRectDataSourceSO.sortType;
 
         current = (current + 1) % Enum.GetValues(typeof(InventorySortType)).Length;
 
-        _scrollRectDataSourceSO.sortType = (InventorySortType)current;
+        scrollRectDataSourceSO.sortType = (InventorySortType)current;
+        scrollRectDataSourceSO.SortData();
         UpdateSortTypeText();
         _optimizeScrollRect.ReloadData();
     }
 
-    private void HandleUsedItemWithStackable(ItemData itemData)
+    private void HandleUsedItemWithStackable(ItemDataBase itemData)
     {
         _optimizeScrollRect.ReloadData();
     }
 
-    private void HandleAddedInventoryData(ItemData addedInventoryData)
+    private void HandleAddedInventoryData(ItemDataBase addedInventoryData)
     {
-        _scrollRectDataSourceSO.AddData(addedInventoryData);
+        scrollRectDataSourceSO.AddData(addedInventoryData);
     }
 
-    private void HandleRemovedInventoryData(ItemData removedInventoryData)
+    private void HandleRemovedInventoryData(ItemDataBase removedInventoryData)
     {
-        _scrollRectDataSourceSO.RemoveData(removedInventoryData);
+        scrollRectDataSourceSO.RemoveData(removedInventoryData);
     }
 
-    private void HandleForceChangedInventoryData(List<ItemData> inventoryDataList)
+    private void HandleForceChangedInventoryData(List<ItemDataBase> inventoryDataList)
     {
-        _scrollRectDataSourceSO.ClearData();
+        scrollRectDataSourceSO.ClearData();
         foreach (var data in inventoryDataList)
         {
-            _scrollRectDataSourceSO.AddData(data);
+            scrollRectDataSourceSO.AddData(data);
         }
 
         _optimizeScrollRect.ReloadData();
     }
 
-    private void HandleChangedInventoryData(List<ItemData> inventoryDataList)
+    private void HandleChangedInventoryData(List<ItemDataBase> inventoryDataList)
     {
         var existingIDs = new HashSet<Guid>();
-        for (int i = 0; i < _scrollRectDataSourceSO.ItemDataList.Count; i++)
+        for (int i = 0; i < scrollRectDataSourceSO.ItemDataList.Count; i++)
         {
-            ItemData itemData = _scrollRectDataSourceSO.ItemDataList[i];
+            ItemDataBase itemData = scrollRectDataSourceSO.ItemDataList[i];
             if (itemData != null)
-                existingIDs.Add(_scrollRectDataSourceSO.ItemDataList[i].uniqueID);
+                existingIDs.Add(scrollRectDataSourceSO.ItemDataList[i].uniqueID);
             else
                 existingIDs.Add(Guid.Empty);
         }
@@ -127,17 +128,17 @@ public class InventoryUI : UIBase
         {
             if (!existingIDs.Contains(data.uniqueID))
             {
-                _scrollRectDataSourceSO.AddData(data);
+                scrollRectDataSourceSO.AddData(data);
             }
         }
 
-        for (int i = _scrollRectDataSourceSO.ItemDataList.Count - 1; i >= 0; i--)
+        for (int i = scrollRectDataSourceSO.ItemDataList.Count - 1; i >= 0; i--)
         {
-            var existing = _scrollRectDataSourceSO.ItemDataList[i];
+            var existing = scrollRectDataSourceSO.ItemDataList[i];
             if (existing == null) continue;
             if (!inventoryDataList.Exists(itemData => itemData?.uniqueID == existing?.uniqueID))
             {
-                _scrollRectDataSourceSO.RemoveData(existing);
+                scrollRectDataSourceSO.RemoveData(existing);
                 _inventorySO.RemoveItem(existing);
             }
         }

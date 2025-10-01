@@ -8,9 +8,9 @@ using UnityEngine;
 public class ItemManagerSO : ScriptableObject
 {
     [Inject] private InventorySO _inventorySO;
-    public event Action<ItemData> OnUsedItemWithStackable;
+    public event Action<ItemDataBase> OnUsedItemWithStackable;
 
-    public void UseItem(ItemData itemData)
+    public void UseItem(ItemDataBase itemData)
     {
         if (itemData is IUsable usable)
         {

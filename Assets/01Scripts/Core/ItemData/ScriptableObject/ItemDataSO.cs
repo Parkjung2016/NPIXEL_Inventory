@@ -5,7 +5,7 @@ public class ItemDataSO : BaseItemDataSO
 {
     public ItemData itemData = new();
 
-    public override ItemData GetItemData()
+    public override ItemDataBase GetItemData()
     {
         return itemData;
     }
