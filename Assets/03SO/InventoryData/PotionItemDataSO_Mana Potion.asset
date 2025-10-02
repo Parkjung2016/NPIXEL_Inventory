@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d3b28427024e00881cf8db46e2b4b6, type: 3}
   m_Name: PotionItemDataSO_Mana Potion
   m_EditorClassIdentifier: 
+  attributes: []
+  additionalAttributes: []
   itemData:
     displayName: Mana Potion
     typeName: Potion

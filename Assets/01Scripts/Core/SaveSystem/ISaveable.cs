@@ -6,4 +6,5 @@ public interface ISaveable
     public SaveManagerSO SaveManagerSO { get; }
     public UniTask<byte[]> ParsingToBytes();
     public UniTask ParsingFromBytes(byte[] bytes);
+    public void AllLoaded();
 }

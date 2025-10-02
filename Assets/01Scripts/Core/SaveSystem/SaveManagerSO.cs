@@ -7,6 +7,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SaveManagerSO : ScriptableObject
 {
+    public event Action OnSaveCompleted;
+    public event Action OnLoadCompleted;
     private List<ISaveable> _saveables = new List<ISaveable>();
 
     private void OnEnable()
@@ -14,8 +16,9 @@ public class SaveManagerSO : ScriptableObject
         _saveables.Clear();
     }
 
-    public async void Save(Action OnSaveCompleted = null)
+    public async void Save()
     {
+        _saveables.Sort(CompareID);
         for (int i = 0; i < _saveables.Count; i++)
         {
             byte[] bytes = await _saveables[i].ParsingToBytes();
@@ -27,8 +30,14 @@ public class SaveManagerSO : ScriptableObject
         OnSaveCompleted?.Invoke();
     }
 
-    public async void Load(Action OnLoadCompleted = null)
+    public int CompareID(ISaveable saveable, ISaveable saveable2)
     {
+        return saveable2.SaveID.CompareTo(saveable.SaveID); // 내림차순
+    }
+
+    public async void Load()
+    {
+        _saveables.Sort(CompareID);
         for (int i = 0; i < _saveables.Count; i++)
         {
             string path = GetSaveFilePath(_saveables[i].SaveID);
@@ -37,6 +46,11 @@ public class SaveManagerSO : ScriptableObject
         }
 
         PJHDebug.LogColorPart("Game Loaded", Color.green, tag: "SaveManagerSO");
+
+        for (int i = 0; i < _saveables.Count; i++)
+        {
+            _saveables[i].AllLoaded();
+        }
 
         OnLoadCompleted?.Invoke();
     }

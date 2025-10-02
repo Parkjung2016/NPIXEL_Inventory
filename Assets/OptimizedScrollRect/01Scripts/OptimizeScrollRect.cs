@@ -6,12 +6,14 @@ public class OptimizeScrollRect : ScrollRect
 {
     public int Segments
     {
-        set { _segments = Math.Max(value, 2); }
-        get { return _segments; }
+        set { segments = Math.Max(value, 2); }
+        get { return segments; }
     }
 
+    [SerializeField] private int segments;
+    [SerializeField] private RectTransform cellPrefab;
+
     private IOptimizeScrollRectDataSource _dataSource;
-    [SerializeField] private int _segments;
     public VerticalRecyclingSystem RecyclingSystem => _recyclingSystem;
     private VerticalRecyclingSystem _recyclingSystem;
     private Vector2 _prevAnchoredPos;
@@ -24,19 +26,22 @@ public class OptimizeScrollRect : ScrollRect
 
     public void SetDataSource(IOptimizeScrollRectDataSource dataSource)
     {
+        if (_dataSource != null)
+            _dataSource.OnUpdateItemCount -= HandleUpdateItemCount;
         _dataSource = dataSource;
+        if (_dataSource != null)
+            _dataSource.OnUpdateItemCount += HandleUpdateItemCount;
     }
 
     private void Initialize()
     {
         _recyclingSystem =
-            new VerticalRecyclingSystem(_dataSource.CellPrefab, viewport, content, _dataSource, Segments);
+            new VerticalRecyclingSystem(cellPrefab, viewport, content, _dataSource, Segments);
 
         vertical = true;
         horizontal = false;
 
         _prevAnchoredPos = content.anchoredPosition;
-        _dataSource.OnUpdateItemCount += HandleUpdateItemCount;
         onValueChanged.RemoveListener(OnValueChangedListener);
         StartCoroutine(_recyclingSystem.InitCoroutine(() =>
             onValueChanged.AddListener(OnValueChangedListener)
@@ -52,6 +57,7 @@ public class OptimizeScrollRect : ScrollRect
 
     private void HandleUpdateItemCount()
     {
+        Debug.Log(_dataSource);
         ReloadData();
     }
 

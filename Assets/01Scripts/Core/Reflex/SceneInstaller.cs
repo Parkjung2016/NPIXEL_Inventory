@@ -5,6 +5,7 @@ using Reflex.Injectors;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[DefaultExecutionOrder(-9999)]
 public class SceneInstaller : MonoBehaviour, IInstaller
 {
     public void InstallBindings(ContainerBuilder containerBuilder)

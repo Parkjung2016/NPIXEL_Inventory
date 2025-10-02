@@ -22,28 +22,6 @@ public enum ItemType
     Material
 }
 
-public enum OperationType
-{
-    Sum,
-    Sub
-}
-
-[Serializable]
-[MemoryPackable]
-public partial class ItemAttribute
-{
-    public string attributeName;
-    public float attributeValue;
-}
-
-[Serializable]
-[MemoryPackable]
-public partial class ItemAttributeOverride
-{
-    public ItemAttribute overrideAttribute;
-    public OperationType operationType;
-}
-
 [MemoryPackable]
 [MemoryPackUnion(0, typeof(ItemData))]
 [MemoryPackUnion(1, typeof(PotionItemData))]
@@ -60,11 +38,16 @@ public abstract partial class ItemDataBase
     [HideInInspector] public string iconKey;
     public ItemRank rank;
     public Guid uniqueID;
-    public List<ItemAttribute> baseAttributes;
-    public List<ItemAttributeOverride> additionalAttributes;
+    [HideInInspector] public List<ItemAttribute> baseAttributes;
+    [HideInInspector] public List<AdditionalItemAttribute> additionalAttributes;
 
     [NonSerialized] [MemoryPackIgnore] [Inject]
     private EnumStringMappingSO _enumStringMappingSO;
+
+    public void SetEnumStringMappingSO(EnumStringMappingSO enumStringMappingSO)
+    {
+        _enumStringMappingSO = enumStringMappingSO;
+    }
 
     public virtual StringBuilder GetItemDisplayName()
     {
@@ -124,6 +107,7 @@ public abstract partial class ItemDataBase
     public virtual StringBuilder GetDetailInfo()
     {
         var sb = new StringBuilder();
+        Debug.Log(uniqueID);
         string displayItemTypeName = _enumStringMappingSO.itemTypeToString[itemType];
         if (!displayItemTypeName.IsNullOrEmpty())
         {
@@ -141,10 +125,10 @@ public abstract partial class ItemDataBase
         sb.AppendLine("Modifiers");
         for (int i = 0; i < additionalAttributes.Count; i++)
         {
-            ItemAttributeOverride attribute = additionalAttributes[i];
+            AdditionalItemAttribute additionalAttribute = additionalAttributes[i];
             string operationType = "";
             sb.Append("\t");
-            switch (attribute.operationType)
+            switch (additionalAttribute.operationType)
             {
                 case OperationType.Sum:
                     sb.Append("<color=green>");
@@ -157,11 +141,11 @@ public abstract partial class ItemDataBase
             }
 
             sb.Append("*");
-            sb.Append(attribute.overrideAttribute.attributeName);
+            sb.Append(additionalAttribute.additionalAttribute.attributeName);
             sb.Append(": ");
             sb.Append(operationType);
 
-            sb.Append(attribute.overrideAttribute.attributeValue);
+            sb.Append(additionalAttribute.value);
             sb.Append("</color>");
             if (i < additionalAttributes.Count - 1)
                 sb.AppendLine();

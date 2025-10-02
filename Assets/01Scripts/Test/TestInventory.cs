@@ -1,8 +1,6 @@
 using System.Collections;
-using MemoryPack;
 using PJH.Utility.CoroutineHelpers;
 using Reflex.Attributes;
-using UnityEditor;
 using UnityEngine;
 
 public class TestInventory : MonoBehaviour
@@ -36,7 +34,7 @@ public class TestInventory : MonoBehaviour
 
     private void AddMaxInventoryDataLength_100()
     {
-        inventoryUI.ScrollRectDataSourceSO.AddDataLength(100);
+        inventoryUI.ClonedInventoryScrollRectDataSourceSO.dataSource.AddDataLength(100);
     }
 
     private void OnGUI()

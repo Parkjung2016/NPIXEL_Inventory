@@ -2199,7 +2199,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  _segments: 6
+  segments: 6
+  cellPrefab: {fileID: 224182731342183468, guid: d8dab30b6d8b3dc4cb8ddf42a4d7752b, type: 3}
 --- !u!1 &7354183875998591785
 GameObject:
   m_ObjectHideFlags: 0
@@ -2250,7 +2251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a60d8fe65054993829baa20093adb29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ScrollRectDataSourceSO>k__BackingField: {fileID: 11400000, guid: 989fb222b60a0c148bf0909cbf8bf46c, type: 2}
+  _scrollRectDataSourceSO: {fileID: 11400000, guid: 989fb222b60a0c148bf0909cbf8bf46c, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

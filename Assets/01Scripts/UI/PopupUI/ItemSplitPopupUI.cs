@@ -1,6 +1,5 @@
 using Reflex.Attributes;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
 public class ItemSplitPopupUI : UIBase, IPopupUI

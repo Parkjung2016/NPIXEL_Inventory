@@ -13,11 +13,17 @@ public class BaseItemDataSOEditor : Editor
 
     private int _pickerControlID;
     private Vector2 _iconScrollPos;
+    private SerializedProperty _itemDataProp;
+    private SerializedProperty _attributes;
+    private SerializedProperty _additionalAttributes;
 
     private void OnEnable()
     {
         if (target != null)
             _targetSO = (BaseItemDataSO)target;
+        _itemDataProp = serializedObject.FindProperty("itemData");
+        _attributes = serializedObject.FindProperty("attributes");
+        _additionalAttributes = serializedObject.FindProperty("additionalAttributes");
     }
 
     public override void OnInspectorGUI()
@@ -59,12 +65,13 @@ public class BaseItemDataSOEditor : Editor
 
     private void DrawLeftPanel()
     {
-        SerializedProperty itemDataProp = serializedObject.FindProperty("itemData");
-        if (itemDataProp != null)
+        if (_itemDataProp != null)
         {
-            DrawPropertiesRecursively(itemDataProp);
+            DrawPropertiesRecursively(_itemDataProp);
         }
 
+        EditorGUILayout.PropertyField(_attributes);
+        EditorGUILayout.PropertyField(_additionalAttributes);
         serializedObject.ApplyModifiedProperties();
     }
 

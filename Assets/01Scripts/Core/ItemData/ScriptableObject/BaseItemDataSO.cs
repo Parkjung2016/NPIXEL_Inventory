@@ -1,13 +1,58 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
+[Serializable]
+public class ItemAttributeOverride
+{
+    public ItemAttributeSO itemAttribute;
+    public float value;
+}
+
+[Serializable]
+public class AdditionalItemAttributeClass
+{
+    public ItemAttributeSO additionalAttribute;
+    public float value;
+    public OperationType operationType;
+}
 
 public abstract class BaseItemDataSO : ScriptableObject
 {
     public abstract ItemDataBase GetItemData();
+    public List<ItemAttributeOverride> attributes;
+    public List<AdditionalItemAttributeClass> additionalAttributes;
 
     private void OnValidate()
     {
+        ItemDataBase itemData = GetItemData();
+        itemData.additionalAttributes.Clear();
+        foreach (var additionalAttribute in additionalAttributes)
+        {
+            if (additionalAttribute == null || additionalAttribute.additionalAttribute == null) continue;
+            AdditionalItemAttribute newOverride = new AdditionalItemAttribute
+            {
+                additionalAttribute = additionalAttribute.additionalAttribute.attribute,
+                value = additionalAttribute.value,
+                operationType = additionalAttribute.operationType
+            };
+            itemData.additionalAttributes.Add(newOverride);
+        }
+
+        itemData.baseAttributes.Clear();
+        foreach (var attribute in attributes)
+        {
+            if (attribute == null || attribute.itemAttribute == null) continue;
+
+            ItemAttribute newAttribute = new ItemAttribute
+            {
+                attributeName = attribute.itemAttribute.attribute.attributeName,
+                attributeValue = attribute.value
+            };
+            itemData.baseAttributes.Add(newAttribute);
+        }
+
         if (EditorApplication.isUpdating) return; // 임포트 중이면 실행하지 않음
         EditorApplication.delayCall -= RenameAsset;
         EditorApplication.delayCall += RenameAsset;

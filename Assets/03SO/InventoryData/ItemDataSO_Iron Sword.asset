@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a67f38898e4448783c860e369ebc2a4, type: 3}
   m_Name: ItemDataSO_Iron Sword
   m_EditorClassIdentifier: 
+  attributes:
+  - itemAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
+    value: 10
+  additionalAttributes:
+  - additionalAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
+    value: 50
+    operationType: 0
   itemData:
     displayName: Iron Sword
     typeName: Melee Weapon
@@ -20,5 +27,12 @@ MonoBehaviour:
     itemType: 0
     iconKey: sword_iron.sprite
     rank: 0
-    baseAttributes: []
-    additionalAttributes: []
+    baseAttributes:
+    - attributeName: Power
+      attributeValue: 10
+    additionalAttributes:
+    - additionalAttribute:
+        attributeName: Power
+        attributeValue: 3
+      value: 50
+      operationType: 0

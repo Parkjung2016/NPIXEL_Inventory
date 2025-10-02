@@ -1,39 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Cysharp.Threading.Tasks;
+using MemoryPack;
+using Reflex.Attributes;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScrollRectDataSource
+[Serializable]
+[MemoryPackable]
+public partial class InventoryScrollRectDataSource : IOptimizeScrollRectDataSource
 {
-    public event Action OnUpdateItemCount;
-    [SerializeField] private int dataLength;
-    [field: SerializeField] public RectTransform CellPrefab { get; private set; }
+    [MemoryPackIgnore] public Action OnUpdateItemCount { get; set; }
+    public int dataLength;
 
-    private int _currentCellCount;
-
-    private List<ItemDataBase> _itemDataList;
-
-    public IList<ItemDataBase> ItemDataList => _itemDataList;
+    [MemoryPackIgnore] public List<ItemDataBase> itemDataList = new();
 
     public InventorySortType sortType;
 
-    private void OnValidate()
+    public void InitData()
     {
-        InitData();
-    }
-
-    private void InitData()
-    {
-        _itemDataList = new List<ItemDataBase>(dataLength);
+        itemDataList = new List<ItemDataBase>(dataLength);
         for (int i = 0; i < dataLength; i++)
         {
-            _itemDataList.Add(null);
+            itemDataList.Add(null);
         }
     }
 
     public void ClearData()
     {
-        if (_itemDataList.Count == 0)
+        if (itemDataList.Count == 0)
         {
             InitData();
             return;
@@ -41,7 +36,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
         for (int i = 0; i < dataLength; i++)
         {
-            _itemDataList[i] = null;
+            itemDataList[i] = null;
         }
     }
 
@@ -57,7 +52,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
         for (int i = 0; i < lengthToAdd; i++)
         {
-            _itemDataList.Add(null);
+            itemDataList.Add(null);
         }
 
         OnUpdateItemCount?.Invoke();
@@ -65,11 +60,11 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
     public void AddData(ItemDataBase dataToAdd)
     {
-        int emptyIndex = _itemDataList.FindIndex(x => x == null);
+        int emptyIndex = itemDataList.FindIndex(x => x == null);
 
         if (emptyIndex >= 0)
         {
-            _itemDataList[emptyIndex] = dataToAdd;
+            itemDataList[emptyIndex] = dataToAdd;
             SortData();
         }
         else
@@ -80,7 +75,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
     public void RemoveData(ItemDataBase dataToRemove)
     {
-        int removeIndex = _itemDataList.FindIndex(data => data == dataToRemove);
+        int removeIndex = itemDataList.FindIndex(data => data == dataToRemove);
         Debug.Log(removeIndex);
 
         RemoveData(removeIndex);
@@ -90,7 +85,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
     {
         if (removeIndex >= 0)
         {
-            _itemDataList[removeIndex] = null;
+            itemDataList[removeIndex] = null;
             SortData();
         }
         else
@@ -101,7 +96,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
 
     public void SortData()
     {
-        _itemDataList.Sort((a, b) =>
+        itemDataList.Sort((a, b) =>
         {
             if (a == null && b == null) return 0;
             if (a == null) return 1; // null은 뒤로
@@ -119,8 +114,11 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
                 }
                 case InventorySortType.ByCount:
                 {
-                    int countCompare = CompareByCount(a, b);
-                    return countCompare;
+                    return CompareByCount(a, b);
+                }
+                case InventorySortType.ByType:
+                {
+                    return CompareByType(a, b);
                 }
                 case InventorySortType.ByAll:
                 {
@@ -144,7 +142,7 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
     public void SetCell(ICell cell, int index)
     {
         var item = cell as ItemSlotUI;
-        item.ConfigureCell(_itemDataList[index], index);
+        item.ConfigureCell(itemDataList[index], index);
     }
 
     #region compare functions
@@ -172,6 +170,67 @@ public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScroll
         // 내림차순: 큰 수 먼저
         int countCompare = itemCountB.CompareTo(itemCountA);
         return countCompare;
+    }
+
+    int CompareByType(ItemDataBase a, ItemDataBase b)
+    {
+        return a.itemType.CompareTo(b.itemType);
+    }
+
+    #endregion
+}
+
+[CreateAssetMenu]
+public class InventoryScrollRectDataSourceSO : ScriptableObject, ISaveable
+{
+    public event Action<InventoryScrollRectDataSource> OnLoadedInventoryData;
+    [field: SerializeField] public int SaveID { get; private set; }
+    [Inject] public SaveManagerSO SaveManagerSO { get; private set; }
+    public InventoryScrollRectDataSource dataSource = new InventoryScrollRectDataSource();
+
+    public void Init()
+    {
+        SaveManagerSO?.RegisterSaveable(this);
+        ;
+    }
+
+    private void OnDisable()
+    {
+        SaveManagerSO?.UnregisterSaveable(this);
+    }
+
+    private void OnValidate()
+    {
+        dataSource.InitData();
+    }
+
+    public InventoryScrollRectDataSourceSO Clone()
+    {
+        InventoryScrollRectDataSourceSO clone = Instantiate(this);
+        clone.dataSource = clone.dataSource.DeepCopy();
+        return clone;
+    }
+
+    #region saveable
+
+    public async UniTask<byte[]> ParsingToBytes()
+    {
+        using var stream = new MemoryStream();
+        await MemoryPackSerializer.SerializeAsync(stream, dataSource);
+        return stream.ToArray();
+    }
+
+    public async UniTask ParsingFromBytes(byte[] bytes)
+    {
+        using var stream = new MemoryStream(bytes);
+        dataSource = await MemoryPackSerializer.DeserializeAsync<InventoryScrollRectDataSource>(stream);
+        dataSource.InitData();
+    }
+
+    public void AllLoaded()
+    {
+        OnLoadedInventoryData?.Invoke(dataSource);
+        dataSource.OnUpdateItemCount?.Invoke();
     }
 
     #endregion

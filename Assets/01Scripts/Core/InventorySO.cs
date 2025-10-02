@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using MemoryPack;
+using PJH.Utility.Managers;
 using Reflex.Attributes;
 using Reflex.Extensions;
 using Reflex.Injectors;
@@ -41,7 +41,12 @@ public class InventorySO : ScriptableObject, ISaveable
     public void Init()
     {
         ClearData();
-        SaveManagerSO.RegisterSaveable(this);
+        SaveManagerSO?.RegisterSaveable(this);
+    }
+
+    private void OnDisable()
+    {
+        SaveManagerSO?.UnregisterSaveable(this);
     }
 
     [ContextMenu("Clear Data")]
@@ -150,10 +155,14 @@ public class InventorySO : ScriptableObject, ISaveable
         inventoryData = await MemoryPackSerializer.DeserializeAsync<InventoryData>(stream);
         for (int i = 0; i < inventoryData.currentInventoryDataList.Count; i++)
         {
-            AttributeInjector.Inject(inventoryData.currentInventoryDataList[i],
-                SceneManager.GetActiveScene().GetSceneContainer());
+            ItemDataBase itemData = inventoryData.currentInventoryDataList[i];
+            itemData.uniqueID = Guid.NewGuid();
+            AttributeInjector.Inject(itemData, SceneManager.GetActiveScene().GetSceneContainer());
         }
+    }
 
+    public void AllLoaded()
+    {
         OnForceChangedInventoryData?.Invoke(inventoryData.currentInventoryDataList);
     }
 

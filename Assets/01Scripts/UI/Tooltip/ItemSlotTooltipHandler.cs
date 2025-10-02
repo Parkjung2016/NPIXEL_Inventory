@@ -14,9 +14,15 @@ public class ItemSlotTooltipHandler : MonoBehaviour, IPointerEnterHandler, IPoin
 
     private async void OnEnable()
     {
-        await UniTask.WaitUntil(() => _uiEventChannelSO != null,
-            cancellationToken: gameObject.GetCancellationTokenOnDestroy());
-        _uiEventChannelSO.AddListener<ShowItemSlotTooltipUIEvent>(HandleShowItemSlotTooltipUI);
+        try
+        {
+            await UniTask.WaitUntil(() => _uiEventChannelSO != null,
+                cancellationToken: gameObject.GetCancellationTokenOnDestroy());
+            _uiEventChannelSO.AddListener<ShowItemSlotTooltipUIEvent>(HandleShowItemSlotTooltipUI);
+        }
+        catch
+        {
+        }
     }
 
     private void OnDisable()

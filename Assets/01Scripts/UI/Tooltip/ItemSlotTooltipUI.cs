@@ -188,6 +188,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
         try
         {
             await UniTask.Yield(gameObject.GetCancellationTokenOnDestroy());
+            Debug.Log(evt.itemData);
             ShowUIInfo(evt.itemData);
             GetObject((byte)Objects.InteractGroup).SetActive(false);
         }
@@ -199,7 +200,6 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     private void HideTooltip()
     {
-        Debug.Log(ChildPopupUIStack.Count);
         for (int i = 0; i < ChildPopupUIStack.Count; i++)
         {
             IPopupUI popupUI = ChildPopupUIStack.Pop();
