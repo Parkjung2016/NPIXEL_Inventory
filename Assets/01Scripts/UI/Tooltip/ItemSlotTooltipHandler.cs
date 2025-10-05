@@ -1,28 +1,25 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using Reflex.Attributes;
+using PJH.Utility.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ItemSlotTooltipHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private const float hoverTime = 0.5f;
-    [Inject] private GameEventChannelSO _uiEventChannelSO;
+    private GameEventChannelSO _uiEventChannelSO;
     private CancellationTokenSource _hoverCancellationTokenSource;
 
     public ItemDataBase CurrentItemData { get; private set; }
 
-    private async void OnEnable()
+    private void Awake()
     {
-        try
-        {
-            await UniTask.WaitUntil(() => _uiEventChannelSO != null,
-                cancellationToken: gameObject.GetCancellationTokenOnDestroy());
-            _uiEventChannelSO.AddListener<ShowItemSlotTooltipUIEvent>(HandleShowItemSlotTooltipUI);
-        }
-        catch
-        {
-        }
+        _uiEventChannelSO = AddressableManager.Load<GameEventChannelSO>("UIEventChannelSO");
+    }
+
+    private void OnEnable()
+    {
+        _uiEventChannelSO.AddListener<ShowItemSlotTooltipUIEvent>(HandleShowItemSlotTooltipUI);
     }
 
     private void OnDisable()
@@ -95,7 +92,7 @@ public class ItemSlotTooltipHandler : MonoBehaviour, IPointerEnterHandler, IPoin
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (UIEvents.ClickItemSlot.isClicked) return;
+        if (ShouldBlockTooltip()) return;
         var showItemSlotTooltipEvt = UIEvents.ShowItemSlotTooltip;
 
         if (showItemSlotTooltipEvt.show)
@@ -126,8 +123,13 @@ public class ItemSlotTooltipHandler : MonoBehaviour, IPointerEnterHandler, IPoin
     public void OnPointerExit(PointerEventData eventData)
     {
         DisposeHoverCancellationTokenSource();
-        if (UIEvents.ClickItemSlot.isClicked) return;
+        if (ShouldBlockTooltip()) return;
         _hoverCancellationTokenSource = new CancellationTokenSource();
         HideTooltipAfterDelay(_hoverCancellationTokenSource.Token).Forget();
+    }
+
+    public bool ShouldBlockTooltip()
+    {
+        return UIEvents.ClickItemSlot.isClicked || UIEvents.ItemSlotDragAction.itemSlot != null;
     }
 }

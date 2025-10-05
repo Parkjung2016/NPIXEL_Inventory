@@ -1,6 +1,12 @@
-using UnityEngine;
+using System;
+using MemoryPack;
 
-[CreateAssetMenu]
+[MemoryPackable]
+[Serializable]
+public partial class ItemData : ItemDataBase
+{
+}
+
 public class ItemDataSO : BaseItemDataSO
 {
     public ItemData itemData = new();

@@ -45,14 +45,14 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c45dd31486654bc4fa1fb1f6f95b2a43
-    m_Address: InventorySO
+  - m_GUID: e21c5a1b25cb7e946ad3f9dd651546ef
+    m_Address: InventoryDataListSO
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e21c5a1b25cb7e946ad3f9dd651546ef
-    m_Address: InventoryDataListSO
+  - m_GUID: efd43e6ef172ba044ba4f5af89b49c6a
+    m_Address: InventoryListSO
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad

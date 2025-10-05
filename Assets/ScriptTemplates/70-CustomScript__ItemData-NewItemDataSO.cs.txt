@@ -1,0 +1,20 @@
+using System;
+using MemoryPack;
+
+#ROOTNAMESPACEBEGIN#
+[MemoryPackable]
+[Serializable]
+public partial class #SCRIPTNAME_NO_SO# : ItemDataBase
+{
+}
+
+public class #SCRIPTNAME# : BaseItemDataSO
+{
+    public #SCRIPTNAME_NO_SO#  itemData = new();
+
+    public override ItemDataBase GetItemData()
+    {
+        return itemData;
+    }
+}
+#ROOTNAMESPACEEND#

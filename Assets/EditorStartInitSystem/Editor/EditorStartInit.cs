@@ -60,6 +60,9 @@ namespace PJH.Editor
                 EditorSceneManager.playModeStartScene = null;
                 PJHDebug.Log("▶ 현재 씬에서 시작");
             }
+
+            EditorUtility.SetDirty(editorStartInitSetting);
+            AssetDatabase.SaveAssets();
         }
     }
 }

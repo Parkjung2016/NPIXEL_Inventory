@@ -1,9 +1,12 @@
+using System;
 using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemSplitPopupUI : UIBase, IPopupUI
 {
+    public event Action OnSplited;
+
     enum Buttons
     {
         Button_Cancel,
@@ -17,7 +20,7 @@ public class ItemSplitPopupUI : UIBase, IPopupUI
 
     public GameObject GameObject => gameObject;
     [field: SerializeField] public bool AllowDuplicates { get; private set; } = false;
-    [Inject] private InventorySO _inventorySO;
+    [Inject] private InventoryListSO _inventoryListSO;
     private ItemDataBase _itemData;
 
     public override void Init()
@@ -42,9 +45,8 @@ public class ItemSplitPopupUI : UIBase, IPopupUI
         if (itemData is IStackable stackable)
         {
             Slider slider = GetSlider((byte)Sliders.Slider);
-            slider.minValue = 1;
             slider.maxValue = stackable.StackCount - 1;
-            slider.value = slider.maxValue / 2;
+            slider.value = Mathf.CeilToInt(slider.maxValue / 2);
         }
     }
 
@@ -57,8 +59,9 @@ public class ItemSplitPopupUI : UIBase, IPopupUI
     {
         Slider slider = GetSlider((byte)Sliders.Slider);
         int splitCount = (int)slider.value;
-        _inventorySO.Split(_itemData, splitCount);
+        _inventoryListSO.SplitItem(_itemData, splitCount);
 
+        OnSplited?.Invoke();
         Managers.UI.ClosePopup(this);
     }
 }

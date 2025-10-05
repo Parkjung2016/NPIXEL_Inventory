@@ -4,7 +4,7 @@ using System.IO;
 using PJH.Utility;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "SO/Save/SaveManagerSO")]
 public class SaveManagerSO : ScriptableObject
 {
     public event Action OnSaveCompleted;

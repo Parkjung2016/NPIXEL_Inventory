@@ -1,6 +1,7 @@
+using PJH.Utility.Utils;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "SO/Mapping/EnumStringMappingSO")]
 public class EnumStringMappingSO : ScriptableObject
 {
     public SerializableDictionary<ItemType, string> itemTypeToString;

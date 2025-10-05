@@ -4,38 +4,48 @@ using UnityEngine;
 
 namespace PJH.Utility.Utils
 {
+    [Serializable]
+    public class SerializableKeyValue<TKey, TValue>
+    {
+        public TKey Key;
+        public TValue Value;
+    }
+
     [System.Serializable]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-        [SerializeField] private List<TKey> keys = new List<TKey>();
+        [SerializeField] private List<SerializableKeyValue<TKey, TValue>> _keyValueList = new();
 
-        [SerializeField] private List<TValue> values = new List<TValue>();
-
-        // save the dictionary to lists
         public void OnBeforeSerialize()
         {
-            keys.Clear();
-            values.Clear();
-            foreach (KeyValuePair<TKey, TValue> pair in this)
+            if (_keyValueList == null) return;
+            if (this.Count < _keyValueList.Count)
             {
-                keys.Add(pair.Key);
-                values.Add(pair.Value);
+                return;
+            }
+
+            _keyValueList.Clear();
+
+            foreach (var kv in this)
+            {
+                _keyValueList.Add(new SerializableKeyValue<TKey, TValue>()
+                {
+                    Key = kv.Key,
+                    Value = kv.Value
+                });
             }
         }
 
-
-        // load dictionary from lists
         public void OnAfterDeserialize()
         {
             this.Clear();
-
-            if (keys.Count != values.Count)
-                throw new Exception("there are " + keys.Count + " keys and " + values.Count +
-                                    " values after deserialization. Make sure that both key and value types are serializable.");
-
-
-            for (int i = 0; i < keys.Count; i++)
-                this.Add(keys[i], values[i]);
+            foreach (var kv in _keyValueList)
+            {
+                if (!this.TryAdd(kv.Key, kv.Value))
+                {
+                    Debug.LogError($"List has duplicate Key");
+                }
+            }
         }
     }
 }

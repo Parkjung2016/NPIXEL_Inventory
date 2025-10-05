@@ -1,7 +1,23 @@
+using UnityEngine;
+
 public static class UIEvents
 {
-    public static ShowItemSlotTooltipUIEvent ShowItemSlotTooltip = new ShowItemSlotTooltipUIEvent();
-    public static ClickItemSlotEvent ClickItemSlot = new ClickItemSlotEvent();
+    public static readonly ShowItemSlotTooltipUIEvent ShowItemSlotTooltip = new ShowItemSlotTooltipUIEvent();
+    public static readonly ClickItemSlotEvent ClickItemSlot = new ClickItemSlotEvent();
+    public static readonly ItemSlotDragActionEvent ItemSlotDragAction = new ItemSlotDragActionEvent();
+    public static readonly ItemSlotDragEvent ItemSlotDrag = new ItemSlotDragEvent();
+}
+
+public class ItemSlotDragActionEvent : GameEvent
+{
+    public IItemSlotUI itemSlot;
+    public Vector2 slotSize;
+    public Vector3 startPosition;
+}
+
+public class ItemSlotDragEvent : GameEvent
+{
+    public Vector3 currentPosition;
 }
 
 public class ShowItemSlotTooltipUIEvent : GameEvent

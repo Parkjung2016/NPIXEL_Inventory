@@ -24,4 +24,5 @@ MonoBehaviour:
     rank: 0
     baseAttributes: []
     additionalAttributes: []
-    <MaxStackCount>k__BackingField: 4
+    <StackCount>k__BackingField: 0
+    <MaxStackCount>k__BackingField: 5

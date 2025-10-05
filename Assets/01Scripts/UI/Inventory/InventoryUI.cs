@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using PJH.Utility.Managers;
 using Reflex.Attributes;
 using Reflex.Extensions;
 using Reflex.Injectors;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -12,45 +15,111 @@ public class InventoryUI : UIBase
 {
     enum Buttons
     {
-        Button_ChangeSortType
+        Button_ChangeSortType,
+        Button_Sort,
+        Button_GoToTop,
+        Button_GoToBottom
     }
 
     enum Texts
     {
-        Text_SortType
+        Text_SortType,
+        Text_ItemCount
     }
 
-    [SerializeField] private InventoryScrollRectDataSourceSO _scrollRectDataSourceSO;
+    enum Toggles
+    {
+        Toggle_AutoSort
+    }
+
+    enum Objects
+    {
+        Viewport,
+        TopGroups
+    }
+
+    enum CanvasGroups
+    {
+        BlockInteraction
+    }
+
+    private readonly Dictionary<ItemType, ChangeInventoryTypeButton> _changeInventoryTypeButtons =
+        new Dictionary<ItemType, ChangeInventoryTypeButton>();
+
+    public ItemType InventoryType => _inventoryType;
+
+    [SerializeField] private ChangeInventoryTypeButton _changeInventoryTypeButtonPrefab;
+    [SerializeField] private InventoryScrollRectDataSourceSO scrollRectDataSourceSO;
+    [SerializeField] private ItemDragSlotUI itemDragSlotUIPrefab;
+    [SerializeField] private ItemType _inventoryType;
     [Inject] private ItemManagerSO _itemManagerSO;
-    [Inject] private InventorySO _inventorySO;
+    [Inject] private InventoryListSO _inventoryListSO;
     private OptimizeScrollRect _optimizeScrollRect;
-    public InventoryScrollRectDataSourceSO ClonedInventoryScrollRectDataSourceSO { get; private set; }
+    private GameEventChannelSO _uiEventChannelSO;
+
+
+    private InventorySO inventorySO => _inventoryListSO[_inventoryType];
+
 
     public override void Init()
     {
+        _uiEventChannelSO = AddressableManager.Load<GameEventChannelSO>("UIEventChannelSO");
+        Instantiate(itemDragSlotUIPrefab, transform);
+        AttributeInjector.Inject(scrollRectDataSourceSO, SceneManager.GetActiveScene().GetSceneContainer());
+        scrollRectDataSourceSO.SetInventorySO(inventorySO);
         _optimizeScrollRect = GetComponent<OptimizeScrollRect>();
-        ClonedInventoryScrollRectDataSourceSO = _scrollRectDataSourceSO.Clone();
-        ClonedInventoryScrollRectDataSourceSO.OnLoadedInventoryData += HandleLoadedInventoryData;
-        AttributeInjector.Inject(ClonedInventoryScrollRectDataSourceSO,
-            SceneManager.GetActiveScene().GetSceneContainer());
-        ClonedInventoryScrollRectDataSourceSO.Init();
-        _optimizeScrollRect.SetDataSource(ClonedInventoryScrollRectDataSourceSO.dataSource);
-        ClonedInventoryScrollRectDataSourceSO.dataSource.ClearData();
+        _optimizeScrollRect.SetDataSource(scrollRectDataSourceSO);
+
+        Bind<GameObject>(typeof(Objects));
+        if (_changeInventoryTypeButtonPrefab != null)
+        {
+            Transform topGroups = GetObject((byte)Objects.TopGroups).transform;
+            foreach (ItemType itemType in Enum.GetValues(typeof(ItemType)))
+            {
+                ChangeInventoryTypeButton changeInventoryTypeButton =
+                    Instantiate(_changeInventoryTypeButtonPrefab, topGroups);
+                changeInventoryTypeButton.Init(this, itemType);
+                _changeInventoryTypeButtons.Add(itemType, changeInventoryTypeButton);
+            }
+        }
 
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Text>(typeof(Texts));
-        GetButton((byte)Buttons.Button_ChangeSortType).onClick.AddListener(HandleClickSortButton);
+        Bind<Toggle>(typeof(Toggles));
+        Bind<CanvasGroup>(typeof(CanvasGroups));
+
+        BindEvent(GetObject((byte)Objects.Viewport),
+            pointerEvent =>
+            {
+                if (pointerEvent.button != PointerEventData.InputButton.Left) return;
+                var evt = UIEvents.ClickItemSlot;
+                evt.itemSlot = null;
+                evt.isClicked = false;
+                _uiEventChannelSO.RaiseEvent(evt);
+            });
+        GetButton((byte)Buttons.Button_ChangeSortType).onClick.AddListener(HandleClickChangeSortButton);
+        GetButton((byte)Buttons.Button_Sort).onClick.AddListener(HandleClickSortButton);
+        GetButton((byte)Buttons.Button_GoToTop).onClick.AddListener(HandleClickGoToTopButton);
+        GetButton((byte)Buttons.Button_GoToBottom).onClick.AddListener(HandleClickGoToBottomButton);
+        Toggle autoSortToggle = GetToggle((byte)Toggles.Toggle_AutoSort);
+        autoSortToggle.onValueChanged.AddListener(HandleToggleAutoSort);
+        bool autoSort = inventorySO.inventoryData.canAutoSort;
+        autoSortToggle.isOn = autoSort;
+        GetButton((byte)Buttons.Button_Sort).gameObject.SetActive(!autoSort);
+
+        DisableBlockInteraction();
+        UpdateCurrentItemCountText();
+        UpdateInventoryTypeButtons();
     }
 
     protected override void Start()
     {
         if (!Application.isPlaying) return;
-        if (_inventorySO != null)
+        if (inventorySO != null)
         {
-            _inventorySO.OnChangedInventoryData += HandleChangedInventoryData;
-            _inventorySO.OnForceChangedInventoryData += HandleForceChangedInventoryData;
-            _inventorySO.OnAddedInventoryData += HandleAddedInventoryData;
-            _inventorySO.OnRemovedInventoryData += HandleRemovedInventoryData;
+            inventorySO.OnLoadedInventoryData += HandleLoadedInventoryData;
+
+            SubscribeInventoryDataEvents();
         }
 
         if (_itemManagerSO != null)
@@ -63,104 +132,154 @@ public class InventoryUI : UIBase
 
     protected override void OnDestroy()
     {
-        if (_inventorySO != null)
+        if (inventorySO != null)
         {
-            _inventorySO.OnChangedInventoryData -= HandleChangedInventoryData;
-            _inventorySO.OnForceChangedInventoryData -= HandleForceChangedInventoryData;
-            _inventorySO.OnAddedInventoryData -= HandleAddedInventoryData;
-            _inventorySO.OnRemovedInventoryData -= HandleRemovedInventoryData;
+            inventorySO.OnLoadedInventoryData -= HandleLoadedInventoryData;
+            UnsubscribeInventoryDataEvents();
         }
 
         if (_itemManagerSO != null)
         {
             _itemManagerSO.OnUsedItemWithStackable -= HandleUsedItemWithStackable;
         }
+    }
 
-        if (ClonedInventoryScrollRectDataSourceSO != null)
-            ClonedInventoryScrollRectDataSourceSO.OnLoadedInventoryData -= HandleLoadedInventoryData;
+    private void SubscribeInventoryDataEvents()
+    {
+        inventorySO.inventoryData.OnChangedCurrentInventorySlotCount += UpdateCurrentItemCountText;
+        inventorySO.inventoryData.OnUpdateItemCount += HandleUpdateItemCount;
+        inventorySO.inventoryData.OnChangedInventoryData += HandleChangedInventoryData;
+    }
+
+    private void UnsubscribeInventoryDataEvents()
+    {
+        inventorySO.inventoryData.OnChangedCurrentInventorySlotCount -= UpdateCurrentItemCountText;
+        inventorySO.inventoryData.OnUpdateItemCount -= HandleUpdateItemCount;
+        inventorySO.inventoryData.OnChangedInventoryData -= HandleChangedInventoryData;
+    }
+
+    public void ChangeInventoryType(ItemType newType)
+    {
+        if (newType == _inventoryType) return;
+        _inventoryType = newType;
+        scrollRectDataSourceSO.SetInventorySO(inventorySO);
+        UpdateSortTypeText();
+        UpdateCurrentItemCountText();
+        UnsubscribeInventoryDataEvents();
+        SubscribeInventoryDataEvents();
+        _optimizeScrollRect.ReloadData();
+        UpdateInventoryTypeButtons();
+    }
+
+    private void UpdateInventoryTypeButtons()
+    {
+        foreach (var pair in _changeInventoryTypeButtons)
+        {
+            pair.Value.SetSelected(pair.Key == _inventoryType);
+        }
+    }
+
+    private void UpdateCurrentItemCountText()
+    {
+        GetText((byte)Texts.Text_ItemCount).text =
+            $"{inventorySO.inventoryData.currentInventorySlotCount}/{inventorySO.inventoryData.inventorySlotCapacity}";
+    }
+
+    private void HandleUpdateItemCount()
+    {
+        UpdateCurrentItemCountText();
+        _optimizeScrollRect.ReloadData();
     }
 
     private void UpdateSortTypeText()
     {
         string sortTypeName = Enum.GetName(typeof(InventorySortType),
-            ClonedInventoryScrollRectDataSourceSO.dataSource.sortType);
+            inventorySO.inventoryData.sortType);
         GetText((byte)Texts.Text_SortType).text = $"Sort Type: {sortTypeName}";
     }
 
-    private void HandleLoadedInventoryData(InventoryScrollRectDataSource dataSource)
+    private void HandleToggleAutoSort(bool isOn)
     {
-        _optimizeScrollRect.SetDataSource(dataSource);
+        inventorySO.inventoryData.canAutoSort = isOn;
+        GetButton((byte)Buttons.Button_Sort).gameObject.SetActive(!isOn);
+        if (isOn)
+        {
+            SortData();
+        }
+    }
+
+    private void HandleClickGoToTopButton()
+    {
+        BlockDuringAsync(_optimizeScrollRect.GoToTop());
+    }
+
+    private void HandleClickGoToBottomButton()
+    {
+        BlockDuringAsync(_optimizeScrollRect.GoToBottom());
+    }
+
+    private async void BlockDuringAsync(UniTask task)
+    {
+        EnableBlockInteraction();
+        await task;
+        DisableBlockInteraction();
+    }
+
+    private void EnableBlockInteraction()
+    {
+        CanvasGroup blockInteractionCanvasGroup = GetCanvasGroup((byte)CanvasGroups.BlockInteraction);
+        blockInteractionCanvasGroup.alpha = 1;
+        blockInteractionCanvasGroup.blocksRaycasts = true;
+        inventorySO.inventoryData.canSettingData = false;
+    }
+
+    private void DisableBlockInteraction()
+    {
+        CanvasGroup blockInteractionCanvasGroup = GetCanvasGroup((byte)CanvasGroups.BlockInteraction);
+        blockInteractionCanvasGroup.alpha = 0;
+        blockInteractionCanvasGroup.blocksRaycasts = false;
+        inventorySO.inventoryData.canSettingData = true;
+    }
+
+    private void SortData()
+    {
+        inventorySO.inventoryData.SortData();
+        _optimizeScrollRect.ReloadData(false);
     }
 
     private void HandleClickSortButton()
     {
-        int current = (int)ClonedInventoryScrollRectDataSourceSO.dataSource.sortType;
+        SortData();
+    }
+
+    private void HandleClickChangeSortButton()
+    {
+        int current = (int)inventorySO.inventoryData.sortType;
 
         current = (current + 1) % Enum.GetValues(typeof(InventorySortType)).Length;
 
-        ClonedInventoryScrollRectDataSourceSO.dataSource.sortType = (InventorySortType)current;
-        ClonedInventoryScrollRectDataSourceSO.dataSource.SortData();
+        inventorySO.inventoryData.sortType = (InventorySortType)current;
         UpdateSortTypeText();
-        _optimizeScrollRect.ReloadData();
+        if (inventorySO.inventoryData.canAutoSort)
+        {
+            SortData();
+        }
     }
 
     private void HandleUsedItemWithStackable(ItemDataBase itemData)
     {
+        _optimizeScrollRect.ReloadData(false);
+    }
+
+    private void HandleLoadedInventoryData()
+    {
+        UnsubscribeInventoryDataEvents();
+        SubscribeInventoryDataEvents();
         _optimizeScrollRect.ReloadData();
     }
 
-    private void HandleAddedInventoryData(ItemDataBase addedInventoryData)
+    private void HandleChangedInventoryData(List<ItemDataBase> inventoryDataList, bool resetData)
     {
-        ClonedInventoryScrollRectDataSourceSO.dataSource.AddData(addedInventoryData);
-    }
-
-    private void HandleRemovedInventoryData(ItemDataBase removedInventoryData)
-    {
-        ClonedInventoryScrollRectDataSourceSO.dataSource.RemoveData(removedInventoryData);
-    }
-
-    private void HandleForceChangedInventoryData(List<ItemDataBase> inventoryDataList)
-    {
-        ClonedInventoryScrollRectDataSourceSO.dataSource.ClearData();
-        foreach (var data in inventoryDataList)
-        {
-            ClonedInventoryScrollRectDataSourceSO.dataSource.AddData(data);
-        }
-
-        _optimizeScrollRect.ReloadData();
-    }
-
-    private void HandleChangedInventoryData(List<ItemDataBase> inventoryDataList)
-    {
-        var existingIDs = new HashSet<Guid>();
-        for (int i = 0; i < ClonedInventoryScrollRectDataSourceSO.dataSource.itemDataList.Count; i++)
-        {
-            ItemDataBase itemData = ClonedInventoryScrollRectDataSourceSO.dataSource.itemDataList[i];
-            if (itemData != null)
-                existingIDs.Add(ClonedInventoryScrollRectDataSourceSO.dataSource.itemDataList[i].uniqueID);
-            else
-                existingIDs.Add(Guid.Empty);
-        }
-
-        foreach (var data in inventoryDataList)
-        {
-            if (!existingIDs.Contains(data.uniqueID))
-            {
-                ClonedInventoryScrollRectDataSourceSO.dataSource.AddData(data);
-            }
-        }
-
-        for (int i = ClonedInventoryScrollRectDataSourceSO.dataSource.itemDataList.Count - 1; i >= 0; i--)
-        {
-            var existing = ClonedInventoryScrollRectDataSourceSO.dataSource.itemDataList[i];
-            if (existing == null) continue;
-            if (!inventoryDataList.Exists(itemData => itemData?.uniqueID == existing?.uniqueID))
-            {
-                ClonedInventoryScrollRectDataSourceSO.dataSource.RemoveData(existing);
-                _inventorySO.RemoveItem(existing);
-            }
-        }
-
-        _optimizeScrollRect.ReloadData();
+        _optimizeScrollRect.ReloadData(resetData);
     }
 }

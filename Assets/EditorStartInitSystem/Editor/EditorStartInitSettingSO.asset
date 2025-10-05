@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ad0ee2f7ba4fafbb26ce9bd07fc34c, type: 3}
   m_Name: EditorStartInitSettingSO
   m_EditorClassIdentifier: 
-  useSetupScene: 0
+  useSetupScene: 1

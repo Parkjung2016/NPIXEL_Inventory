@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class InventoryDataListWindow : EditorWindow
 {
-    private const float minLeftPanelWidth = 350f; // 최소 너비
+    private const float minLeftPanelWidth = 400f; // 최소 너비
     private const float leftListTopOffset = 50;
     private static InventoryDataListSO _targetSO;
     private Vector2 _leftScrollPos;
@@ -54,7 +54,6 @@ public class InventoryDataListWindow : EditorWindow
             }
             EditorGUILayout.EndVertical();
 
-            // --- 리사이즈 핸들 ---
             _resizeHandle = new Rect(_leftPanelWidth, leftListTopOffset, 5f, position.height);
             EditorGUI.DrawRect(_resizeHandle, Color.gray); // 시각적인 구분
             EditorGUIUtility.AddCursorRect(_resizeHandle, MouseCursor.ResizeHorizontal);
@@ -212,7 +211,7 @@ public class InventoryDataListWindow : EditorWindow
         {
             if (e.type == EventType.MouseDrag)
             {
-                _leftPanelWidth = Mathf.Clamp(e.mousePosition.x, 400f, position.width - 100f); // 최소/최대 제한
+                _leftPanelWidth = Mathf.Clamp(e.mousePosition.x, minLeftPanelWidth, position.width - 100f); // 최소/최대 제한
                 Repaint();
             }
             else if (e.type == EventType.MouseUp)

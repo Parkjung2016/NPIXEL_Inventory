@@ -1,60 +1,84 @@
 using System.Collections;
+using System.Collections.Generic;
 using PJH.Utility.CoroutineHelpers;
 using Reflex.Attributes;
 using UnityEngine;
+using ZLinq;
 
 public class TestInventory : MonoBehaviour
 {
-    [Inject] private InventorySO _inventorySO;
-    [Inject] private InventoryDataListSO _inventoryDataListSO;
-    [Inject] private SaveManagerSO _saveManagerSO;
-    public InventoryUI inventoryUI;
     public BaseItemDataSO test;
+    public InventoryUI inventoryUI;
+    [Inject] private InventoryDataListSO _inventoryDataListSO;
+    [Inject] private InventoryListSO _inventoryListSO;
+    [Inject] private SaveManagerSO _saveManagerSO;
+    private string _inputCountToAddItem = "1";
+    private string _inputCountToAddInventorySlotCapacity = "100";
 
     private IEnumerator Start()
     {
         yield return YieldCache.GetWaitForSeconds(.5f);
-        _inventorySO.AddItem(test.GetItemData());
+        ItemDataBase itemData = test.GetItemData();
+        _inventoryListSO.AddItem(itemData);
     }
 
     private void AddRandomItem()
     {
-        ItemDataBase inventoryData = _inventoryDataListSO.GetRandomInventoryData();
-        _inventorySO.AddItem(inventoryData);
+        int addCount = int.Parse(_inputCountToAddItem);
+        List<ItemDataBase> itemDataList = new List<ItemDataBase>();
+        for (int i = 0; i < addCount; i++)
+        {
+            ItemDataBase itemData = _inventoryDataListSO.GetRandomInventoryData(inventoryUI.InventoryType);
+            itemDataList.Add(itemData);
+        }
+
+        _inventoryListSO.AddItems(itemDataList);
     }
 
     private void RemoveItem_End()
     {
-        if (_inventorySO.inventoryData.currentInventoryDataList.Count > 0)
-        {
-            ItemDataBase inventoryData = _inventorySO.inventoryData.currentInventoryDataList[^1];
-            _inventorySO.RemoveItem(inventoryData.itemID);
-        }
+        InventorySO inventorySO = _inventoryListSO[inventoryUI.InventoryType];
+        ItemDataBase itemData = inventorySO.inventoryData.currentInventoryDataList
+            .AsValueEnumerable()
+            .Where(item => item != null).LastOrDefault();
+        inventorySO.inventoryData.RemoveItem(itemData);
     }
 
-    private void AddMaxInventoryDataLength_100()
+    private void AddInventorySlotCapacity()
     {
-        inventoryUI.ClonedInventoryScrollRectDataSourceSO.dataSource.AddDataLength(100);
+        int countToAdd = int.Parse(_inputCountToAddInventorySlotCapacity);
+        _inventoryListSO.AddInventorySlotCapacity(inventoryUI.InventoryType, countToAdd);
     }
 
     private void OnGUI()
     {
         float buttonWidth = Screen.width * 0.2f;
         float buttonHeight = Screen.height * 0.08f;
+        float textFieldWidth = buttonWidth;
+        float textFieldHeight = buttonHeight * .5f;
         float startX = 10;
         float startY = 10;
         float space = 10;
 
-        if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "AddItem"))
+        if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), $"AddItem_{_inputCountToAddItem}"))
             AddRandomItem();
         startY += buttonHeight + space;
+        _inputCountToAddItem =
+            GUI.TextField(new Rect(startX, startY, textFieldWidth, textFieldHeight), _inputCountToAddItem);
+        startY += buttonHeight + space;
+
 
         if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "RemoveItem_End"))
             RemoveItem_End();
         startY += buttonHeight + space;
 
-        if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "AddMaxInventoryDataLength_100"))
-            AddMaxInventoryDataLength_100();
+        if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight),
+                $"AddInventorySlotCapacity_{_inputCountToAddInventorySlotCapacity}"))
+            AddInventorySlotCapacity();
+        startY += buttonHeight + space;
+        _inputCountToAddInventorySlotCapacity =
+            GUI.TextField(new Rect(startX, startY, textFieldWidth, textFieldHeight),
+                _inputCountToAddInventorySlotCapacity);
         startY += buttonHeight + space;
 
         if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "Save"))

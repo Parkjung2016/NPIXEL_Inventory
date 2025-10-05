@@ -3,11 +3,12 @@ using PJH.Utility;
 using Reflex.Attributes;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "SO/Item/ItemManagerSO")]
 public class ItemManagerSO : ScriptableObject
 {
-    [Inject] private InventorySO _inventorySO;
+    [Inject] private InventoryListSO _inventoryListSO;
     public event Action<ItemDataBase> OnUsedItemWithStackable;
+
 
     public void UseItem(ItemDataBase itemData)
     {
@@ -23,7 +24,7 @@ public class ItemManagerSO : ScriptableObject
                 {
                     PJHDebug.LogColorPart($"Item used up! :{itemData.displayName} ", Color.yellow,
                         tag: "ItemManagerSO");
-                    _inventorySO.RemoveItem(itemData);
+                    RemoveItem(itemData);
                 }
                 else
                 {
@@ -31,7 +32,24 @@ public class ItemManagerSO : ScriptableObject
                 }
             }
             else
-                _inventorySO.RemoveItem(itemData);
+                RemoveItem(itemData);
         }
+    }
+
+    public void ChangeItemDataIndex(ItemDataBase itemData, int prevIndex, int newIndex)
+    {
+        _inventoryListSO.ChangeItemDataIndex(itemData, prevIndex, newIndex);
+    }
+
+    public void DeleteItem(ItemDataBase itemData)
+    {
+        PJHDebug.LogColorPart($"Item deleted! :{itemData.displayName}", Color.red, tag: "ItemManagerSO");
+
+        RemoveItem(itemData);
+    }
+
+    public void RemoveItem(ItemDataBase itemData)
+    {
+        _inventoryListSO.RemoveItem(itemData);
     }
 }

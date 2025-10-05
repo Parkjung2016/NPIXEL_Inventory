@@ -107,7 +107,6 @@ public abstract partial class ItemDataBase
     public virtual StringBuilder GetDetailInfo()
     {
         var sb = new StringBuilder();
-        Debug.Log(uniqueID);
         string displayItemTypeName = _enumStringMappingSO.itemTypeToString[itemType];
         if (!displayItemTypeName.IsNullOrEmpty())
         {
@@ -159,5 +158,30 @@ public abstract partial class ItemDataBase
     public Sprite GetIcon()
     {
         return AddressableManager.Load<Sprite>(iconKey);
+    }
+
+    public virtual ItemDataBase Clone()
+    {
+        ItemDataBase clone = new ItemData();
+        clone.displayName = displayName;
+        clone.typeName = typeName;
+        clone.description = description;
+        clone.itemID = itemID;
+        clone.itemType = itemType;
+        clone.iconKey = iconKey;
+        clone.rank = rank;
+        clone.baseAttributes = new List<ItemAttribute>(baseAttributes);
+        clone.additionalAttributes = new List<AdditionalItemAttribute>(additionalAttributes);
+        clone.uniqueID = Guid.NewGuid();
+        if (this is IStackable stackable)
+        {
+            if (clone is IStackable cloneStackable)
+            {
+                cloneStackable.StackCount = stackable.StackCount;
+                cloneStackable.MaxStackCount = stackable.MaxStackCount;
+            }
+        }
+
+        return clone;
     }
 }

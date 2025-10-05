@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
+
+[DefaultExecutionOrder(-9999)]
 public class BootstrapScene : MonoBehaviour
 {
     public string nextSceneName = "InventoryScene";

@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,11 +27,7 @@ public class OptimizeScrollRect : ScrollRect
 
     public void SetDataSource(IOptimizeScrollRectDataSource dataSource)
     {
-        if (_dataSource != null)
-            _dataSource.OnUpdateItemCount -= HandleUpdateItemCount;
         _dataSource = dataSource;
-        if (_dataSource != null)
-            _dataSource.OnUpdateItemCount += HandleUpdateItemCount;
     }
 
     private void Initialize()
@@ -48,19 +45,6 @@ public class OptimizeScrollRect : ScrollRect
         ));
     }
 
-    protected override void OnDestroy()
-    {
-        if (_dataSource != null)
-            _dataSource.OnUpdateItemCount -= HandleUpdateItemCount;
-        base.OnDestroy();
-    }
-
-    private void HandleUpdateItemCount()
-    {
-        Debug.Log(_dataSource);
-        ReloadData();
-    }
-
     public void OnValueChangedListener(Vector2 normalizedPos)
     {
         Vector2 dir = content.anchoredPosition - _prevAnchoredPos;
@@ -68,22 +52,52 @@ public class OptimizeScrollRect : ScrollRect
         _prevAnchoredPos = content.anchoredPosition;
     }
 
-    public void ReloadData()
+    public void ReloadData(bool reset = true)
     {
-        ReloadData(_dataSource);
+        ReloadDataInternal(_dataSource, reset);
     }
 
-    public void ReloadData(IOptimizeScrollRectDataSource dataSource)
+    private void ReloadDataInternal(IOptimizeScrollRectDataSource dataSource, bool reset = true)
     {
         if (_recyclingSystem != null)
         {
             StopMovement();
-            onValueChanged.RemoveListener(OnValueChangedListener);
-            _recyclingSystem.SetDataSource(dataSource);
-            StartCoroutine(_recyclingSystem.InitCoroutine(() =>
-                onValueChanged.AddListener(OnValueChangedListener)
-            ));
-            _prevAnchoredPos = content.anchoredPosition;
+            if (reset)
+            {
+                onValueChanged.RemoveListener(OnValueChangedListener);
+                _recyclingSystem.SetDataSource(dataSource);
+                StartCoroutine(_recyclingSystem.InitCoroutine(() =>
+                    onValueChanged.AddListener(OnValueChangedListener)
+                ));
+                _prevAnchoredPos = content.anchoredPosition;
+            }
+            else
+            {
+                _recyclingSystem.SetDataSource(dataSource);
+           _recyclingSystem.ReloadData();
+            }
         }
+    }
+
+    public async UniTask GoToTop()
+    {
+        while (_recyclingSystem.CanGoToTop())
+        {
+            normalizedPosition = new Vector2(0f, 1f);
+            await UniTask.WaitForSeconds(.002f);
+        }
+
+        normalizedPosition = new Vector2(0f, 1f);
+    }
+
+    public async UniTask GoToBottom()
+    {
+        while (_recyclingSystem.CanGoToBottom())
+        {
+            normalizedPosition = new Vector2(0f, -1f);
+            await UniTask.WaitForSeconds(.002f);
+        }
+
+        normalizedPosition = new Vector2(0f, -1f);
     }
 }

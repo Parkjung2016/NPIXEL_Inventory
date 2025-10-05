@@ -19,8 +19,8 @@ public class BaseItemDataSOEditor : Editor
 
     private void OnEnable()
     {
-        if (target != null)
-            _targetSO = (BaseItemDataSO)target;
+        if (target == null) return;
+        _targetSO = (BaseItemDataSO)target;
         _itemDataProp = serializedObject.FindProperty("itemData");
         _attributes = serializedObject.FindProperty("attributes");
         _additionalAttributes = serializedObject.FindProperty("additionalAttributes");

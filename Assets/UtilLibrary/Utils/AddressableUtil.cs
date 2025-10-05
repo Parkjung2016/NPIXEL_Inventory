@@ -6,9 +6,9 @@ namespace PJH.Utility.Utils
     using UnityEditor.AddressableAssets.Settings;
     using System.Collections.Generic;
 
-    public static class AddressableUtility
+    public static class AddressableUtil
     {
-        [MenuItem("Tools/Addressables/Rename Sprites")]
+        [MenuItem("Tools/Addressable/Rename Sprites")]
         public static void RenameSprites()
         {
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;

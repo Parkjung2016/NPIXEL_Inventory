@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PJH.Utility.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,9 +26,9 @@ public abstract class UIBase : UIBehaviour
         for (byte i = 0; i < names.Length; i++)
         {
             if (typeof(T) == typeof(GameObject))
-                objects[i] = Util.FindChild(gameObject, names[i], true);
+                objects[i] = ComponentUtil.FindChild(gameObject, names[i], true);
             else
-                objects[i] = Util.FindChild<T>(gameObject, names[i], true);
+                objects[i] = ComponentUtil.FindChild<T>(gameObject, names[i], true);
 
             if (objects[i] == null)
                 Debug.Log($"Failed to bind({names[i]})");
@@ -37,15 +38,10 @@ public abstract class UIBase : UIBehaviour
     public static void BindEvent(GameObject gameObject, Action<PointerEventData> action,
         Define.UIEvent type = Define.UIEvent.Click)
     {
-        UIEventHandler evt = Util.GetOrAddComponent<UIEventHandler>(gameObject);
-
-        switch (type)
-        {
-            case Define.UIEvent.Click:
-                evt.OnClickHandler -= action;
-                evt.OnClickHandler += action;
-                break;
-        }
+        UIEventHandlerManager evt = ComponentUtil.GetOrAddComponent<UIEventHandlerManager>(gameObject);
+        UIEventHandlerTypeBase uiEventHandler = evt.GetOrAddEventHandlerType(type);
+        uiEventHandler.OnEventHandler -= action;
+        uiEventHandler.OnEventHandler += action;
     }
 
     protected T Get<T>(byte idx) where T : UnityEngine.Object
@@ -61,7 +57,10 @@ public abstract class UIBase : UIBehaviour
     {
         return Get<GameObject>(idx);
     }
-
+    protected CanvasGroup GetCanvasGroup(byte idx)
+    {
+        return Get<CanvasGroup>(idx);
+    }
     protected TMP_Text GetText(byte idx)
     {
         return Get<TMP_Text>(idx);
@@ -70,6 +69,11 @@ public abstract class UIBase : UIBehaviour
     protected Button GetButton(byte idx)
     {
         return Get<Button>(idx);
+    }
+
+    protected Toggle GetToggle(byte idx)
+    {
+        return Get<Toggle>(idx);
     }
 
     protected Slider GetSlider(byte idx)

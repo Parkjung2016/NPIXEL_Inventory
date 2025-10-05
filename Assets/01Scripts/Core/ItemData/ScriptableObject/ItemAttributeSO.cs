@@ -5,7 +5,7 @@ using UnityEngine;
 
 [Serializable]
 [MemoryPackable]
-public partial class ItemAttribute
+public partial struct ItemAttribute
 {
     [Delayed] public string attributeName;
     public float attributeValue;

@@ -48,11 +48,11 @@ public class VerticalRecyclingSystem
         _dataSource = dataSource;
     }
 
-    /// <summary>
-    /// 초기화를 함수
-    /// UI 갱신을 위해 한 프레임 대기하였다가 초기화 진행
-    /// </summary>
-    /// <param name="initializedCallback">초기화가 완료되었을 때 호출되는 콜백</param>
+    public int GetCellCount()
+    {
+        return _cellPool.Count;
+    }
+
     public IEnumerator InitCoroutine(System.Action InitializedCallBack)
     {
         SetTopAnchor(_content);
@@ -74,6 +74,14 @@ public class VerticalRecyclingSystem
         SetTopAnchor(_content);
 
         InitializedCallBack?.Invoke();
+    }
+
+    public void ReloadData()
+    {
+        for (int i = 0; i < _cachedCells.Count; i++)
+        {
+            _dataSource.SetCell(_cachedCells[i], _cachedCells[i].CellIndex);
+        }
     }
 
     /// <summary>
@@ -126,12 +134,10 @@ public class VerticalRecyclingSystem
         while ((poolSize < minPoolSize || currentPoolCoverage < requiredCoverage) &&
                poolSize < _dataSource.GetItemCount())
         {
-            RectTransform item = (UnityEngine.Object.Instantiate(_cell.gameObject))
-                .GetComponent<RectTransform>();
+            RectTransform item = UnityEngine.Object.Instantiate(_cell, _content, false);
             item.name = "Cell";
             item.sizeDelta = new Vector2(_cellWidth, _cellHeight);
             _cellPool.Add(item);
-            item.SetParent(_content, false);
 
             posX = _bottomMostCellColumns * _cellWidth;
             item.anchoredPosition = new Vector2(posX, posY);
@@ -143,7 +149,7 @@ public class VerticalRecyclingSystem
             }
 
             _cachedCells.Add(item.GetComponent<ICell>());
-            _dataSource.SetCell(_cachedCells[_cachedCells.Count - 1], poolSize);
+            _dataSource.SetCell(_cachedCells[^1], poolSize);
 
             poolSize++;
         }
@@ -178,13 +184,22 @@ public class VerticalRecyclingSystem
         return Vector2.zero;
     }
 
+    public bool CanGoToBottom()
+    {
+        return _currentItemCount < _dataSource.GetItemCount();
+    }
+
+    public bool CanGoToTop()
+    {
+        return _currentItemCount > _cellPool.Count;
+    }
+
     /// <summary>
     /// 위에서 아래로 셀 재활용.
     /// </summary>
     private Vector2 RecycleTopToBottom()
     {
         _recycling = true;
-
         int n = 0;
         float posY = _cellPool[_bottomMostCellIndex].anchoredPosition.y;
         float posX = 0;

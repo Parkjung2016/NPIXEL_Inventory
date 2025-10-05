@@ -1,6 +1,5 @@
 using System;
 using MemoryPack;
-using UnityEngine;
 
 
 public enum OperationType
@@ -11,7 +10,7 @@ public enum OperationType
 
 [Serializable]
 [MemoryPackable]
-public partial class AdditionalItemAttribute
+public partial struct AdditionalItemAttribute
 {
     public ItemAttribute additionalAttribute;
     public float value;
