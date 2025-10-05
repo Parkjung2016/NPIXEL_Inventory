@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using MemoryPack;
 using PJH.Utility.Extensions;
 using PJH.Utility.Managers;
@@ -10,9 +11,11 @@ using UnityEngine;
 
 public enum ItemRank
 {
-    Low,
-    Middle,
-    High
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
 }
 
 public enum ItemType
@@ -22,6 +25,22 @@ public enum ItemType
     Material
 }
 
+public enum ItemDetailType
+{
+    Armor,
+    Boots,
+    Gloves,
+    Helmet,
+    Leggings,
+    MeleeWeapon,
+    Pendent,
+    Ring,
+    Shield,
+    Chest,
+    Potion,
+    SpellBook,
+}
+
 [MemoryPackable]
 [MemoryPackUnion(0, typeof(ItemData))]
 [MemoryPackUnion(1, typeof(PotionItemData))]
@@ -29,11 +48,11 @@ public enum ItemType
 public abstract partial class ItemDataBase
 {
     public string displayName;
-    public string typeName;
     public string description;
     public int itemID;
 
     public ItemType itemType;
+    public ItemDetailType detailType;
 
     [HideInInspector] public string iconKey;
     public ItemRank rank;
@@ -65,7 +84,8 @@ public abstract partial class ItemDataBase
 
     public virtual string GetItemTypeDisplayName()
     {
-        return typeName;
+        string displayName = Regex.Replace(detailType.ToString(), "([A-Z])", " $1").Trim();
+        return displayName;
     }
 
     public virtual bool Usable()
@@ -164,7 +184,7 @@ public abstract partial class ItemDataBase
     {
         ItemDataBase clone = new ItemData();
         clone.displayName = displayName;
-        clone.typeName = typeName;
+        clone.detailType = detailType;
         clone.description = description;
         clone.itemID = itemID;
         clone.itemType = itemType;

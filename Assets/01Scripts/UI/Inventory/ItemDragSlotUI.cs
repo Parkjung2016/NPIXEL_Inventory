@@ -49,7 +49,10 @@ public class ItemDragSlotUI : UIBase
 
         gameObject.SetActive(true);
         GetImage((byte)Images.Image_Icon).sprite = itemData.GetIcon();
-        if (itemData is IStackable stackable)
+        IStackable stackable = itemData as IStackable;
+        bool stackableExists = stackable != null;
+        GetText((byte)Texts.Text_StackCount).gameObject.SetActive(stackableExists);
+        if (stackableExists)
         {
             GetText((byte)Texts.Text_StackCount).text = stackable.StackCount.ToString();
         }

@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d3b28427024e00881cf8db46e2b4b6, type: 3}
   m_Name: PotionItemDataSO_Health Potion
   m_EditorClassIdentifier: 
-  attributes: []
+  attributes:
+  - itemAttribute: {fileID: 11400000, guid: 636d637d44a7010448e3e791e5e6a069, type: 2}
+    value: 150
   additionalAttributes: []
   itemData:
     displayName: Health Potion
-    typeName: Potion
-    description: Recovery Health
+    description: A magical elixir that restores vitality when consumed
     itemID: 1
     itemType: 1
+    detailType: 10
     iconKey: potion_red.sprite
-    rank: 0
-    baseAttributes: []
+    rank: 1
+    baseAttributes:
+    - attributeName: Health
+      attributeValue: 150
     additionalAttributes: []
     <StackCount>k__BackingField: 0
     <MaxStackCount>k__BackingField: 5

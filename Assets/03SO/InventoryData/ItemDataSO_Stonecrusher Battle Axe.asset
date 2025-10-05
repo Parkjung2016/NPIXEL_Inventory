@@ -10,29 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a67f38898e4448783c860e369ebc2a4, type: 3}
-  m_Name: ItemDataSO_Axe
+  m_Name: ItemDataSO_Stonecrusher Battle Axe
   m_EditorClassIdentifier: 
   attributes:
   - itemAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
-    value: 2
-  additionalAttributes:
-  - additionalAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
-    value: 50
-    operationType: 0
+    value: 45
+  additionalAttributes: []
   itemData:
-    displayName: Axe
-    typeName: Melee Weapon
-    description: Strong Axe
+    displayName: Stonecrusher Battle Axe
+    description: A massive two-handed battle axe forged from dark iron, capable of
+      cleaving through armor and bone alike.
     itemID: 0
     itemType: 0
+    detailType: 5
     iconKey: Falmer__Axe_06.sprite
-    rank: 1
+    rank: 2
     baseAttributes:
     - attributeName: Power
-      attributeValue: 2
-    additionalAttributes:
-    - additionalAttribute:
-        attributeName: Power
-        attributeValue: 3
-      value: 50
-      operationType: 0
+      attributeValue: 45
+    additionalAttributes: []

@@ -3,7 +3,8 @@ using PJH.Utility.Extensions;
 using UnityEngine;
 using ZLinq;
 
-[CreateAssetMenu]
+
+[CreateAssetMenu(menuName = "SO/Inventory/InventoryDataListSO")]
 public class InventoryDataListSO : ScriptableObject
 {
     [SerializeField] private List<BaseItemDataSO> _inventoryDataList;

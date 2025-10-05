@@ -11,7 +11,7 @@ public partial struct ItemAttribute
     public float attributeValue;
 }
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "SO/Item/Attribute/AttributeSO")]
 public class ItemAttributeSO : ScriptableObject
 {
     public ItemAttribute attribute = new();

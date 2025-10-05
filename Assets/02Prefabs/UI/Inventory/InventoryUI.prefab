@@ -2310,7 +2310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a60d8fe65054993829baa20093adb29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _changeInventoryTypeButtonPrefab: {fileID: 4257154739789893288, guid: f113db023465a774b89488ff1493eded, type: 3}
+  changeInventoryTypeButtonPrefab: {fileID: 4257154739789893288, guid: f113db023465a774b89488ff1493eded, type: 3}
   scrollRectDataSourceSO: {fileID: 11400000, guid: 989fb222b60a0c148bf0909cbf8bf46c, type: 2}
   itemDragSlotUIPrefab: {fileID: 2172632928308186630, guid: 01057343b64773c4ab46f767cd660032, type: 3}
-  _inventoryType: 0
+  inventoryType: 0

@@ -16,12 +16,13 @@ MonoBehaviour:
   additionalAttributes: []
   itemData:
     displayName: Mana Potion
-    typeName: Potion
-    description: Recovery Mana
+    description: A mystical brew that restores a significant amount of mana upon
+      consumption.
     itemID: 2
     itemType: 1
-    iconKey: potion_purple.sprite
-    rank: 0
+    detailType: 10
+    iconKey: potion_blue.sprite
+    rank: 1
     baseAttributes: []
     additionalAttributes: []
     <StackCount>k__BackingField: 0

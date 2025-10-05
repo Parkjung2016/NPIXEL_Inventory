@@ -75,17 +75,23 @@ public class ItemSlotUI : UIBase, ICell, IItemSlotUI
 
     private void HandleSlotDrop(PointerEventData pointerEvent)
     {
-        if (!CanDragAndDrop()) return;
         IItemSlotUI targetItemSlot = UIEvents.ItemSlotDragAction.itemSlot;
         if (targetItemSlot == null) return;
+        ItemDataBase itemData = targetItemSlot.CurrentItemData;
+        if (!CanDragAndDrop(itemData)) return;
 
-        _itemManagerSO.ChangeItemDataIndex(targetItemSlot.CurrentItemData, targetItemSlot.CellIndex, CellIndex);
+        _itemManagerSO.ChangeItemDataIndex(itemData, targetItemSlot.CellIndex, CellIndex);
         var evt = UIEvents.ItemSlotDragAction;
         evt.itemSlot = null;
         _uiEventChannelSO.RaiseEvent(evt);
     }
 
-    private bool CanDragAndDrop() => !_inventoryListSO[CurrentItemData.itemType].inventoryData.canAutoSort;
+    private bool CanDragAndDrop(ItemDataBase targetItemData = null)
+    {
+        ItemDataBase itemData = targetItemData ?? CurrentItemData;
+
+        return itemData != null && !_inventoryListSO[itemData.itemType].inventoryData.canAutoSort;
+    }
 
     private void HandleSlotBeginDrag(PointerEventData pointerEvent)
     {

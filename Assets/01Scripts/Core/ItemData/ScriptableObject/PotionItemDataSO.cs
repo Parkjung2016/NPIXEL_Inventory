@@ -24,7 +24,7 @@ public partial class PotionItemData : ItemDataBase, IUsable, IStackable
         PotionItemData clone = new PotionItemData
         {
             displayName = displayName,
-            typeName = typeName,
+            detailType = detailType,
             description = description,
             itemID = itemID,
             itemType = itemType,

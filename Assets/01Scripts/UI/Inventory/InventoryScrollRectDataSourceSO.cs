@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "SO/UI/InventoryScrollRectDataSourceSO")]
 public class InventoryScrollRectDataSourceSO : ScriptableObject, IOptimizeScrollRectDataSource
 {
     private InventorySO _inventorySO;

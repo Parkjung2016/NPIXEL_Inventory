@@ -24,7 +24,15 @@ public abstract class BaseItemDataSO : ScriptableObject
     public List<ItemAttributeOverride> attributes;
     public List<AdditionalItemAttributeClass> additionalAttributes;
 
-    private void OnValidate()
+    public void OnValidate()
+    {
+        UpdateAttributeData();
+        if (EditorApplication.isUpdating) return; // 임포트 중이면 실행하지 않음
+        EditorApplication.delayCall -= RenameAsset;
+        EditorApplication.delayCall += RenameAsset;
+    }
+
+    private void UpdateAttributeData()
     {
         ItemDataBase itemData = GetItemData();
         itemData.additionalAttributes.Clear();
@@ -52,10 +60,6 @@ public abstract class BaseItemDataSO : ScriptableObject
             };
             itemData.baseAttributes.Add(newAttribute);
         }
-
-        if (EditorApplication.isUpdating) return; // 임포트 중이면 실행하지 않음
-        EditorApplication.delayCall -= RenameAsset;
-        EditorApplication.delayCall += RenameAsset;
     }
 
     private void RenameAsset()

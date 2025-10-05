@@ -46,19 +46,19 @@ public class InventoryUI : UIBase
     private readonly Dictionary<ItemType, ChangeInventoryTypeButton> _changeInventoryTypeButtons =
         new Dictionary<ItemType, ChangeInventoryTypeButton>();
 
-    public ItemType InventoryType => _inventoryType;
+    public ItemType InventoryType => inventoryType;
 
-    [SerializeField] private ChangeInventoryTypeButton _changeInventoryTypeButtonPrefab;
+    [SerializeField] private ChangeInventoryTypeButton changeInventoryTypeButtonPrefab;
     [SerializeField] private InventoryScrollRectDataSourceSO scrollRectDataSourceSO;
     [SerializeField] private ItemDragSlotUI itemDragSlotUIPrefab;
-    [SerializeField] private ItemType _inventoryType;
+    [SerializeField] private ItemType inventoryType;
     [Inject] private ItemManagerSO _itemManagerSO;
     [Inject] private InventoryListSO _inventoryListSO;
     private OptimizeScrollRect _optimizeScrollRect;
     private GameEventChannelSO _uiEventChannelSO;
 
 
-    private InventorySO inventorySO => _inventoryListSO[_inventoryType];
+    private InventorySO inventorySO => _inventoryListSO[inventoryType];
 
 
     public override void Init()
@@ -71,13 +71,13 @@ public class InventoryUI : UIBase
         _optimizeScrollRect.SetDataSource(scrollRectDataSourceSO);
 
         Bind<GameObject>(typeof(Objects));
-        if (_changeInventoryTypeButtonPrefab != null)
+        if (changeInventoryTypeButtonPrefab != null)
         {
             Transform topGroups = GetObject((byte)Objects.TopGroups).transform;
             foreach (ItemType itemType in Enum.GetValues(typeof(ItemType)))
             {
                 ChangeInventoryTypeButton changeInventoryTypeButton =
-                    Instantiate(_changeInventoryTypeButtonPrefab, topGroups);
+                    Instantiate(changeInventoryTypeButtonPrefab, topGroups);
                 changeInventoryTypeButton.Init(this, itemType);
                 _changeInventoryTypeButtons.Add(itemType, changeInventoryTypeButton);
             }
@@ -110,6 +110,18 @@ public class InventoryUI : UIBase
         DisableBlockInteraction();
         UpdateCurrentItemCountText();
         UpdateInventoryTypeButtons();
+        _optimizeScrollRect.onValueChanged.AddListener(HandleScrollValueChanged);
+    }
+
+    private void HandleScrollValueChanged(Vector2 value)
+    {
+        var evt = UIEvents.ClickItemSlot;
+        if (evt.isClicked)
+        {
+            evt.itemSlot = null;
+            evt.isClicked = false;
+            _uiEventChannelSO.RaiseEvent(evt);
+        }
     }
 
     protected override void Start()
@@ -160,8 +172,8 @@ public class InventoryUI : UIBase
 
     public void ChangeInventoryType(ItemType newType)
     {
-        if (newType == _inventoryType) return;
-        _inventoryType = newType;
+        if (newType == inventoryType) return;
+        inventoryType = newType;
         scrollRectDataSourceSO.SetInventorySO(inventorySO);
         UpdateSortTypeText();
         UpdateCurrentItemCountText();
@@ -169,13 +181,20 @@ public class InventoryUI : UIBase
         SubscribeInventoryDataEvents();
         _optimizeScrollRect.ReloadData();
         UpdateInventoryTypeButtons();
+        var evt = UIEvents.ClickItemSlot;
+        if (evt.isClicked)
+        {
+            evt.itemSlot = null;
+            evt.isClicked = false;
+            _uiEventChannelSO.RaiseEvent(evt);
+        }
     }
 
     private void UpdateInventoryTypeButtons()
     {
         foreach (var pair in _changeInventoryTypeButtons)
         {
-            pair.Value.SetSelected(pair.Key == _inventoryType);
+            pair.Value.SetSelected(pair.Key == inventoryType);
         }
     }
 

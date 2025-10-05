@@ -14,25 +14,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attributes:
   - itemAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
-    value: 10
+    value: 15
+  - itemAttribute: {fileID: 11400000, guid: 636d637d44a7010448e3e791e5e6a069, type: 2}
+    value: 5
   additionalAttributes:
   - additionalAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
-    value: 50
+    value: 3
+    operationType: 0
+  - additionalAttribute: {fileID: 11400000, guid: 9f98c245b7bdca347a91f988eb5859f0, type: 2}
+    value: 2
     operationType: 0
   itemData:
     displayName: Iron Sword
-    typeName: Melee Weapon
-    description: used by beginners.
+    description: A sturdy sword forged from iron, reliable and well-balanced for
+      combat.
     itemID: 3
     itemType: 0
+    detailType: 0
     iconKey: sword_iron.sprite
-    rank: 0
+    rank: 1
     baseAttributes:
     - attributeName: Power
-      attributeValue: 10
+      attributeValue: 15
+    - attributeName: Health
+      attributeValue: 5
     additionalAttributes:
     - additionalAttribute:
         attributeName: Power
         attributeValue: 3
-      value: 50
+      value: 3
+      operationType: 0
+    - additionalAttribute:
+        attributeName: Armor
+        attributeValue: 3
+      value: 2
       operationType: 0

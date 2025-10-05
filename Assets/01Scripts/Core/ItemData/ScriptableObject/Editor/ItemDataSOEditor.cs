@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
@@ -67,7 +68,7 @@ public class BaseItemDataSOEditor : Editor
     {
         if (_itemDataProp != null)
         {
-            DrawPropertiesRecursively(_itemDataProp);
+            EditorGUILayout.PropertyField(_itemDataProp, includeChildren: true);
         }
 
         EditorGUILayout.PropertyField(_attributes);
@@ -116,8 +117,10 @@ public class BaseItemDataSOEditor : Editor
                 foreach (var entry in spriteEntries)
                 {
                     if (!entry.address.Contains(".sprite")) continue;
+                    string detailTypeDisplayName =
+                        Regex.Replace(itemData.detailType.ToString(), "([A-Z])", " $1").Trim();
                     if (!entry.AssetPath.Contains(
-                            $"{itemData.itemType}{(itemData.typeName != string.Empty ? $"/{itemData.typeName}" : "")}/"))
+                            $"{itemData.itemType}/{detailTypeDisplayName}/"))
                         continue;
 
                     Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(entry.GetAssetLoadPath(true));
@@ -148,10 +151,5 @@ public class BaseItemDataSOEditor : Editor
         }
 
         EditorGUILayout.EndScrollView();
-    }
-
-    private void DrawPropertiesRecursively(SerializedProperty prop)
-    {
-        EditorGUILayout.PropertyField(prop, includeChildren: true);
     }
 }

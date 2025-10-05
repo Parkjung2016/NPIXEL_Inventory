@@ -15,8 +15,12 @@ MonoBehaviour:
   rankColorMapping:
     _keyValueList:
     - Key: 0
-      Value: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+      Value: {r: 0.6901961, g: 0.6901961, b: 0.6901961, a: 1}
     - Key: 1
-      Value: {r: 0.20893155, g: 0.47798735, b: 0.24886009, a: 1}
+      Value: {r: 0, g: 1, b: 0, a: 1}
     - Key: 2
-      Value: {r: 0.97695667, g: 0.98742133, b: 0.412978, a: 1}
+      Value: {r: 0, g: 0, b: 1, a: 1}
+    - Key: 3
+      Value: {r: 0.5019608, g: 0, b: 0.5019608, a: 1}
+    - Key: 4
+      Value: {r: 1, g: 0.64705884, b: 0, a: 1}
