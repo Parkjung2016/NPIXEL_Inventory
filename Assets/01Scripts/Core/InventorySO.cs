@@ -125,23 +125,27 @@ public partial class InventoryData
         }
 
         currentInventoryDataList[newIndex] = itemData;
-        _emptySlotPriorityQueue.TryRemove(newIndex);
         currentInventoryDataList[prevIndex] = prevItemData;
         if (prevItemData == null)
             _emptySlotPriorityQueue.Enqueue(prevIndex, prevIndex);
         OnChangedInventoryData?.Invoke(currentInventoryDataList, false);
     }
 
-
-    public void AddItem(ItemDataBase itemData)
+    public int GetItemDataIndex(ItemDataBase itemData)
     {
-        if (!canSettingData) return;
-        AddItemInternal(itemData);
+        return currentInventoryDataList.FindIndex(x => x == itemData);
+    }
+
+    public ItemDataBase AddItem(ItemDataBase itemData)
+    {
+        if (!canSettingData) return null;
+        return AddItemInternal(itemData);
     }
 
     public void AddItems(IList<ItemDataBase> items)
     {
         if (!canSettingData) return;
+
         for (int j = 0; j < items.Count; j++)
             AddItemInternal(items[j], invokeEvent: false);
         if (canAutoSort)
@@ -150,6 +154,7 @@ public partial class InventoryData
         }
 
         OnChangedCurrentInventorySlotCount?.Invoke();
+
         OnChangedInventoryData?.Invoke(currentInventoryDataList, true);
     }
 
@@ -163,7 +168,7 @@ public partial class InventoryData
         return null;
     }
 
-    private void AddItemInternal(ItemDataBase itemData, bool invokeEvent = true)
+    private ItemDataBase AddItemInternal(ItemDataBase itemData, bool invokeEvent = true)
     {
         IStackable stackable = itemData as IStackable;
         if (stackable != null)
@@ -174,7 +179,7 @@ public partial class InventoryData
                 stackable.StackCount++;
                 if (stackable.StackCount >= stackable.MaxStackCount)
                 {
-                    _stackableLookup[itemData.itemID].Remove(stackable);
+                    RemoveStackableLookup(itemData.itemID, stackable);
                 }
 
                 if (invokeEvent)
@@ -187,14 +192,14 @@ public partial class InventoryData
                     OnChangedInventoryData?.Invoke(currentInventoryDataList, false);
                 }
 
-                return;
+                return null;
             }
         }
 
         if (IsFull())
         {
-            PJHDebug.LogWarning("No empty slot available to add the item.", tag: "InventorySO");
-            return;
+            // PJHDebug.LogWarning("No empty slot available to add the item.", tag: "InventorySO");
+            return null;
         }
 
         ItemDataBase dataInstance = itemData.Clone();
@@ -206,7 +211,9 @@ public partial class InventoryData
             if (_stackableLookup.ContainsKey(dataInstance.itemID))
                 _stackableLookup[dataInstance.itemID].Add(stackable);
             else
+            {
                 _stackableLookup.Add(dataInstance.itemID, new List<IStackable> { stackable });
+            }
         }
 
         dataInstance.uniqueID = Guid.NewGuid();
@@ -228,6 +235,8 @@ public partial class InventoryData
                 OnChangedInventoryData?.Invoke(currentInventoryDataList, false);
             }
         }
+
+        return dataInstance;
     }
 
     public void SplitItem(ItemDataBase itemData, int splitCount)
@@ -249,10 +258,13 @@ public partial class InventoryData
 
             ItemDataBase newItem = itemData.DeepCopy();
             AttributeInjector.Inject(newItem, SceneManager.GetActiveScene().GetSceneContainer());
-            (newItem as IStackable).StackCount = splitCount;
+            IStackable newItemStackable = (newItem as IStackable);
+            newItemStackable.StackCount = splitCount;
             stackable.StackCount -= splitCount;
             int emptySlotIndex = FindEmptySlotIndex();
             currentInventoryDataList[emptySlotIndex] = newItem;
+            AddStackableLookup(newItem.itemID, newItemStackable);
+
             CurrentInventorySlotCount++;
             OnChangedInventoryData?.Invoke(currentInventoryDataList, true);
         }
@@ -262,33 +274,61 @@ public partial class InventoryData
         }
     }
 
-    public void RemoveItem(ItemDataBase dataToRemove)
+    public bool RemoveItem(ItemDataBase dataToRemove)
     {
-        if (!canSettingData) return;
+        if (!canSettingData) return false;
         if (dataToRemove == null)
         {
             PJHDebug.LogWarning("Cannot remove a null item.", tag: "InventorySO");
-            return;
+            return false;
         }
 
         int removeIndex = currentInventoryDataList.FindIndex(x => x == dataToRemove);
-        RemoveItem(removeIndex);
+        return RemoveItem(removeIndex);
     }
 
-    public void RemoveItem(int index)
+    public bool RemoveItem(int index)
     {
-        if (!canSettingData) return;
+        if (!canSettingData) return false;
         if (index >= 0 && index < currentInventoryDataList.Count)
         {
+            ItemDataBase prevItemData = currentInventoryDataList[index];
+            if (prevItemData is IStackable stackable)
+            {
+                RemoveStackableLookup(prevItemData.itemID, stackable);
+            }
+
             currentInventoryDataList[index] = null;
             _emptySlotPriorityQueue.Enqueue(index, index);
-
+            if (canAutoSort)
+                SortData();
             CurrentInventorySlotCount--;
             OnChangedInventoryData?.Invoke(currentInventoryDataList, false);
+
+            return true;
         }
+
+        PJHDebug.LogWarning($"Index {index} is out of range. Cannot remove item.", tag: "InventorySO");
+        return false;
+    }
+
+    private void AddStackableLookup(int index, IStackable stackable)
+    {
+        if (_stackableLookup.ContainsKey(index))
+            _stackableLookup[index].Add(stackable);
         else
         {
-            PJHDebug.LogWarning($"Index {index} is out of range. Cannot remove item.", tag: "InventorySO");
+            _stackableLookup.Add(index, new List<IStackable> { stackable });
+        }
+    }
+
+    private void RemoveStackableLookup(int index, IStackable stackable)
+    {
+        if (!_stackableLookup.ContainsKey(index)) return;
+        _stackableLookup[index].Remove(stackable);
+        if (_stackableLookup[index].Count == 0)
+        {
+            _stackableLookup.Remove(index);
         }
     }
 
@@ -331,6 +371,23 @@ public partial class InventoryData
 
             return 0;
         });
+
+        UpdateEmptySlotPriorityQueue();
+    }
+
+    private void UpdateEmptySlotPriorityQueue()
+    {
+        for (int i = 0; i < currentInventoryDataList.Count; i++)
+        {
+            if (currentInventoryDataList[i] != null && _emptySlotPriorityQueue.Contains(i))
+            {
+                _emptySlotPriorityQueue.Remove(i);
+            }
+            else if (currentInventoryDataList[i] == null && !_emptySlotPriorityQueue.Contains(i))
+            {
+                _emptySlotPriorityQueue.Enqueue(i, i);
+            }
+        }
     }
 
     #region compare functions
@@ -412,7 +469,6 @@ public class InventorySO : ScriptableObject, ISaveable
         {
             ItemDataBase itemData = inventoryData.currentInventoryDataList[i];
             if (itemData == null) continue;
-            itemData.uniqueID = Guid.NewGuid();
             AttributeInjector.Inject(itemData, SceneManager.GetActiveScene().GetSceneContainer());
         }
     }

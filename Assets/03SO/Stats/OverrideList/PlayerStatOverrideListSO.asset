@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95528723fc1582348b5aad0c1af6cf02, type: 3}
+  m_Name: PlayerStatOverrideListSO
+  m_EditorClassIdentifier: 
+  statOverrides:
+  - _stat: {fileID: 11400000, guid: 3cce9d7f26854d9499baff2946b36390, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 5
+  - _stat: {fileID: 11400000, guid: 984b27cdb74590e43a0fce70bf947b67, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 1
+  - _stat: {fileID: 11400000, guid: 4a86433cc2979024681c599e3ba7c909, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 0
+  - _stat: {fileID: 11400000, guid: 35fe18aa6357f31479f0a440d60823e5, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 100
+  - _stat: {fileID: 11400000, guid: 6b98c05b9708f56458c59d2dae8f4a67, type: 2}
+    _isUseOverride: 1
+    _overrideValue: 1

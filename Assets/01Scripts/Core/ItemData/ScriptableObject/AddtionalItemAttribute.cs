@@ -5,7 +5,9 @@ using MemoryPack;
 public enum OperationType
 {
     Sum,
-    Sub
+    Sub,
+    PercentAdd,
+    PercentSub
 }
 
 [Serializable]
@@ -16,4 +18,3 @@ public partial struct AdditionalItemAttribute
     public float value;
     public OperationType operationType;
 }
-

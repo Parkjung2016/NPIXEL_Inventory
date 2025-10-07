@@ -6,6 +6,24 @@ using MemoryPack;
 [Serializable]
 public partial class #SCRIPTNAME_NO_SO# : ItemDataBase
 {
+
+    public override ItemDataBase Clone()
+    {
+        SCRIPTNAME_NO_SO clone = new SCRIPTNAME_NO_SO
+        {
+            displayName = displayName,
+            detailType = detailType,
+            description = description,
+            itemID = itemID,
+            itemType = itemType,
+            iconKey = iconKey,
+            rank = rank,
+            baseAttributes = new List<ItemAttribute>(baseAttributes),
+            additionalAttributes = new List<AdditionalItemAttribute>(additionalAttributes),
+            uniqueID = Guid.NewGuid()
+        };
+        return clone;
+    }
 }
 
 public class #SCRIPTNAME# : BaseItemDataSO

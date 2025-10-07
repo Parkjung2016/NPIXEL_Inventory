@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79767db0c56fcf5448f0a591d8061923, type: 3}
+  m_Name: EquipmentItemDataSO_Axe of the Mountain King
+  m_EditorClassIdentifier: 
+  attributes:
+  - itemAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
+    value: 60
+  - itemAttribute: {fileID: 11400000, guid: 1d6cd36c35a7525488aaea6ef3cb85d0, type: 2}
+    value: 30
+  - itemAttribute: {fileID: 11400000, guid: 29549161335d0004d8a2126ca8cec948, type: 2}
+    value: 1.6
+  additionalAttributes:
+  - additionalAttribute: {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
+    value: 25
+    operationType: 0
+  - additionalAttribute: {fileID: 11400000, guid: 9f98c245b7bdca347a91f988eb5859f0, type: 2}
+    value: 15
+    operationType: 0
+  - additionalAttribute: {fileID: 11400000, guid: 1d6cd36c35a7525488aaea6ef3cb85d0, type: 2}
+    value: 10
+    operationType: 0
+  itemData:
+    displayName: Axe of the Mountain King
+    description: "Forged in volcanic fire and quenched in dragon\u2019s blood, this
+      axe holds the earth\u2019s raw power\u2014its blade never dulls, and its strikes
+      can shatter stone."
+    itemID: 4
+    itemType: 0
+    detailType: 5
+    iconKey: Falmer_Axe_74.sprite
+    rank: 4
+    baseAttributes:
+    - attributeName: Power
+      attributeValue: 60
+    - attributeName: MaxHealth
+      attributeValue: 30
+    - attributeName: AttackSpeed
+      attributeValue: 1.6
+    additionalAttributes:
+    - additionalAttribute:
+        attributeName: Power
+        attributeValue: 3
+      value: 25
+      operationType: 0
+    - additionalAttribute:
+        attributeName: Defnece
+        attributeValue: 3
+      value: 15
+      operationType: 0
+    - additionalAttribute:
+        attributeName: MaxHealth
+        attributeValue: 3
+      value: 10
+      operationType: 0

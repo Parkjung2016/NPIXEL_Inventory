@@ -6,7 +6,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Item/ItemManagerSO")]
 public class ItemManagerSO : ScriptableObject
 {
+    public event Action<ItemDataBase> OnItemEquipped;
+    public event Action<ItemDataBase> OnItemUnEquipped;
     [Inject] private InventoryListSO _inventoryListSO;
+    public InventoryListSO InventoryListSO => _inventoryListSO;
     public event Action<ItemDataBase> OnUsedItemWithStackable;
 
 
@@ -19,7 +22,7 @@ public class ItemManagerSO : ScriptableObject
             if (itemData is IStackable stackable)
             {
                 stackable.StackCount = Mathf.Max(0, stackable.StackCount - 1);
-                bool isEmpty = stackable.StackCount <= 0;
+                bool isEmpty = stackable.StackCount == 0;
                 if (isEmpty)
                 {
                     PJHDebug.LogColorPart($"Item used up! :{itemData.displayName} ", Color.yellow,
@@ -45,11 +48,52 @@ public class ItemManagerSO : ScriptableObject
     {
         PJHDebug.LogColorPart($"Item deleted! :{itemData.displayName}", Color.red, tag: "ItemManagerSO");
 
-        RemoveItem(itemData);
+        if (!RemoveItem(itemData))
+        {
+            if (itemData is IEquipable equipable)
+            {
+                EquipmentHandler.Unequip(itemData, equipable.GetBaseAttributeKey(),
+                    equipable.GetAdditionalAttributeKey());
+                OnItemUnEquipped?.Invoke(itemData);
+            }
+        }
     }
 
-    public void RemoveItem(ItemDataBase itemData)
+    public bool RemoveItem(ItemDataBase itemData)
     {
+        return _inventoryListSO.RemoveItem(itemData);
+    }
+
+    public void EquipItem(ItemDataBase itemData)
+    {
+        if (itemData is not IEquipable equipable || equipable.IsEquipped) return;
         _inventoryListSO.RemoveItem(itemData);
+        EquipmentHandler.Equip(itemData, equipable.GetBaseAttributeKey(),
+            equipable.GetAdditionalAttributeKey());
+        OnItemEquipped?.Invoke(itemData);
+    }
+
+    public void EquipItemForce(ItemDataBase itemData)
+    {
+        if (itemData is not IEquipable equipable) return;
+        EquipmentHandler.Equip(itemData, equipable.GetBaseAttributeKey(),
+            equipable.GetAdditionalAttributeKey());
+        OnItemEquipped?.Invoke(itemData);
+    }
+
+    public int UnEquipItem(ItemDataBase itemData)
+    {
+        if (itemData is not IEquipable equipable || !equipable.IsEquipped) return -1;
+
+        EquipmentHandler.Unequip(itemData, equipable.GetBaseAttributeKey(),
+            equipable.GetAdditionalAttributeKey());
+        OnItemUnEquipped?.Invoke(itemData);
+        ItemDataBase addedItem = _inventoryListSO.AddItem(itemData);
+        if (addedItem != null)
+        {
+            return _inventoryListSO.GetItemDataIndex(addedItem);
+        }
+
+        return -1;
     }
 }

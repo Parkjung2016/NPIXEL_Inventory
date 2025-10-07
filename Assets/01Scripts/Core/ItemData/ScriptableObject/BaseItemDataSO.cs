@@ -24,7 +24,7 @@ public abstract class BaseItemDataSO : ScriptableObject
     public List<ItemAttributeOverride> attributes;
     public List<AdditionalItemAttributeClass> additionalAttributes;
 
-    public void OnValidate()
+    public virtual void OnValidate()
     {
         UpdateAttributeData();
         if (EditorApplication.isUpdating) return; // 임포트 중이면 실행하지 않음

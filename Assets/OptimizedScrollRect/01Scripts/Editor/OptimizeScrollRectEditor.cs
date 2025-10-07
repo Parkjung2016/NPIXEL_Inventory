@@ -1,6 +1,4 @@
-﻿using UnityEngine.UI;
-using UnityEditor.AnimatedValues;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.UI;
 
 [CustomEditor(typeof(OptimizeScrollRect), true)]

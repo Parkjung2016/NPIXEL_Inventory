@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: ItemAttributeListSO
   m_EditorClassIdentifier: 
   itemAttributes:
-  - {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
+  - {fileID: 11400000, guid: 29549161335d0004d8a2126ca8cec948, type: 2}
   - {fileID: 11400000, guid: 9f98c245b7bdca347a91f988eb5859f0, type: 2}
+  - {fileID: 11400000, guid: 78727da807c43c445a80bd3256463f29, type: 2}
+  - {fileID: 11400000, guid: 1d6cd36c35a7525488aaea6ef3cb85d0, type: 2}
+  - {fileID: 11400000, guid: cc49ace44d5b6474c83ec1bf71ef8c6a, type: 2}
   - {fileID: 11400000, guid: 636d637d44a7010448e3e791e5e6a069, type: 2}
+  - {fileID: 11400000, guid: bbf802b6a7cc48b4387b1e9de6e8c4b0, type: 2}
+  - {fileID: 11400000, guid: 40ca36a830409b24faa80fa3bacfc2d5, type: 2}

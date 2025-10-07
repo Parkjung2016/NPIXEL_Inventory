@@ -43,12 +43,24 @@ public class InventoryListSO : ScriptableObject
         return false;
     }
 
-    public void AddItem(ItemDataBase itemData)
+    public int GetItemDataIndex(ItemDataBase itemData)
     {
         if (_inventorySOIstanceDictionary.TryGetValue(itemData.itemType, out InventorySO inventorySO))
         {
-            inventorySO.inventoryData.AddItem(itemData);
+            return inventorySO.inventoryData.GetItemDataIndex(itemData);
         }
+
+        return -1;
+    }
+
+    public ItemDataBase AddItem(ItemDataBase itemData)
+    {
+        if (_inventorySOIstanceDictionary.TryGetValue(itemData.itemType, out InventorySO inventorySO))
+        {
+            return inventorySO.inventoryData.AddItem(itemData);
+        }
+
+        return null;
     }
 
     public void AddItems(List<ItemDataBase> itemDataList)
@@ -75,12 +87,14 @@ public class InventoryListSO : ScriptableObject
         }
     }
 
-    public void RemoveItem(ItemDataBase itemData)
+    public bool RemoveItem(ItemDataBase itemData)
     {
         if (_inventorySOIstanceDictionary.TryGetValue(itemData.itemType, out InventorySO inventorySO))
         {
-            inventorySO.inventoryData.RemoveItem(itemData);
+            return inventorySO.inventoryData.RemoveItem(itemData);
         }
+
+        return false;
     }
 
     public void AddInventorySlotCapacity(ItemType inventoryType, int countToAdd)

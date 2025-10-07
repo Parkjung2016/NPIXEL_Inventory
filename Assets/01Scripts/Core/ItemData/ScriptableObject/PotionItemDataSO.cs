@@ -10,13 +10,22 @@ public partial class PotionItemData : ItemDataBase, IUsable, IStackable
     [field: SerializeField] public int StackCount { get; set; }
     [field: SerializeField] public int MaxStackCount { get; set; }
 
+    public List<UsableItemEffect> UsableItemEffects { get; set; }
+    [MemoryPackIgnore] public List<UsableItemEffectSO> usableItemEffectSOList;
+
+
     public PotionItemData()
     {
         itemType = ItemType.Consumable;
     }
 
+
     public void Use()
     {
+        for (int i = 0; i < UsableItemEffects.Count; i++)
+        {
+            UsableItemEffects[i].UseItem(baseAttributes, additionalAttributes);
+        }
     }
 
     public override ItemDataBase Clone()
@@ -32,6 +41,7 @@ public partial class PotionItemData : ItemDataBase, IUsable, IStackable
             rank = rank,
             baseAttributes = new List<ItemAttribute>(baseAttributes),
             additionalAttributes = new List<AdditionalItemAttribute>(additionalAttributes),
+            UsableItemEffects = UsableItemEffects,
             uniqueID = Guid.NewGuid()
         };
         if (this is IStackable stackable)
@@ -45,6 +55,16 @@ public partial class PotionItemData : ItemDataBase, IUsable, IStackable
 
         return clone;
     }
+
+    public void OnValidate()
+    {
+        UsableItemEffects = new();
+        foreach (var effect in usableItemEffectSOList)
+        {
+            if (effect != null)
+                UsableItemEffects.Add(effect.GetUsableItemEffect());
+        }
+    }
 }
 
 public class PotionItemDataSO : BaseItemDataSO
@@ -54,5 +74,11 @@ public class PotionItemDataSO : BaseItemDataSO
     public override ItemDataBase GetItemData()
     {
         return itemData;
+    }
+
+    public override void OnValidate()
+    {
+        base.OnValidate();
+        itemData.OnValidate();
     }
 }

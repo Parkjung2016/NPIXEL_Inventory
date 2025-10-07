@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79767db0c56fcf5448f0a591d8061923, type: 3}
+  m_Name: EquipmentItemDataSO_Helm of the Iron Will
+  m_EditorClassIdentifier: 
+  attributes:
+  - itemAttribute: {fileID: 11400000, guid: 1d6cd36c35a7525488aaea6ef3cb85d0, type: 2}
+    value: 25
+  - itemAttribute: {fileID: 11400000, guid: 9f98c245b7bdca347a91f988eb5859f0, type: 2}
+    value: 35
+  additionalAttributes: []
+  itemData:
+    displayName: Helm of the Iron Will
+    description: A sturdy helmet forged from dark iron, said to grant unyielding
+      resolve to its wearer.
+    itemID: 12
+    itemType: 0
+    detailType: 3
+    iconKey: helmet_silver.sprite
+    rank: 2
+    baseAttributes:
+    - attributeName: MaxHealth
+      attributeValue: 25
+    - attributeName: Defnece
+      attributeValue: 35
+    additionalAttributes: []

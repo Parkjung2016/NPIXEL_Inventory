@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -20,26 +19,25 @@ namespace PJH.Utility.Editor
             string stack_trace = GetStackTrace();
             if (!string.IsNullOrEmpty(stack_trace))
             {
-                Match matches = Regex.Match(stack_trace, @"\(at(.+)\)", RegexOptions.IgnoreCase);
-                if (matches.Success)
+                MatchCollection matches = Regex.Matches(stack_trace, @"\(at (.+)\)", RegexOptions.IgnoreCase);
+                foreach (Match match in matches)
                 {
-                    matches = matches.NextMatch();
-                    if (matches.Success)
+                    string pathline = match.Groups[1].Value.Trim();
+                    if (!pathline.Contains("PJHDebug.cs")) // ✅ PJHDebug.cs 제외
                     {
-                        string pathline;
-                        pathline = matches.Groups[1].Value;
-                        pathline = pathline.Replace(" ", "");
-
                         int split_index = pathline.LastIndexOf(":");
-                        string path = pathline.Substring(0, split_index);
-                        line = Convert.ToInt32(pathline.Substring(split_index + 1));
-                        string fullpath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("Assets"));
-                        fullpath = fullpath + path;
-                        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(fullpath, line);
+                        if (split_index > 0)
+                        {
+                            string path = pathline.Substring(0, split_index);
+                            line = Convert.ToInt32(pathline.Substring(split_index + 1));
+
+                            string fullpath =
+                                Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("Assets")) + path;
+                            UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(fullpath, line);
+                            return true;
+                        }
                     }
                 }
-
-                return true;
             }
 
             return false;

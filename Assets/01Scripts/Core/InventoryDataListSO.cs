@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using PJH.Utility.Extensions;
+using UnityEditor;
 using UnityEngine;
 using ZLinq;
 
@@ -22,5 +23,22 @@ public class InventoryDataListSO : ScriptableObject
             .ToList();
         if (filteredList.Count == 0) return null;
         return filteredList.Random().GetItemData();
+    }
+
+    private void OnValidate()
+    {
+        for (int i = 0; i < _inventoryDataList.Count; i++)
+        {
+            _inventoryDataList[i].GetItemData().itemID = i;
+            EditorUtility.SetDirty(_inventoryDataList[i]);
+        }
+
+        EditorApplication.delayCall -= OnDelayCalled;
+        EditorApplication.delayCall += OnDelayCalled;
+    }
+
+    private void OnDelayCalled()
+    {
+        AssetDatabase.SaveAssets();
     }
 }

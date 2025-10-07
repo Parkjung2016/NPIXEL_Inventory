@@ -74,7 +74,7 @@ public class OptimizeScrollRect : ScrollRect
             else
             {
                 _recyclingSystem.SetDataSource(dataSource);
-           _recyclingSystem.ReloadData();
+                _recyclingSystem.ReloadData();
             }
         }
     }

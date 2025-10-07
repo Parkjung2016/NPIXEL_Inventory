@@ -16,13 +16,18 @@ public class SceneInstaller : MonoBehaviour, IInstaller
         ItemManagerSO itemManagerSO = AddressableManager.Load<ItemManagerSO>("ItemManagerSO");
         ItemRankColorMappingSO itemRankColorMappingSO =
             AddressableManager.Load<ItemRankColorMappingSO>("ItemRankColorMappingSO");
+        PlayerStatus playerStatus = FindAnyObjectByType<PlayerStatus>();
         SaveManagerSO saveManagerSO = AddressableManager.Load<SaveManagerSO>("SaveManagerSO");
         containerBuilder.AddSingleton(enumStringMappingSO);
         containerBuilder.AddSingleton(inventoryDataListSO);
         containerBuilder.AddSingleton(inventoryListSO);
         containerBuilder.AddSingleton(itemManagerSO);
         containerBuilder.AddSingleton(itemRankColorMappingSO);
+        containerBuilder.AddSingleton(playerStatus);
         containerBuilder.AddSingleton(saveManagerSO);
+
+        ItemTooltipFormatter.Initialize(enumStringMappingSO);
+        EquipmentHandler.Initialize(playerStatus);
     }
 
     private void Awake()
