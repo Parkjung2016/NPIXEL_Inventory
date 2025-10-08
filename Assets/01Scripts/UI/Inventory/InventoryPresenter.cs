@@ -25,6 +25,7 @@ public class InventoryPresenter
 
         _view.OnChangeSortTypeClicked += HandleChangeSortTypeClicked;
         _view.OnSortClicked += SortData;
+        _view.OnStackAllClicked += HandleStackAllClicked;
         _view.OnGoToTopClicked += HandleGoToTopClicked;
         _view.OnGoToBottomClicked += HandleGoToBottomClicked;
         _view.OnAutoSortToggled += HandleToggleAutoSort;
@@ -72,6 +73,8 @@ public class InventoryPresenter
         UpdateSortTypeText();
         UpdateInventoryTypeButtons();
         _view.SetSortButtonActive(!CurrentInventorySO.inventoryData.canAutoSort);
+        _view.SetAutoSortToggle(CurrentInventorySO.inventoryData.canAutoSort);
+        _view.SetStackAllButtonActive(CurrentInventoryType != ItemType.Equipment);
         _view.BlockInteraction(false);
 
         if (isInitialLoad)
@@ -129,6 +132,11 @@ public class InventoryPresenter
         _view.ReloadScrollData(false);
     }
 
+    private void HandleStackAllClicked()
+    {
+        CurrentInventorySO.inventoryData.StackAll();
+    }
+
     private void HandleBlocked(bool isBlocked)
     {
         CurrentInventorySO.inventoryData.canSettingData = !isBlocked;
@@ -168,7 +176,7 @@ public class InventoryPresenter
         ItemDataBase itemData = targetItemSlot.CurrentItemData;
         if (targetItemSlot.CellIndex != -1 || itemData is IEquipable { IsEquipped: false }) return;
 
-        _itemManagerSO.UnEquipItem(targetItemSlot.CurrentItemData);
+        _itemManagerSO.UnequipItem(targetItemSlot.CurrentItemData);
 
         var evt = UIEvents.ItemSlotDragAction;
         evt.itemSlot = null;

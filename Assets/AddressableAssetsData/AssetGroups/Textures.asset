@@ -33,12 +33,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 08dbd56e3f08bb143af3f8bd14f4fe6d
-    m_Address: magic_fantasy_Amulet_03.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0e35fded0a8e6fb408a29d38405f8cf7
     m_Address: golden_coins_stack_0_1.sprite
     m_ReadOnly: 0
@@ -77,12 +71,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b605ce4efd3905d8b621544e1c932a1
     m_Address: armor_iron.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1d085bb0d16d6fc41a9037c3afc099a8
-    m_Address: wooden_chest.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -135,12 +123,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 33e4c660eaa80064f8928fd5d7332313
-    m_Address: Dwarven_magical_scroll_elemental_of_magic_05.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 34d2218ab0b4d3e40b00239c92994593
     m_Address: herbs_Basil.sprite
     m_ReadOnly: 0
@@ -153,20 +135,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3b709f5dd572836dda96e05fdb0d1c73
-    m_Address: ring_iron.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c1a17a61142d69568169110d9b82a9e
     m_Address: potion_red.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3d05a3e09a0b74e36b1fa94fb9279990
-    m_Address: ring_gold.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -201,12 +171,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4f8262a99e41e314ab59f891d8321961
-    m_Address: magic_fantasy_ring_39.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 561e5bc70c5cfc0e78f526d29d5f7ab2
     m_Address: armor_silver.sprite
     m_ReadOnly: 0
@@ -237,12 +201,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6584bebaf63b2a647b531ce97f4e001b
-    m_Address: magic_fantasy_ring_36.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 664752cf063362cfbad247aec3f86f94
     m_Address: book_blue.sprite
     m_ReadOnly: 0
@@ -251,12 +209,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6940e47ce192fb8ab9ab7dd56f4616c5
     m_Address: coin_silver.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6c30bb400cd1dd6c8b3c281dbfc2ec5c
-    m_Address: gloves_silver.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -281,12 +233,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 849bf28dc861be34f99c1515ad0b5f13
     m_Address: Falmer_Tunics_86.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 851bcbbe8e28a1ab292fffa5feb6eed0
-    m_Address: gloves_gold.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -329,12 +275,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 92bc953d2ce8f374cbdded612d89641b
     m_Address: golden_key.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 96d881a28b54d0d35b40ccbb9cf61b28
-    m_Address: ring_silver.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -423,12 +363,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b7d26d30b22e5bd6da6eb78ce9d54b6b
-    m_Address: gloves_iron.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b906fea0feef57a4ab4ae21578cc1c5a
     m_Address: sword_185.sprite
     m_ReadOnly: 0
@@ -455,12 +389,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c4acf9370c3181f98912418bb7f1b5ee
     m_Address: potion_blue.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c79255b3645b07b4c81f297cb9cefc02
-    m_Address: Dwarven_magical_book_31.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad
@@ -533,12 +461,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fa6a9a20d1ac92e41bb2fcc4933d737b
     m_Address: Falmer_Tunics_10.sprite
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PreLoad
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fb696ab16a924d64abde4d54c572cec0
-    m_Address: Spellbook_02.sprite
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad

@@ -23,7 +23,7 @@ MonoBehaviour:
     displayName: Swiftfoot Treads
     description: Leather boots reinforced with mystical fibers that grant increased
       agility and protection to the wearer.
-    itemID: 11
+    <ItemID>k__BackingField: 10
     itemType: 0
     detailType: 1
     iconKey: boot_silver.sprite

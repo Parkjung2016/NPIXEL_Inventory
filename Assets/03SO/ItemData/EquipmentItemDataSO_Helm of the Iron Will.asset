@@ -22,10 +22,10 @@ MonoBehaviour:
     displayName: Helm of the Iron Will
     description: A sturdy helmet forged from dark iron, said to grant unyielding
       resolve to its wearer.
-    itemID: 12
+    <ItemID>k__BackingField: 5
     itemType: 0
-    detailType: 3
-    iconKey: helmet_silver.sprite
+    detailType: 2
+    iconKey: Falmer_helmet_with_wings_28.png.sprite
     rank: 2
     baseAttributes:
     - attributeName: MaxHealth

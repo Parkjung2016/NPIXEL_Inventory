@@ -22,9 +22,9 @@ MonoBehaviour:
     displayName: Woodcutter's Axe
     description: A sturdy axe commonly used by woodsmen for chopping timber. Reliable
       but unremarkable.
-    itemID: 3
+    <ItemID>k__BackingField: 11
     itemType: 0
-    detailType: 5
+    detailType: 4
     iconKey: axe_iron.sprite
     rank: 0
     baseAttributes:

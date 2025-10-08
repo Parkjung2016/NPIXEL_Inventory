@@ -19,16 +19,15 @@ MonoBehaviour:
   itemData:
     displayName: Health Potion
     description: A magical elixir that restores vitality when consumed
-    itemID: 0
+    <ItemID>k__BackingField: 12
     itemType: 1
-    detailType: 10
+    detailType: 6
     iconKey: potion_red.sprite
     rank: 1
     baseAttributes:
     - attributeName: RecoveryHealth
       attributeValue: 5
     additionalAttributes: []
-    <StackCount>k__BackingField: 0
     <MaxStackCount>k__BackingField: 5
     usableItemEffectSOList:
     - {fileID: 11400000, guid: cfcff29cce729db498c3b86e93b6b997, type: 2}

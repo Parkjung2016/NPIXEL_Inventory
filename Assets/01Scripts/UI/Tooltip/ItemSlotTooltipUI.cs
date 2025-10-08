@@ -26,7 +26,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
         Text_BaseInfo,
         Text_DetailInfo,
         Text_AdditionalInfo,
-        Text_EquipAndUnEquips
+        Text_EquipAndUnequip
     }
 
     enum Objects
@@ -43,7 +43,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
         Button_Split,
         Button_Delete,
         Button_Cancel,
-        Button_EquipAndUnEquip
+        Button_EquipAndUnequip
     }
 
     public Transform ChildPopupUIParentTransform { get; private set; }
@@ -59,7 +59,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
     private ItemDataBase _currentItemData;
 
     private bool _lockedUpdatePosition;
-
+    private Vector2 _tooltipSize;
     public override void Init()
     {
         _uiEventChannelSO = AddressableManager.Load<GameEventChannelSO>("UIEventChannelSO");
@@ -75,7 +75,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
         GetButton((byte)Buttons.Button_Cancel).onClick.AddListener(HandleClickCancelButton);
         GetButton((byte)Buttons.Button_Split).onClick.AddListener(HandleClickSplitButton);
         GetButton((byte)Buttons.Button_Delete).onClick.AddListener(HandleClickDeleteButton);
-        GetButton((byte)Buttons.Button_EquipAndUnEquip).onClick.AddListener(HandleClickEquipAndUnEquipButton);
+        GetButton((byte)Buttons.Button_EquipAndUnequip).onClick.AddListener(HandleClickEquipAndUnequipButton);
         _uiEventChannelSO.AddListener<ShowItemSlotTooltipUIEvent>(HandleShowItemSlotTooltipUI);
         _uiEventChannelSO.AddListener<ClickItemSlotEvent>(HandleClickItemSlot);
 
@@ -89,14 +89,14 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
         _uiEventChannelSO.RemoveListener<ClickItemSlotEvent>(HandleClickItemSlot);
     }
 
-    private void HandleClickEquipAndUnEquipButton()
+    private void HandleClickEquipAndUnequipButton()
     {
         if (_currentItemData is IEquipable equipable)
         {
             var evt = UIEvents.ClickItemSlot;
             if (equipable.IsEquipped)
             {
-                _itemManagerSO.UnEquipItem(_currentItemData);
+                _itemManagerSO.UnequipItem(_currentItemData);
             }
             else
             {
@@ -105,7 +105,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
                 {
                     if (equippedItem != null)
                     {
-                        int prevIndex = _itemManagerSO.UnEquipItem(equippedItem);
+                        int prevIndex = _itemManagerSO.UnequipItem(equippedItem);
                         int newIndex = evt.itemSlot.CellIndex;
 
                         _itemManagerSO.ChangeItemDataIndex(equippedItem, prevIndex, newIndex);
@@ -115,58 +115,56 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
                 _itemManagerSO.EquipItem(_currentItemData);
             }
 
-            evt.isClicked = false;
-            evt.itemSlot = null;
-            _uiEventChannelSO.RaiseEvent(evt);
+            ResetClickItemSlotEvent();
         }
     }
 
     private void HandleClickDeleteButton()
     {
         _itemManagerSO.DeleteItem(_currentItemData);
-        var evt = UIEvents.ClickItemSlot;
-        evt.isClicked = false;
-        evt.itemSlot = null;
-        _uiEventChannelSO.RaiseEvent(evt);
+        ResetClickItemSlotEvent();
     }
 
     private void HandleClickSplitButton()
     {
+        if (_currentItemData is IStackable stackable)
+        {
+            if (stackable.StackCount == 2)
+            {
+                _inventoryListSO.SplitItem(_currentItemData, 1);
+                ResetClickItemSlotEvent();
+                return;
+            }
+        }
+
         ItemSplitPopupUI itemSplitPopupUI =
             Managers.UI.ShowPopup<ItemSplitPopupUI>("ItemSplitPopupUI", this);
         if (itemSplitPopupUI != null)
         {
             itemSplitPopupUI.SetItemData(_currentItemData);
-            itemSplitPopupUI.OnSplited += () =>
-            {
-                var evt = UIEvents.ClickItemSlot;
-                evt.isClicked = false;
-                evt.itemSlot = null;
-                _uiEventChannelSO.RaiseEvent(evt);
-            };
+            itemSplitPopupUI.OnSplited += ResetClickItemSlotEvent;
         }
     }
 
     private void HandleClickCancelButton()
     {
-        var evt = UIEvents.ClickItemSlot;
-        evt.isClicked = false;
-        evt.itemSlot = null;
-        _uiEventChannelSO.RaiseEvent(evt);
+        ResetClickItemSlotEvent();
     }
 
     private void HandleClickUseButton()
     {
         _itemManagerSO.UseItem(_currentItemData);
-        if (_currentItemData is IStackable stackable)
+        if (_currentItemData is IStackable { StackCount: > 0 })
         {
-            if (stackable.StackCount > 0)
-            {
-                ShowUIInfo(_currentItemData);
-                return;
-            }
+            ShowUIInfo(_currentItemData);
+            return;
         }
 
+        ResetClickItemSlotEvent();
+    }
+
+    private void ResetClickItemSlotEvent()
+    {
         var evt = UIEvents.ClickItemSlot;
         evt.isClicked = false;
         evt.itemSlot = null;
@@ -177,39 +175,82 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
     {
         UpdatePosition();
     }
+    private Vector2 GetTooltipSize()
+    {
+        return new Vector2(_rectTrm.rect.width, _rectTrm.rect.height);
+    }
 
     private void UpdatePosition()
     {
         if (_lockedUpdatePosition) return;
-        Vector3 mousePosition = Mouse.current.position.value;
-        RectTransform canvasRectTrm = (RectTransform)transform.parent;
 
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRectTrm,
-            mousePosition,
-            null,
-            out localPoint
-        );
+        Vector2 mousePosition = Mouse.current.position.value;
 
-        Vector2 sizeDelta = _rectTrm.sizeDelta;
+        _tooltipSize = GetTooltipSize();
 
-        Vector2 halfCanvasSize = canvasRectTrm.sizeDelta * 0.5f;
+        Vector2 offset = new Vector2(10, -10);
+        Vector2 desiredPosition = mousePosition + offset;
 
-        Vector2 targetPivot = _originPivot;
-        if (localPoint.x - sizeDelta.x < -halfCanvasSize.x)
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+
+        Vector2 newPivot = _originPivot;
+        float newX = desiredPosition.x;
+        float newY = desiredPosition.y;
+
+        if (desiredPosition.x + _tooltipSize.x * (1f - _originPivot.x) > screenWidth)
         {
-            targetPivot.x = 0f;
+            newPivot.x = 1f;
+            newX = mousePosition.x - offset.x;
+
+            float minX = _tooltipSize.x * newPivot.x;
+            float maxX = screenWidth - _tooltipSize.x * (1f - newPivot.x);
+
+            newX = Mathf.Clamp(newX, minX, maxX);
+        }
+        else
+        {
+            newPivot.x = _originPivot.x;
+
+            float minX = _tooltipSize.x * newPivot.x;
+            float maxX = screenWidth - _tooltipSize.x * (1f - newPivot.x);
+
+            newX = Mathf.Clamp(desiredPosition.x, minX, maxX);
         }
 
-        if (localPoint.y - sizeDelta.y < -halfCanvasSize.y)
+
+        if (desiredPosition.y + _tooltipSize.y * (1f - _originPivot.y) > screenHeight)
         {
-            targetPivot.y = 0f;
+            newPivot.y = 1f;
+            newY = mousePosition.y - offset.y;
+
+            float minY = _tooltipSize.y * newPivot.y;
+            float maxY = screenHeight - _tooltipSize.y * (1f - newPivot.y);
+
+            newY = Mathf.Clamp(newY, minY, maxY);
+        }
+        else if (desiredPosition.y - _tooltipSize.y * newPivot.y < 0)
+        {
+            newPivot.y = 0f;
+            newY = mousePosition.y + offset.y;
+
+            float minY = _tooltipSize.y * newPivot.y;
+            float maxY = screenHeight - _tooltipSize.y * (1f - newPivot.y);
+
+            newY = Mathf.Clamp(newY, minY, maxY);
+        }
+        else
+        {
+            newPivot.y = _originPivot.y;
+
+            float minY = _tooltipSize.y * newPivot.y;
+            float maxY = screenHeight - _tooltipSize.y * (1f - newPivot.y);
+
+            newY = Mathf.Clamp(desiredPosition.y, minY, maxY);
         }
 
-        _rectTrm.pivot = targetPivot;
-
-        _rectTrm.anchoredPosition = localPoint;
+        _rectTrm.pivot = newPivot;
+        _rectTrm.position = new Vector3(newX, newY, 0);
     }
 
     private void HandleClickItemSlot(ClickItemSlotEvent evt)
@@ -277,10 +318,10 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
         GetObject((byte)Objects.InteractGroup).SetActive(true);
         GetButton((byte)Buttons.Button_Use).gameObject.SetActive(usableItem);
         GetButton((byte)Buttons.Button_Split).gameObject.SetActive(splitableItem);
-        GetButton((byte)Buttons.Button_EquipAndUnEquip).gameObject.SetActive(equipableItem);
+        GetButton((byte)Buttons.Button_EquipAndUnequip).gameObject.SetActive(equipableItem);
         if (equipableItem)
         {
-            GetText((byte)Texts.Text_EquipAndUnEquips).SetText(equipable.IsEquipped ? "Unequip" : "Equip");
+            GetText((byte)Texts.Text_EquipAndUnequip).SetText(equipable.IsEquipped ? "Unequip" : "Equip");
         }
 
         GetImage((byte)Images.Image_Icon).sprite = itemData.GetIcon();

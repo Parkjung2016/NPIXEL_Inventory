@@ -11,13 +11,13 @@ public class EquipSlotUI : BaseItemSlotUI
     {
         base.Init();
         _itemManagerSO.OnItemEquipped += HandleItemEquipped;
-        _itemManagerSO.OnItemUnEquipped += HandleItemUnEquipped;
+        _itemManagerSO.OnItemUnequipped += HandleItemUnequipped;
     }
 
     protected override void OnDestroy()
     {
         _itemManagerSO.OnItemEquipped -= HandleItemEquipped;
-        _itemManagerSO.OnItemUnEquipped -= HandleItemUnEquipped;
+        _itemManagerSO.OnItemUnequipped -= HandleItemUnequipped;
     }
 
     protected override void HandleSlotClick(PointerEventData pointerEvent)
@@ -26,7 +26,7 @@ public class EquipSlotUI : BaseItemSlotUI
         {
             if (Keyboard.current.shiftKey.isPressed)
             {
-                TryEquipOrUnEquip(CurrentItemData);
+                TryEquipOrUnequip(CurrentItemData);
                 return;
             }
 
@@ -41,7 +41,7 @@ public class EquipSlotUI : BaseItemSlotUI
         }
         else if (pointerEvent.button == PointerEventData.InputButton.Right)
         {
-            TryEquipOrUnEquip(CurrentItemData);
+            TryEquipOrUnequip(CurrentItemData);
         }
     }
 
@@ -84,7 +84,7 @@ public class EquipSlotUI : BaseItemSlotUI
         if (CurrentItemData != null)
         {
             var prev = CurrentItemData;
-            int prevIndex = _itemManagerSO.UnEquipItem(prev);
+            int prevIndex = _itemManagerSO.UnequipItem(prev);
             _itemManagerSO.ChangeItemDataIndex(prev, prevIndex, targetSlot.CellIndex);
         }
 
@@ -99,7 +99,7 @@ public class EquipSlotUI : BaseItemSlotUI
         if (itemData is IEquipable && itemData.detailType == _equipSlotType) SetItemData(itemData);
     }
 
-    private void HandleItemUnEquipped(ItemDataBase itemData)
+    private void HandleItemUnequipped(ItemDataBase itemData)
     {
         if (itemData == CurrentItemData) SetItemData(null);
     }

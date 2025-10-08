@@ -25,7 +25,7 @@ MonoBehaviour:
     displayName: Cuirass of the Unyielding Titan
     description: "Forged from a mountain giant\u2019s heartstone, this chestplate
       endures any cataclysm and hums with ancient earth power."
-    itemID: 8
+    <ItemID>k__BackingField: 3
     itemType: 0
     detailType: 0
     iconKey: Falmer_Tunics_74.sprite

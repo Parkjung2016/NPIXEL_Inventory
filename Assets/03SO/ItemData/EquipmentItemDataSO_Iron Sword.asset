@@ -22,9 +22,9 @@ MonoBehaviour:
     displayName: Iron Sword
     description: A sturdy sword forged from iron, reliable and well-balanced for
       combat.
-    itemID: 13
+    <ItemID>k__BackingField: 7
     itemType: 0
-    detailType: 5
+    detailType: 4
     iconKey: sword_iron.sprite
     rank: 0
     baseAttributes:

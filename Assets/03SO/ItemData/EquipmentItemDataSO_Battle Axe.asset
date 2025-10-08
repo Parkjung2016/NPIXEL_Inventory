@@ -22,9 +22,9 @@ MonoBehaviour:
     displayName: Battle Axe
     description: A massive two-handed battle axe forged from dark iron, capable of
       cleaving through armor and bone alike.
-    itemID: 2
+    <ItemID>k__BackingField: 1
     itemType: 0
-    detailType: 5
+    detailType: 4
     iconKey: Falmer__Axe_06.sprite
     rank: 2
     baseAttributes:

@@ -1,6 +1,5 @@
 using Reflex.Attributes;
 using TMPro;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -29,7 +28,14 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
         {
             if (Keyboard.current.shiftKey.isPressed && CurrentItemData is IEquipable)
             {
-                TryEquipOrUnEquip(CurrentItemData);
+                TryEquipOrUnequip(CurrentItemData);
+                return;
+            }
+
+            if (Keyboard.current.ctrlKey.isPressed && CurrentItemData is IStackable { StackCount: > 1 } stackable)
+            {
+                _inventoryListSO.SplitItem(CurrentItemData, stackable.StackCount / 2);
+                ResetClickEvent();
                 return;
             }
 
@@ -51,7 +57,7 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
             }
             else
             {
-                TryEquipOrUnEquip(CurrentItemData);
+                TryEquipOrUnequip(CurrentItemData);
             }
         }
     }
@@ -95,7 +101,7 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
         if (targetSlot == null) return;
         var itemData = targetSlot.CurrentItemData;
         if (!CanDragAndDrop(itemData)) return;
-        if (targetSlot.CellIndex == -1) _itemManagerSO.UnEquipItem(itemData);
+        if (targetSlot.CellIndex == -1) _itemManagerSO.UnequipItem(itemData);
         else _itemManagerSO.ChangeItemDataIndex(itemData, targetSlot.CellIndex, CellIndex);
         ResetDragEvent();
         ResetClickEvent();

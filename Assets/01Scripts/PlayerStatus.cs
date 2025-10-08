@@ -34,7 +34,7 @@ public class PlayerStatus : MonoBehaviour, ISaveable
     {
         SaveManagerSO.RegisterSaveable(this);
         _itemManagerSO.OnItemEquipped += HandleItemEquipped;
-        _itemManagerSO.OnItemUnEquipped += HandleItemUnEquipped;
+        _itemManagerSO.OnItemUnequipped += HandleItemUnequipped;
 
         playerStatusData.statDatas = _statOverrideListSO.statOverrides.Select(x => x.CreateStat()).ToArray();
     }
@@ -42,7 +42,7 @@ public class PlayerStatus : MonoBehaviour, ISaveable
     private void OnDestroy()
     {
         _itemManagerSO.OnItemEquipped -= HandleItemEquipped;
-        _itemManagerSO.OnItemUnEquipped -= HandleItemUnEquipped;
+        _itemManagerSO.OnItemUnequipped -= HandleItemUnequipped;
     }
 
     private void HandleItemEquipped(ItemDataBase itemData)
@@ -51,7 +51,7 @@ public class PlayerStatus : MonoBehaviour, ISaveable
             playerStatusData.equippedItems[itemData.detailType] = itemData;
     }
 
-    private void HandleItemUnEquipped(ItemDataBase itemData)
+    private void HandleItemUnequipped(ItemDataBase itemData)
     {
         if (playerStatusData.equippedItems.ContainsValue(itemData))
             playerStatusData.equippedItems[itemData.detailType] = null;

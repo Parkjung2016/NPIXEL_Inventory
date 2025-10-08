@@ -34,9 +34,9 @@ MonoBehaviour:
     description: "Forged in volcanic fire and quenched in dragon\u2019s blood, this
       axe holds the earth\u2019s raw power\u2014its blade never dulls, and its strikes
       can shatter stone."
-    itemID: 4
+    <ItemID>k__BackingField: 0
     itemType: 0
-    detailType: 5
+    detailType: 4
     iconKey: Falmer_Axe_74.sprite
     rank: 4
     baseAttributes:

@@ -80,6 +80,14 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
     protected virtual void HandleSlotDrag(PointerEventData pointerEvent)
     {
         if (pointerEvent.button != PointerEventData.InputButton.Left) return;
+        if (UIEvents.ShowItemSlotTooltip.show)
+        {
+            var showItemSlotTooltipEvt = UIEvents.ShowItemSlotTooltip;
+            showItemSlotTooltipEvt.show = false;
+            showItemSlotTooltipEvt.itemData = null;
+            _uiEventChannelSO.RaiseEvent(showItemSlotTooltipEvt);
+        }
+
         var evt = UIEvents.ItemSlotDrag;
         evt.currentPosition = pointerEvent.position;
         _uiEventChannelSO.RaiseEvent(evt);
@@ -131,12 +139,12 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
         _uiEventChannelSO.RaiseEvent(evt);
     }
 
-    protected void TryEquipOrUnEquip(ItemDataBase itemData)
+    protected void TryEquipOrUnequip(ItemDataBase itemData)
     {
         if (itemData is IEquipable equipable)
         {
             if (equipable.IsEquipped)
-                _itemManagerSO.UnEquipItem(itemData);
+                _itemManagerSO.UnequipItem(itemData);
             else
             {
                 ItemDataBase prevCurrentItemData = CurrentItemData;
@@ -145,7 +153,7 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
                 {
                     if (equippedItem != null)
                     {
-                        int prevIndex = _itemManagerSO.UnEquipItem(equippedItem);
+                        int prevIndex = _itemManagerSO.UnequipItem(equippedItem);
                         int newIndex = CellIndex;
                         _itemManagerSO.ChangeItemDataIndex(equippedItem, prevIndex, newIndex);
                     }

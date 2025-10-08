@@ -25,7 +25,7 @@ MonoBehaviour:
     displayName: Dragonbone Plate
     description: Forged from the bones of an ancient dragon, this armor provides
       exceptional protection while maintaining surprising mobility.
-    itemID: 7
+    <ItemID>k__BackingField: 4
     itemType: 0
     detailType: 0
     iconKey: armor_iron.sprite

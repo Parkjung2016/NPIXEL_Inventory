@@ -22,7 +22,7 @@ MonoBehaviour:
     displayName: Iron Breastplate
     description: A sturdy iron chestpiece offering reliable protection for novice
       adventurers.
-    itemID: 6
+    <ItemID>k__BackingField: 6
     itemType: 0
     detailType: 0
     iconKey: armor_silver.sprite

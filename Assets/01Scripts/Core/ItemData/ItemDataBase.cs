@@ -27,28 +27,25 @@ public enum ItemDetailType
 {
     Armor,
     Boots,
-    Gloves,
     Helmet,
     Leggings,
     MeleeWeapon,
-    Pendent,
-    Ring,
     Shield,
-    Chest,
     Potion,
-    SpellBook,
+    Material
 }
 
 [MemoryPackable]
 [MemoryPackUnion(0, typeof(ItemData))]
 [MemoryPackUnion(1, typeof(PotionItemData))]
 [MemoryPackUnion(2, typeof(EquipmentItemData))]
+[MemoryPackUnion(3, typeof(StackableItemData))]
 [Serializable]
 public abstract partial class ItemDataBase
 {
     public string displayName;
     public string description;
-    [ReadOnly] public int itemID;
+    [field: SerializeField, ReadOnly] public int ItemID { get; set; }
 
     public ItemType itemType;
     public ItemDetailType detailType;
@@ -73,7 +70,7 @@ public abstract partial class ItemDataBase
         clone.displayName = displayName;
         clone.detailType = detailType;
         clone.description = description;
-        clone.itemID = itemID;
+        clone.ItemID = ItemID;
         clone.itemType = itemType;
         clone.iconKey = iconKey;
         clone.rank = rank;

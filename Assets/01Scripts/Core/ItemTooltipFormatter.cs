@@ -1,15 +1,18 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using PJH.Utility.Extensions;
+using UnityEngine;
 
-// ItemDataBase에서 제거된 모든 UI/표현 로직을 담당
 public static class ItemTooltipFormatter
 {
     private static EnumStringMappingSO _enumStringMappingSO;
+    private static ItemRankColorMappingSO _itemRankColorMappingSO;
 
-    public static void Initialize(EnumStringMappingSO enumStringMappingSO)
+    public static void Initialize(EnumStringMappingSO enumStringMappingSO,
+        ItemRankColorMappingSO itemRankColorMappingSO)
     {
         _enumStringMappingSO = enumStringMappingSO;
+        _itemRankColorMappingSO = itemRankColorMappingSO;
     }
 
     public static StringBuilder GetItemDisplayName(ItemDataBase item)
@@ -26,15 +29,30 @@ public static class ItemTooltipFormatter
         return sb;
     }
 
-    public static string GetItemTypeDisplayName(ItemDataBase item)
+    private static string SplitPascalCase(string input)
     {
-        string displayName = Regex.Replace(item.detailType.ToString(), "([A-Z])", " $1").Trim();
-        return displayName;
+        if (string.IsNullOrEmpty(input)) return input;
+
+        string pattern = @"(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=[0-9])";
+
+        return Regex.Replace(input, pattern, " ");
     }
 
-    // ItemDataBase가 아닌, 외부에서 인터페이스 구현 여부만 확인하도록 분리
+    public static StringBuilder GetItemTypeDisplayName(ItemDataBase item)
+    {
+        StringBuilder sb = new StringBuilder();
+        Color rankColor = _itemRankColorMappingSO[item.rank];
+        sb.Append($"<color=#{ColorUtility.ToHtmlStringRGB(rankColor)}>");
+        sb.Append(item.rank);
+        sb.Append("</color> ");
+        // 자동 띄어쓰기
+        sb.Append(SplitPascalCase(item.detailType.ToString()));
+
+        return sb;
+    }
+
     public static bool IsUsable(ItemDataBase item) => item is IUsable;
-    public static bool IsSplitable(ItemDataBase item) => item is IStackable stackable && stackable.StackCount > 1;
+    public static bool IsSplitable(ItemDataBase item) => item is IStackable { StackCount: > 1 };
 
     public static StringBuilder GetBaseInfo(ItemDataBase item)
     {
@@ -58,7 +76,6 @@ public static class ItemTooltipFormatter
     public static StringBuilder GetDetailInfo(ItemDataBase item)
     {
         var sb = new StringBuilder();
-        // 의존성 (_enumStringMappingSO)을 여기서 사용
         string displayItemTypeName = _enumStringMappingSO.itemTypeToString[item.itemType];
         if (!displayItemTypeName.IsNullOrEmpty())
         {
@@ -73,7 +90,6 @@ public static class ItemTooltipFormatter
     public static StringBuilder GetAdditionalAttributeInfo(ItemDataBase item)
     {
         var sb = new StringBuilder(item.additionalAttributes.Count + 1);
-        // ... (기존 GetAdditionalAttributeInfo 로직 그대로 이관) ...
         sb.AppendLine("Modifiers");
         for (int i = 0; i < item.additionalAttributes.Count; i++)
         {

@@ -7,18 +7,16 @@ using UnityEngine;
 [Serializable]
 public partial class PotionItemData : ItemDataBase, IUsable, IStackable
 {
-    [field: SerializeField] public int StackCount { get; set; }
+    public int StackCount { get; set; }
     [field: SerializeField] public int MaxStackCount { get; set; }
 
     public List<UsableItemEffect> UsableItemEffects { get; set; }
     [MemoryPackIgnore] public List<UsableItemEffectSO> usableItemEffectSOList;
 
-
     public PotionItemData()
     {
         itemType = ItemType.Consumable;
     }
-
 
     public void Use()
     {
@@ -35,7 +33,7 @@ public partial class PotionItemData : ItemDataBase, IUsable, IStackable
             displayName = displayName,
             detailType = detailType,
             description = description,
-            itemID = itemID,
+            ItemID = base.ItemID,
             itemType = itemType,
             iconKey = iconKey,
             rank = rank,

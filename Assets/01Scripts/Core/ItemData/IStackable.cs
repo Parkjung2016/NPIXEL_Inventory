@@ -1,5 +1,6 @@
 public interface IStackable
 {
-    public int StackCount { get; set; }
-    public int MaxStackCount { get; set; }
+    int ItemID { get; }
+    int StackCount { get; set; }
+    int MaxStackCount { get; set; }
 }

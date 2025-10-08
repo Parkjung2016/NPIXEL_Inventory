@@ -25,9 +25,9 @@ MonoBehaviour:
     displayName: Blade of the Fallen Star
     description: Forged from a shard of a celestial body, this blade hums with immense,
       barely-contained power.
-    itemID: 5
+    <ItemID>k__BackingField: 2
     itemType: 0
-    detailType: 5
+    detailType: 4
     iconKey: sword_185.sprite
     rank: 4
     baseAttributes:

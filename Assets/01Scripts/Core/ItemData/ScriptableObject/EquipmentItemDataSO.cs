@@ -29,7 +29,7 @@ public partial class EquipmentItemData : ItemDataBase, IEquipable
 
     public void Unequip()
     {
-        PJHDebug.LogColorPart("UnEquip", Color.red, tag: "EquipmentItemData");
+        PJHDebug.LogColorPart("Unequip", Color.red, tag: "EquipmentItemData");
     }
 
     public override ItemDataBase Clone()
@@ -39,7 +39,7 @@ public partial class EquipmentItemData : ItemDataBase, IEquipable
             displayName = displayName,
             detailType = detailType,
             description = description,
-            itemID = itemID,
+            ItemID = ItemID,
             itemType = itemType,
             iconKey = iconKey,
             rank = rank,

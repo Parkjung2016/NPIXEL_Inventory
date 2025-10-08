@@ -46,7 +46,7 @@ MonoBehaviour:
     - PreLoad
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e21c5a1b25cb7e946ad3f9dd651546ef
-    m_Address: InventoryDataListSO
+    m_Address: ItemDataListSO
     m_ReadOnly: 0
     m_SerializedLabels:
     - PreLoad

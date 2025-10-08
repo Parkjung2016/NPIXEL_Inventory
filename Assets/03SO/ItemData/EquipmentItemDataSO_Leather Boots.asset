@@ -17,11 +17,14 @@ MonoBehaviour:
     value: 5
   - itemAttribute: {fileID: 11400000, guid: 9f98c245b7bdca347a91f988eb5859f0, type: 2}
     value: 8
-  additionalAttributes: []
+  additionalAttributes:
+  - additionalAttribute: {fileID: 11400000, guid: 1d6cd36c35a7525488aaea6ef3cb85d0, type: 2}
+    value: 1
+    operationType: 3
   itemData:
     displayName: Leather Boots
     description: Sturdy leather boots offering basic protection and comfort for adventurers.
-    itemID: 9
+    <ItemID>k__BackingField: 8
     itemType: 0
     detailType: 1
     iconKey: leather_boots.sprite
@@ -31,4 +34,9 @@ MonoBehaviour:
       attributeValue: 5
     - attributeName: Defnece
       attributeValue: 8
-    additionalAttributes: []
+    additionalAttributes:
+    - additionalAttribute:
+        attributeName: MaxHealth
+        attributeValue: 3
+      value: 1
+      operationType: 3

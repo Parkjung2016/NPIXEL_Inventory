@@ -11,7 +11,7 @@ public class SceneInstaller : MonoBehaviour, IInstaller
     public void InstallBindings(ContainerBuilder containerBuilder)
     {
         EnumStringMappingSO enumStringMappingSO = AddressableManager.Load<EnumStringMappingSO>("EnumStringMappingSO");
-        InventoryDataListSO inventoryDataListSO = AddressableManager.Load<InventoryDataListSO>("InventoryDataListSO");
+        ItemDataListSO itemDataListSo = AddressableManager.Load<ItemDataListSO>("ItemDataListSO");
         InventoryListSO inventoryListSO = AddressableManager.Load<InventoryListSO>("InventoryListSO");
         ItemManagerSO itemManagerSO = AddressableManager.Load<ItemManagerSO>("ItemManagerSO");
         ItemRankColorMappingSO itemRankColorMappingSO =
@@ -19,14 +19,14 @@ public class SceneInstaller : MonoBehaviour, IInstaller
         PlayerStatus playerStatus = FindAnyObjectByType<PlayerStatus>();
         SaveManagerSO saveManagerSO = AddressableManager.Load<SaveManagerSO>("SaveManagerSO");
         containerBuilder.AddSingleton(enumStringMappingSO);
-        containerBuilder.AddSingleton(inventoryDataListSO);
+        containerBuilder.AddSingleton(itemDataListSo);
         containerBuilder.AddSingleton(inventoryListSO);
         containerBuilder.AddSingleton(itemManagerSO);
         containerBuilder.AddSingleton(itemRankColorMappingSO);
         containerBuilder.AddSingleton(playerStatus);
         containerBuilder.AddSingleton(saveManagerSO);
 
-        ItemTooltipFormatter.Initialize(enumStringMappingSO);
+        ItemTooltipFormatter.Initialize(enumStringMappingSO, itemRankColorMappingSO);
         EquipmentHandler.Initialize(playerStatus);
     }
 

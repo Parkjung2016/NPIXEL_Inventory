@@ -9,7 +9,7 @@ public class TestInventory : MonoBehaviour
 {
     public BaseItemDataSO test;
     public InventoryUI inventoryUI;
-    [Inject] private InventoryDataListSO _inventoryDataListSO;
+    [Inject] private ItemDataListSO _itemDataListSo;
     [Inject] private InventoryListSO _inventoryListSO;
     [Inject] private SaveManagerSO _saveManagerSO;
     private string _inputCountToAddItem = "1";
@@ -28,7 +28,7 @@ public class TestInventory : MonoBehaviour
         List<ItemDataBase> itemDataList = new List<ItemDataBase>();
         for (int i = 0; i < addCount; i++)
         {
-            ItemDataBase itemData = _inventoryDataListSO.GetRandomInventoryData(inventoryUI.InventoryType);
+            ItemDataBase itemData = _itemDataListSo.GetRandomItemData(inventoryUI.InventoryType);
             itemDataList.Add(itemData);
         }
 

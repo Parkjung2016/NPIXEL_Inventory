@@ -7,9 +7,8 @@ using UnityEngine;
 public class ItemManagerSO : ScriptableObject
 {
     public event Action<ItemDataBase> OnItemEquipped;
-    public event Action<ItemDataBase> OnItemUnEquipped;
+    public event Action<ItemDataBase> OnItemUnequipped;
     [Inject] private InventoryListSO _inventoryListSO;
-    public InventoryListSO InventoryListSO => _inventoryListSO;
     public event Action<ItemDataBase> OnUsedItemWithStackable;
 
 
@@ -54,7 +53,7 @@ public class ItemManagerSO : ScriptableObject
             {
                 EquipmentHandler.Unequip(itemData, equipable.GetBaseAttributeKey(),
                     equipable.GetAdditionalAttributeKey());
-                OnItemUnEquipped?.Invoke(itemData);
+                OnItemUnequipped?.Invoke(itemData);
             }
         }
     }
@@ -81,13 +80,13 @@ public class ItemManagerSO : ScriptableObject
         OnItemEquipped?.Invoke(itemData);
     }
 
-    public int UnEquipItem(ItemDataBase itemData)
+    public int UnequipItem(ItemDataBase itemData)
     {
         if (itemData is not IEquipable equipable || !equipable.IsEquipped) return -1;
 
         EquipmentHandler.Unequip(itemData, equipable.GetBaseAttributeKey(),
             equipable.GetAdditionalAttributeKey());
-        OnItemUnEquipped?.Invoke(itemData);
+        OnItemUnequipped?.Invoke(itemData);
         ItemDataBase addedItem = _inventoryListSO.AddItem(itemData);
         if (addedItem != null)
         {

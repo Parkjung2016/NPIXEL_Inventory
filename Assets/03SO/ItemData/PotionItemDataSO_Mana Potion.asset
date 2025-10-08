@@ -20,16 +20,15 @@ MonoBehaviour:
     displayName: Mana Potion
     description: A mystical brew that restores a significant amount of mana upon
       consumption.
-    itemID: 1
+    <ItemID>k__BackingField: 13
     itemType: 1
-    detailType: 10
+    detailType: 6
     iconKey: potion_blue.sprite
     rank: 1
     baseAttributes:
     - attributeName: RecoveryMana
       attributeValue: 20
     additionalAttributes: []
-    <StackCount>k__BackingField: 0
     <MaxStackCount>k__BackingField: 5
     usableItemEffectSOList:
     - {fileID: 11400000, guid: b8366b2e31a753240a0db3a3b3421bbe, type: 2}

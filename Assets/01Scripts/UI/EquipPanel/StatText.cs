@@ -49,7 +49,6 @@ public class StatText : MonoBehaviour
                 else
                 {
                     sb.Append("<color=#FF0000>");
-                    sb.Append("-");
                 }
 
                 sb.Append(modifier);
@@ -69,7 +68,6 @@ public class StatText : MonoBehaviour
                 else
                 {
                     sb.Append("<color=#FF0000>");
-                    sb.Append("-");
                 }
 
                 sb.Append(modifierPercent);

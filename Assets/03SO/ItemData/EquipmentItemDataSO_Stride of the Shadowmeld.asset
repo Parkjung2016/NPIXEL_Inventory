@@ -22,7 +22,7 @@ MonoBehaviour:
     displayName: Stride of the Shadowmeld
     description: These supple leather boots allow the wearer to move with unnatural
       silence and speed, leaving no trace of their passing.
-    itemID: 10
+    <ItemID>k__BackingField: 9
     itemType: 0
     detailType: 1
     iconKey: boot_iron.sprite
