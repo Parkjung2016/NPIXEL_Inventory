@@ -9,7 +9,7 @@ public static class ItemDataListWindowUtility
         return AssetDatabase.LoadAssetAtPath<T>($"Assets/{relativePath}");
     }
 
-    public static void AddNewItem(ItemDataListSO targetSO, Type type)
+    public static BaseItemDataSO AddNewItem(ItemDataListSO targetSO, Type type)
     {
         BaseItemDataSO newItem = (BaseItemDataSO)ScriptableObject.CreateInstance(type);
         newItem.name = $"New {type.Name}";
@@ -23,6 +23,7 @@ public static class ItemDataListWindowUtility
 
         targetSO.ItemDataList.Add(newItem);
         EditorUtility.SetDirty(targetSO);
+        return newItem;
     }
 
     public static void DeleteItem(ItemDataListSO targetSO, int index)

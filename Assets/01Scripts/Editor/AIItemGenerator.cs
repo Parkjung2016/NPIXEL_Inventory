@@ -9,30 +9,30 @@ using UnityEngine.Networking;
 
 public static class AIItemGenerator
 {
-    private const string ApiUrl = "https://router.huggingface.co/v1/chat/completions";
-    private const string ApiToken = "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";
-    private const string ApiModel = "deepseek-ai/DeepSeek-V3.2-Exp:novita";
+    private static AIAPISO _apiSO;
 
     public static async void GenerateAsync(string prompt, BaseItemDataSO targetSO, ItemAttributeListSO attrList,
         Action onFinish)
     {
+        if (_apiSO == null)
+            _apiSO = AssetDatabase.LoadAssetAtPath<AIAPISO>("Assets/03SO/API/AIAPISO.asset");
         EditorUtility.DisplayProgressBar("AI Item Generation", "Generating item...", 0f);
 
         string jsonPrompt = BuildPrompt(prompt, attrList);
         JObject request = new()
         {
-            ["model"] = ApiModel,
+            ["model"] = _apiSO.apiModel,
             ["messages"] = new JArray(new JObject { ["role"] = "user", ["content"] = jsonPrompt }),
             ["stream"] = false
         };
 
-        using var req = new UnityWebRequest(ApiUrl, "POST")
+        using var req = new UnityWebRequest(_apiSO.apiUrl, "POST")
         {
             uploadHandler =
                 new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(request))),
             downloadHandler = new DownloadHandlerBuffer()
         };
-        req.SetRequestHeader("Authorization", "Bearer " + ApiToken);
+        req.SetRequestHeader("Authorization", "Bearer " + _apiSO.apiToken);
         req.SetRequestHeader("Content-Type", "application/json");
 
         await req.SendWebRequest();

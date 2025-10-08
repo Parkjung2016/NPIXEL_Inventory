@@ -96,7 +96,11 @@ public class ItemDataListWindow : EditorWindow
         Color prev = GUI.backgroundColor;
         GUI.backgroundColor = Color.green;
         if (GUILayout.Button("Add Item"))
-            ItemDataListWindowUtility.AddNewItem(_targetSO, _itemTypes[_selectedTypeIndex]);
+        {
+            BaseItemDataSO itemData = ItemDataListWindowUtility.AddNewItem(_targetSO, _itemTypes[_selectedTypeIndex]);
+            GUI.FocusControl(null);
+            _selectedIndex = itemData.GetItemData().ItemID;
+        }
 
         GUI.backgroundColor = Color.red;
         if (_selectedIndex >= 0 && GUILayout.Button("Delete Selected"))
