@@ -687,6 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AllowDuplicates>k__BackingField: 0
+  buttonClickSound: {fileID: 11400000, guid: 1a02a0499f313174eb35fa0128def939, type: 2}
 --- !u!114 &-5285445511055449233
 MonoBehaviour:
   m_ObjectHideFlags: 0

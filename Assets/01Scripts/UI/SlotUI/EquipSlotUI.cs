@@ -30,14 +30,7 @@ public class EquipSlotUI : BaseItemSlotUI
                 return;
             }
 
-            var evt = UIEvents.ClickItemSlot;
-            if (evt.isClicked && ReferenceEquals(evt.itemSlot, this)) ResetClickEvent();
-            else
-            {
-                evt.itemSlot = this;
-                evt.isClicked = true;
-                _uiEventChannelSO.RaiseEvent(evt);
-            }
+            base.HandleSlotClick(pointerEvent);
         }
         else if (pointerEvent.button == PointerEventData.InputButton.Right)
         {
@@ -89,8 +82,7 @@ public class EquipSlotUI : BaseItemSlotUI
         }
 
         _itemManagerSO.EquipItem(itemData);
-        ResetDragEvent();
-        ResetClickEvent();
+        base.HandleSlotDrop(pointerEvent);
     }
 
 

@@ -48,18 +48,19 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     public Transform ChildPopupUIParentTransform { get; private set; }
     public Stack<IPopupUI> ChildPopupUIStack { get; set; } = new Stack<IPopupUI>();
-
-    private GameEventChannelSO _uiEventChannelSO;
+    [SerializeField] private SoundDataSO buttonClickSound;
     [Inject] private ItemRankColorMappingSO _itemRankColorMappingSO;
     [Inject] private ItemManagerSO _itemManagerSO;
     [Inject] private InventoryListSO _inventoryListSO;
     [Inject] private PlayerStatus _playerStatus;
+    private GameEventChannelSO _uiEventChannelSO;
     private RectTransform _rectTrm;
     private Vector2 _originPivot;
     private ItemDataBase _currentItemData;
 
     private bool _lockedUpdatePosition;
     private Vector2 _tooltipSize;
+
     public override void Init()
     {
         _uiEventChannelSO = AddressableManager.Load<GameEventChannelSO>("UIEventChannelSO");
@@ -91,6 +92,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     private void HandleClickEquipAndUnequipButton()
     {
+        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         if (_currentItemData is IEquipable equipable)
         {
             var evt = UIEvents.ClickItemSlot;
@@ -121,12 +123,14 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     private void HandleClickDeleteButton()
     {
+        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         _itemManagerSO.DeleteItem(_currentItemData);
         ResetClickItemSlotEvent();
     }
 
     private void HandleClickSplitButton()
     {
+        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         if (_currentItemData is IStackable stackable)
         {
             if (stackable.StackCount == 2)
@@ -148,11 +152,13 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     private void HandleClickCancelButton()
     {
+        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         ResetClickItemSlotEvent();
     }
 
     private void HandleClickUseButton()
     {
+        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         _itemManagerSO.UseItem(_currentItemData);
         if (_currentItemData is IStackable { StackCount: > 0 })
         {
@@ -175,6 +181,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
     {
         UpdatePosition();
     }
+
     private Vector2 GetTooltipSize()
     {
         return new Vector2(_rectTrm.rect.width, _rectTrm.rect.height);

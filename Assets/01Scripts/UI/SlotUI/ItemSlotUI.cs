@@ -39,14 +39,7 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
                 return;
             }
 
-            var evt = UIEvents.ClickItemSlot;
-            if (evt.isClicked && ReferenceEquals(evt.itemSlot, this)) ResetClickEvent();
-            else
-            {
-                evt.itemSlot = this;
-                evt.isClicked = true;
-                _uiEventChannelSO.RaiseEvent(evt);
-            }
+            base.HandleSlotClick(pointerEvent);
         }
         else if (pointerEvent.button == PointerEventData.InputButton.Right)
         {
@@ -103,8 +96,7 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
         if (!CanDragAndDrop(itemData)) return;
         if (targetSlot.CellIndex == -1) _itemManagerSO.UnequipItem(itemData);
         else _itemManagerSO.ChangeItemDataIndex(itemData, targetSlot.CellIndex, CellIndex);
-        ResetDragEvent();
-        ResetClickEvent();
+        base.HandleSlotDrop(pointerEvent);
     }
 
     private bool CanDragAndDrop(ItemDataBase targetItemData = null)

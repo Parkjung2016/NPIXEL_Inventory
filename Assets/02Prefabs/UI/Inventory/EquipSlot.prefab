@@ -85,7 +85,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1168194114035730, guid: d8dab30b6d8b3dc4cb8ddf42a4d7752b, type: 3}
       propertyPath: m_Name
-      value: EquipSlot_Armor
+      value: EquipSlot
       objectReference: {fileID: 0}
     - target: {fileID: 224182731342183468, guid: d8dab30b6d8b3dc4cb8ddf42a4d7752b, type: 3}
       propertyPath: m_Pivot.x
@@ -210,4 +210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 748b13357830464b83a6654fbb4c1359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickedSound: {fileID: 11400000, guid: 70739ec4c9177854ca9748240b3963b6, type: 2}
+  dropSound: {fileID: 11400000, guid: 9f9e8149b5748374e9926c749fc732c9, type: 2}
   _equipSlotType: 0

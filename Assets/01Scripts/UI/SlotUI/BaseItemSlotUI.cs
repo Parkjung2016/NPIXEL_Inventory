@@ -23,6 +23,8 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
     public abstract int CellIndex { get; protected set; }
     public ItemDataBase CurrentItemData => _slotTooltipHandler.CurrentItemData;
 
+    [SerializeField] private SoundDataSO clickedSound;
+    [SerializeField] private SoundDataSO dropSound;
     [Inject] protected ItemRankColorMappingSO _rankColorMappingSO;
     [Inject] protected ItemManagerSO _itemManagerSO;
     [Inject] protected PlayerStatus _playerStatus;
@@ -30,6 +32,7 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
     protected GameEventChannelSO _uiEventChannelSO;
     protected ItemSlotTooltipHandler _slotTooltipHandler;
     protected RectTransform _rectTransform;
+
 
     public override void Init()
     {
@@ -60,7 +63,18 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
         BindEvent(noData, HandleSlotDrop, Define.UIEvent.Drop);
     }
 
-    protected abstract void HandleSlotClick(PointerEventData pointerEvent);
+    protected virtual void HandleSlotClick(PointerEventData pointerEvent)
+    {
+        var evt = UIEvents.ClickItemSlot;
+        if (evt.isClicked && ReferenceEquals(evt.itemSlot, this)) ResetClickEvent();
+        else
+        {
+            SoundManager.CreateSoundBuilder().Play(clickedSound);
+            evt.itemSlot = this;
+            evt.isClicked = true;
+            _uiEventChannelSO.RaiseEvent(evt);
+        }
+    }
 
     protected virtual void HandleSlotBeginDrag(PointerEventData pointerEvent)
     {
@@ -99,7 +113,12 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
         ResetDragEvent();
     }
 
-    protected abstract void HandleSlotDrop(PointerEventData pointerEvent);
+    protected virtual void HandleSlotDrop(PointerEventData pointerEvent)
+    {
+        SoundManager.CreateSoundBuilder().Play(dropSound);
+        ResetDragEvent();
+        ResetClickEvent();
+    }
 
     protected virtual void HandleNoItemSlotClick(PointerEventData pointerEvent)
     {

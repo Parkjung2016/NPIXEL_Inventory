@@ -45,6 +45,8 @@ public class InventoryUI : UIBase, IInventoryView
     private readonly Dictionary<ItemType, ChangeInventoryTypeButton> _changeInventoryTypeButtons =
         new Dictionary<ItemType, ChangeInventoryTypeButton>();
 
+    [SerializeField] private SoundDataSO buttonClickSound;
+    [SerializeField] private SoundDataSO reloadingSound;
     [SerializeField] private ChangeInventoryTypeButton changeInventoryTypeButtonPrefab;
     [SerializeField] private InventoryScrollRectDataSourceSO scrollRectDataSourceSO;
     [SerializeField] private ItemDragSlotUI itemDragSlotUIPrefab;
@@ -93,7 +95,6 @@ public class InventoryUI : UIBase, IInventoryView
             {
                 ChangeInventoryTypeButton changeInventoryTypeButton =
                     Instantiate(changeInventoryTypeButtonPrefab, topGroups);
-                // 버튼 클릭 시 View 이벤트 호출
                 changeInventoryTypeButton.Init(itemType, (type) => OnInventoryTypeChanged?.Invoke(type));
                 _changeInventoryTypeButtons.Add(itemType, changeInventoryTypeButton);
             }
@@ -107,14 +108,38 @@ public class InventoryUI : UIBase, IInventoryView
         BindEvent(GetObject((byte)Objects.Viewport), (pointerEvent) => OnViewportDrop?.Invoke(pointerEvent),
             Define.UIEvent.Drop);
 
-        GetButton((byte)Buttons.Button_ChangeSortType).onClick.AddListener(() => OnChangeSortTypeClicked?.Invoke());
-        GetButton((byte)Buttons.Button_Sort).onClick.AddListener(() => OnSortClicked?.Invoke());
-        GetButton((byte)Buttons.Button_StackAll).onClick.AddListener(() => OnStackAllClicked?.Invoke());
-        GetButton((byte)Buttons.Button_GoToTop).onClick.AddListener(() => OnGoToTopClicked?.Invoke());
-        GetButton((byte)Buttons.Button_GoToBottom).onClick.AddListener(() => OnGoToBottomClicked?.Invoke());
+        GetButton((byte)Buttons.Button_ChangeSortType).onClick.AddListener(() =>
+        {
+            SoundManager.CreateSoundBuilder().Play(buttonClickSound);
+            OnChangeSortTypeClicked?.Invoke();
+        });
+        GetButton((byte)Buttons.Button_Sort).onClick.AddListener(() =>
+        {
+            SoundManager.CreateSoundBuilder().Play(buttonClickSound);
+            OnSortClicked?.Invoke();
+        });
+        GetButton((byte)Buttons.Button_StackAll).onClick.AddListener(() =>
+        {
+            SoundManager.CreateSoundBuilder().Play(buttonClickSound);
+            OnStackAllClicked?.Invoke();
+        });
+        GetButton((byte)Buttons.Button_GoToTop).onClick.AddListener(() =>
+        {
+            SoundManager.CreateSoundBuilder().Play(buttonClickSound);
+            OnGoToTopClicked?.Invoke();
+        });
+        GetButton((byte)Buttons.Button_GoToBottom).onClick.AddListener(() =>
+        {
+            SoundManager.CreateSoundBuilder().Play(buttonClickSound);
+            OnGoToBottomClicked?.Invoke();
+        });
 
         Toggle autoSortToggle = GetToggle((byte)Toggles.Toggle_AutoSort);
-        autoSortToggle.onValueChanged.AddListener((isOn) => OnAutoSortToggled?.Invoke(isOn));
+        autoSortToggle.onValueChanged.AddListener((isOn) =>
+        {
+            SoundManager.CreateSoundBuilder().Play(buttonClickSound);
+            OnAutoSortToggled?.Invoke(isOn);
+        });
         _optimizeScrollRect.onValueChanged.AddListener((value) => OnScrollValueChanged?.Invoke(value));
 
         SetPresenter(new InventoryPresenter(this, inventoryType));
@@ -188,8 +213,10 @@ public class InventoryUI : UIBase, IInventoryView
 
     private async void BlockDuringAsync(UniTask task)
     {
+        SoundEmitter soundEmitter = SoundManager.CreateSoundBuilder().Play(reloadingSound);
         BlockInteraction(true);
         await task;
         BlockInteraction(false);
+        soundEmitter.Stop();
     }
 }

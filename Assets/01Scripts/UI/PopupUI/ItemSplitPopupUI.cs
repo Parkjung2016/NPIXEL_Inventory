@@ -20,6 +20,7 @@ public class ItemSplitPopupUI : UIBase, IPopupUI
 
     public GameObject GameObject => gameObject;
     [field: SerializeField] public bool AllowDuplicates { get; private set; } = false;
+    [SerializeField] private SoundDataSO buttonClickSound;
     [Inject] private InventoryListSO _inventoryListSO;
     private ItemDataBase _itemData;
 
@@ -52,11 +53,13 @@ public class ItemSplitPopupUI : UIBase, IPopupUI
 
     private void HandleClickCancelButton()
     {
+        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         Managers.UI.ClosePopup(this);
     }
 
     private void HandleClickSplitButton()
     {
+        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         Slider slider = GetSlider((byte)Sliders.Slider);
         int splitCount = (int)slider.value;
         _inventoryListSO.SplitItem(_itemData, splitCount);
