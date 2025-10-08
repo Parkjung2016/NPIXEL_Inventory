@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab6e8c4b585c444e85d1f9e41f1a78d9, type: 3}
-  m_Name: RecoveryHealthEffectSO
+  m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
+  m_Name: Sounds_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  useSound: {fileID: 11400000, guid: 844857dbdc68f3943800e730bd4a2a3e, type: 2}
-  requiredAttributes:
-  - {fileID: 11400000, guid: 636d637d44a7010448e3e791e5e6a069, type: 2}
+  m_Group: {fileID: 11400000, guid: 40924e27b1c5ef840a0725fde26cf226, type: 2}
+  m_StaticContent: 0

@@ -688,6 +688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AllowDuplicates>k__BackingField: 0
   buttonClickSound: {fileID: 11400000, guid: 1a02a0499f313174eb35fa0128def939, type: 2}
+  splitSound: {fileID: 11400000, guid: 645d648e9751352499d0083e506c3515, type: 2}
 --- !u!114 &-5285445511055449233
 MonoBehaviour:
   m_ObjectHideFlags: 0

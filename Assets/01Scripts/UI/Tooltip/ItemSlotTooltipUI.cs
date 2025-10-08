@@ -49,6 +49,10 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
     public Transform ChildPopupUIParentTransform { get; private set; }
     public Stack<IPopupUI> ChildPopupUIStack { get; set; } = new Stack<IPopupUI>();
     [SerializeField] private SoundDataSO buttonClickSound;
+    [SerializeField] private SoundDataSO splitSound;
+    [SerializeField] private SoundDataSO deleteSound;
+    [SerializeField] private SoundDataSO equipSound;
+    [SerializeField] private SoundDataSO unequipSound;
     [Inject] private ItemRankColorMappingSO _itemRankColorMappingSO;
     [Inject] private ItemManagerSO _itemManagerSO;
     [Inject] private InventoryListSO _inventoryListSO;
@@ -92,12 +96,12 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     private void HandleClickEquipAndUnequipButton()
     {
-        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
         if (_currentItemData is IEquipable equipable)
         {
             var evt = UIEvents.ClickItemSlot;
             if (equipable.IsEquipped)
             {
+                SoundManager.CreateSoundBuilder().Play(unequipSound);
                 _itemManagerSO.UnequipItem(_currentItemData);
             }
             else
@@ -114,6 +118,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
                     }
                 }
 
+                SoundManager.CreateSoundBuilder().Play(equipSound);
                 _itemManagerSO.EquipItem(_currentItemData);
             }
 
@@ -123,7 +128,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     private void HandleClickDeleteButton()
     {
-        SoundManager.CreateSoundBuilder().Play(buttonClickSound);
+        SoundManager.CreateSoundBuilder().Play(deleteSound);
         _itemManagerSO.DeleteItem(_currentItemData);
         ResetClickItemSlotEvent();
     }
@@ -135,6 +140,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
         {
             if (stackable.StackCount == 2)
             {
+                SoundManager.CreateSoundBuilder().Play(splitSound);
                 _inventoryListSO.SplitItem(_currentItemData, 1);
                 ResetClickItemSlotEvent();
                 return;
@@ -314,6 +320,7 @@ public class ItemSlotTooltipUI : UIBase, IPopupParentable
 
     private void ShowUIInfo(ItemDataBase itemData)
     {
+        if (itemData == null) return;
         _currentItemData = itemData;
         gameObject.SetActive(true);
 

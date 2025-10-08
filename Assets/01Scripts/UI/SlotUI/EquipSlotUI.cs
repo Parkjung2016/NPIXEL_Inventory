@@ -81,6 +81,7 @@ public class EquipSlotUI : BaseItemSlotUI
             _itemManagerSO.ChangeItemDataIndex(prev, prevIndex, targetSlot.CellIndex);
         }
 
+        SoundManager.CreateSoundBuilder().Play(equipSound);
         _itemManagerSO.EquipItem(itemData);
         base.HandleSlotDrop(pointerEvent);
     }

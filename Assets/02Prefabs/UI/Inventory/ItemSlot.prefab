@@ -52,6 +52,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickedSound: {fileID: 11400000, guid: 70739ec4c9177854ca9748240b3963b6, type: 2}
   dropSound: {fileID: 11400000, guid: 9f9e8149b5748374e9926c749fc732c9, type: 2}
+  equipSound: {fileID: 11400000, guid: d2cedd235c96d3249921f3e2b8adaf78, type: 2}
+  unequipSound: {fileID: 11400000, guid: 8b5f3b9bbab2ab748a7754b0ee6df931, type: 2}
+  splitSound: {fileID: 11400000, guid: 645d648e9751352499d0083e506c3515, type: 2}
 --- !u!114 &5266727254368705387
 MonoBehaviour:
   m_ObjectHideFlags: 0

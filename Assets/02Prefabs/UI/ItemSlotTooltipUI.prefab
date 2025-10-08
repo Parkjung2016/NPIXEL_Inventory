@@ -1000,6 +1000,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonClickSound: {fileID: 11400000, guid: 1a02a0499f313174eb35fa0128def939, type: 2}
+  splitSound: {fileID: 11400000, guid: 645d648e9751352499d0083e506c3515, type: 2}
+  deleteSound: {fileID: 11400000, guid: 8444b95b9cc54db49b14caefff917a14, type: 2}
+  equipSound: {fileID: 11400000, guid: d2cedd235c96d3249921f3e2b8adaf78, type: 2}
+  unequipSound: {fileID: 11400000, guid: 8b5f3b9bbab2ab748a7754b0ee6df931, type: 2}
 --- !u!1 &3738952213361414488
 GameObject:
   m_ObjectHideFlags: 0

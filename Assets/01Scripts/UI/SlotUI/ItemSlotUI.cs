@@ -1,5 +1,6 @@
 using Reflex.Attributes;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
         Text_StackCount
     }
 
+    [SerializeField] private SoundDataSO splitSound;
     [Inject] private InventoryListSO _inventoryListSO;
     private ScrollRect _scrollRect;
     public override int CellIndex { get; protected set; }
@@ -34,6 +36,7 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
 
             if (Keyboard.current.ctrlKey.isPressed && CurrentItemData is IStackable { StackCount: > 1 } stackable)
             {
+                SoundManager.CreateSoundBuilder().Play(equipSound);
                 _inventoryListSO.SplitItem(CurrentItemData, stackable.StackCount / 2);
                 ResetClickEvent();
                 return;
@@ -94,8 +97,17 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
         if (targetSlot == null) return;
         var itemData = targetSlot.CurrentItemData;
         if (!CanDragAndDrop(itemData)) return;
-        if (targetSlot.CellIndex == -1) _itemManagerSO.UnequipItem(itemData);
-        else _itemManagerSO.ChangeItemDataIndex(itemData, targetSlot.CellIndex, CellIndex);
+        if (targetSlot.CellIndex == -1)
+        {
+            SoundManager.CreateSoundBuilder().Play(unequipSound);
+            _itemManagerSO.UnequipItem(itemData);
+        }
+        else
+        {
+            SoundManager.CreateSoundBuilder().Play(dropSound);
+            _itemManagerSO.ChangeItemDataIndex(itemData, targetSlot.CellIndex, CellIndex);
+        }
+
         base.HandleSlotDrop(pointerEvent);
     }
 

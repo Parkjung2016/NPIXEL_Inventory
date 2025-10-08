@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6cb60aaf8d84e688ac7d32dedfe1162, type: 3}
   m_Name: RecoveryManaEffectSO
   m_EditorClassIdentifier: 
+  useSound: {fileID: 11400000, guid: 844857dbdc68f3943800e730bd4a2a3e, type: 2}
   requiredAttributes:
   - {fileID: 11400000, guid: bbf802b6a7cc48b4387b1e9de6e8c4b0, type: 2}

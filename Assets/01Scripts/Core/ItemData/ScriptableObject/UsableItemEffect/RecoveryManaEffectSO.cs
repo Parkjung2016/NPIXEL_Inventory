@@ -29,6 +29,7 @@ public partial class RecoveryManaEffect : UsableItemEffect
             }
         }
 
+        SoundManager.CreateSoundBuilder().Play(GetUseSound());
         PJHDebug.LogColorPart($"Mana Recovered: {recoveryAmount}", color: Color.green, tag: "RecoveryManaEffect");
     }
 }

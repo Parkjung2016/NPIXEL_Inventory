@@ -23,8 +23,10 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
     public abstract int CellIndex { get; protected set; }
     public ItemDataBase CurrentItemData => _slotTooltipHandler.CurrentItemData;
 
-    [SerializeField] private SoundDataSO clickedSound;
-    [SerializeField] private SoundDataSO dropSound;
+    [SerializeField] protected SoundDataSO clickedSound;
+    [SerializeField] protected SoundDataSO dropSound;
+    [SerializeField] protected SoundDataSO equipSound;
+    [SerializeField] protected SoundDataSO unequipSound;
     [Inject] protected ItemRankColorMappingSO _rankColorMappingSO;
     [Inject] protected ItemManagerSO _itemManagerSO;
     [Inject] protected PlayerStatus _playerStatus;
@@ -115,7 +117,6 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
 
     protected virtual void HandleSlotDrop(PointerEventData pointerEvent)
     {
-        SoundManager.CreateSoundBuilder().Play(dropSound);
         ResetDragEvent();
         ResetClickEvent();
     }
@@ -163,7 +164,10 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
         if (itemData is IEquipable equipable)
         {
             if (equipable.IsEquipped)
+            {
+                SoundManager.CreateSoundBuilder().Play(unequipSound);
                 _itemManagerSO.UnequipItem(itemData);
+            }
             else
             {
                 ItemDataBase prevCurrentItemData = CurrentItemData;
@@ -178,6 +182,7 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
                     }
                 }
 
+                SoundManager.CreateSoundBuilder().Play(equipSound);
                 _itemManagerSO.EquipItem(prevCurrentItemData);
             }
 

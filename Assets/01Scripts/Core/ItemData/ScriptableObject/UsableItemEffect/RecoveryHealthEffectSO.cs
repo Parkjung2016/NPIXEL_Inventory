@@ -29,6 +29,7 @@ public partial class RecoveryHealthEffect : UsableItemEffect
             }
         }
 
+        SoundManager.CreateSoundBuilder().Play(GetUseSound());
         PJHDebug.LogColorPart($"Health Recovered: {recoveryAmount}", color: Color.green, tag: "RecoveryHealthEffect");
     }
 }
