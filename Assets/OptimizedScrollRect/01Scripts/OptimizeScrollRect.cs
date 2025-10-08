@@ -7,8 +7,8 @@ public class OptimizeScrollRect : ScrollRect
 {
     public int Segments
     {
-        set { segments = Math.Max(value, 2); }
-        get { return segments; }
+        set => segments = Math.Max(value, 2);
+        get => segments;
     }
 
     [SerializeField] private int segments;

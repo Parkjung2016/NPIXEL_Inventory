@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MemoryPack;
-using PJH.Utility.Extensions;
-using UnityEngine;
 
 // 기존 InventoryData의 룩업 필드를 캡슐화하고 관리합니다.
 [MemoryPackable]

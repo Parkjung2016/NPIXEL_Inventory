@@ -15,7 +15,7 @@ MonoBehaviour:
   <SaveID>k__BackingField: 1
   inventoryData:
     canSettingData: 1
-    inventorySlotCapacity: 10
+    inventorySlotCapacity: 600
     sortType: 2
     canAutoSort: 1
     currentInventorySlotCount: 0

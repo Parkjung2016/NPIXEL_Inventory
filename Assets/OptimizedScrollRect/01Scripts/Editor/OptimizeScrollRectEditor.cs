@@ -20,7 +20,15 @@ public class OptimizeScrollRectEditor : ScrollRectEditor
     {
         serializedObject.Update();
         EditorGUILayout.PropertyField(_cellPrefab);
-        _script.Segments = EditorGUILayout.IntField("Columns", _script.Segments);
+        EditorGUI.BeginChangeCheck();
+        int newSegments = EditorGUILayout.IntField("Columns", _script.Segments);
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(_script, "Change Segments");
+            _script.Segments = newSegments;
+            EditorUtility.SetDirty(_script);
+        }
+
         serializedObject.ApplyModifiedProperties();
         base.OnInspectorGUI();
     }

@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MemoryPack;
 using Priority_Queue;
-using Reflex.Attributes;
 using Reflex.Injectors;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PJH.Utility.Extensions;
 using PJH.Utility;
 using Reflex.Extensions;
-using Unity.VisualScripting;
 
 public delegate void ChangedInventoryDataEvent(List<ItemDataBase> inventoryDataList, bool resetData);
 
@@ -28,7 +25,7 @@ public partial class InventoryData
     public InventorySortType sortType;
     public bool canAutoSort = true;
 
-    public int currentInventorySlotCount;
+    [HideInInspector] public int currentInventorySlotCount;
 
     [MemoryPackIgnore]
     public int CurrentInventorySlotCount
