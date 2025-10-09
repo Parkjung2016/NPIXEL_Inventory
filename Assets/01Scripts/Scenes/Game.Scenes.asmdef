@@ -1,0 +1,24 @@
+{
+    "name": "Game.Scenes",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:ae7e52b6b1653af469a030c5c09e1a96",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:d9fd6744a33f5c248a531c3c463b21c4",
+        "GUID:57ded4871b5ff6741a0da9ef06c7a699",
+        "GUID:f6d8a0a066eb8f840adb1150f543aede",
+        "GUID:1530a967b84cfb44dbdd5e8a1989764f",
+        "GUID:95fc45cc6af70d042842ca1b05c43bc3",
+        "GUID:b4661a995bd464b498043885e62a1375"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

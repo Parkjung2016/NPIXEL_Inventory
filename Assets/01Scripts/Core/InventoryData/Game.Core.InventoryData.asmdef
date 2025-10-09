@@ -1,0 +1,23 @@
+{
+    "name": "Game.Core.InventoryData",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ae7e52b6b1653af469a030c5c09e1a96",
+        "GUID:1530a967b84cfb44dbdd5e8a1989764f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:a658069527f1c7f4ea7735122ffeea77",
+        "GUID:aa9db46ae02845c4abb6be0bd0e1acd1",
+        "GUID:57ded4871b5ff6741a0da9ef06c7a699",
+        "GUID:c97bba0413f588649a2987f82b00a0d1",
+        "GUID:e88da0336f17d2c4cb36443d1c49bb57"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

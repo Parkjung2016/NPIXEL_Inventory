@@ -1,0 +1,16 @@
+{
+    "name": "OptimizedScrollRect.Editor",
+    "rootNamespace": "",
+    "references": ["GUID:b047da55fddd2e44ebde6760ceb4b786"],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

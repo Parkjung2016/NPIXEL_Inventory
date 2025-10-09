@@ -10,7 +10,7 @@ public class EquipPanelUI : UIBase
     }
 
     [SerializeField] private StatText _statTextPrefab;
-    [Inject] private PlayerStatus _playerStatus;
+    [Inject] private IPlayerStatus _playerStatus;
     [Inject] private ItemManagerSO _itemManagerSO;
 
     private Dictionary<string, StatText> _statTextDictionary = new Dictionary<string, StatText>();
@@ -21,9 +21,9 @@ public class EquipPanelUI : UIBase
         Transform statTextGroup = GetObject((byte)Objects.StatTextGroup).transform;
         _playerStatus.OnLoadedPlayerStatusData += HandleLoadedPlayerStatusData;
 
-        for (int i = 0; i < _playerStatus.playerStatusData.statDatas.Length; i++)
+        for (int i = 0; i < _playerStatus.PlayerStatusData.statDatas.Length; i++)
         {
-            StatData statData = _playerStatus.playerStatusData.statDatas[i];
+            StatData statData = _playerStatus.PlayerStatusData.statDatas[i];
             StatText statText = Instantiate(_statTextPrefab, statTextGroup);
             statText.BindStat(statData);
             _statTextDictionary.Add(statData.statName, statText);
@@ -39,13 +39,12 @@ public class EquipPanelUI : UIBase
     {
         foreach (var pair in playerStatusData.equippedItems)
         {
-            Debug.Log(pair.Value);
             _itemManagerSO.EquipItemForce(pair.Value);
         }
 
-        for (int i = 0; i < _playerStatus.playerStatusData.statDatas.Length; i++)
+        for (int i = 0; i < _playerStatus.PlayerStatusData.statDatas.Length; i++)
         {
-            StatData statData = _playerStatus.playerStatusData.statDatas[i];
+            StatData statData = _playerStatus.PlayerStatusData.statDatas[i];
             StatText statText = _statTextDictionary[statData.statName];
             statText.BindStat(statData);
         }

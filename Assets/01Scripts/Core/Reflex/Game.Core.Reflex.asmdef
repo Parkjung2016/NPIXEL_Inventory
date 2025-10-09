@@ -1,0 +1,24 @@
+{
+    "name": "Game.Core.Reflex",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ee7d698981755ac41aa80bbfc03bffc3",
+        "GUID:d3a2ecf1e8c2af34993e36bdd5e5848f",
+        "GUID:d9fd6744a33f5c248a531c3c463b21c4",
+        "GUID:ae7e52b6b1653af469a030c5c09e1a96",
+        "GUID:3a9f7d53d2fba0743bd654b753f7d4d8",
+        "GUID:57ded4871b5ff6741a0da9ef06c7a699",
+        "GUID:1530a967b84cfb44dbdd5e8a1989764f",
+        "GUID:c97bba0413f588649a2987f82b00a0d1",
+        "GUID:6c480d1b610b81a42919f82939c11208"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

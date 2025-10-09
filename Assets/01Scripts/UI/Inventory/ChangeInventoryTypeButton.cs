@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ChangeInventoryTypeButton : MonoBehaviour
 {
-    private event Action<ItemType> OnChangedInventoryType;
+    private event Action<Define.ItemType> OnChangedInventoryType;
     [SerializeField] private Color selectedColor = Color.yellow;
     [SerializeField] private SoundDataSO buttonClickSound;
 
@@ -14,10 +14,10 @@ public class ChangeInventoryTypeButton : MonoBehaviour
     private Image _image;
     private TextMeshProUGUI _text;
 
-    private ItemType _itemType;
+    private Define.ItemType _itemType;
 
 
-    public void Init(ItemType itemType, Action<ItemType> ChangedInventoryTypeCallBack)
+    public void Init(Define.ItemType itemType, Action<Define.ItemType> ChangedInventoryTypeCallBack)
     {
         OnChangedInventoryType = ChangedInventoryTypeCallBack;
         _text = transform.Find("Text_InventoryType").GetComponent<TextMeshProUGUI>();

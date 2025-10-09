@@ -1,0 +1,17 @@
+{
+    "name": "Game.Core.EventSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a658069527f1c7f4ea7735122ffeea77",
+        "GUID:b4661a995bd464b498043885e62a1375"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

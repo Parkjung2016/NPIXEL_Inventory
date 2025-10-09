@@ -1,0 +1,16 @@
+{
+    "name": "Game.Core.SerializeInterface.Editor",
+    "rootNamespace": "",
+    "references": ["GUID:499cb2594d0c501449b19ba834f4e9b1"],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

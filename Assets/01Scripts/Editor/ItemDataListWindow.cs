@@ -29,7 +29,7 @@ public class ItemDataListWindow : EditorWindow
     private string _aiPrompt;
     private bool _disabledGroup;
 
-    private readonly Dictionary<ItemType, bool> _itemTypeFoldoutStates = new();
+    private readonly Dictionary<Define.ItemType, bool> _itemTypeFoldoutStates = new();
     private readonly Dictionary<string, bool> _itemDetailTypeFoldoutStates = new();
 
     [MenuItem("Tools/Item Data List")]

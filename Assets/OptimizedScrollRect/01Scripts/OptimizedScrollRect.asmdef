@@ -1,0 +1,18 @@
+{
+    "name": "OptimizedScrollRect",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ea28de24f2be303458c32b489557047a",
+        "GUID:9162718fc0615e94992a60a217a01c91",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

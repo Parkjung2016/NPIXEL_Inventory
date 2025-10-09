@@ -1,0 +1,4 @@
+{
+	"name": "Game.Core.SoundSystem",
+	"references":[ "GUID:ae7e52b6b1653af469a030c5c09e1a96" ]
+}

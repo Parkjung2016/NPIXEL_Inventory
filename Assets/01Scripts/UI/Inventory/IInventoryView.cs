@@ -9,7 +9,7 @@ public interface IInventoryView
     void SetSortButtonActive(bool active);
     void SetAutoSortToggle(bool isOn);
     void SetStackAllButtonActive(bool active);
-    void SetInventoryTypeSelected(ItemType type, bool isSelected);
+    void SetInventoryTypeSelected(Define.ItemType type, bool isSelected);
     void ReloadScrollData(bool resetData = true);
     void BlockInteraction(bool block);
     void GoToTop();
@@ -22,7 +22,7 @@ public interface IInventoryView
     event Action OnStackAllClicked;
     event Action OnGoToTopClicked;
     event Action OnGoToBottomClicked;
-    event Action<ItemType> OnInventoryTypeChanged;
+    event Action<Define.ItemType> OnInventoryTypeChanged;
     event Action<PointerEventData> OnViewportDrop;
     event Action OnViewportClicked;
     event Action<bool> OnBlocked;

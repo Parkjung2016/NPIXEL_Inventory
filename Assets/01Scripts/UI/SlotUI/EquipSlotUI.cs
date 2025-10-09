@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class EquipSlotUI : BaseItemSlotUI
 {
-    [SerializeField] private ItemDetailType _equipSlotType;
+    [SerializeField] private Define.ItemDetailType _equipSlotType;
     public override int CellIndex { get; protected set; } = -1;
 
     public override void Init()

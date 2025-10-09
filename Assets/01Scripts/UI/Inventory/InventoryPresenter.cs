@@ -13,11 +13,11 @@ public class InventoryPresenter
     [Inject] private readonly InventoryListSO _inventoryListSO;
     private readonly GameEventChannelSO _uiEventChannelSO;
 
-    public ItemType CurrentInventoryType { get; private set; }
+    public Define.ItemType CurrentInventoryType { get; private set; }
 
     public InventorySO CurrentInventorySO => _inventoryListSO[CurrentInventoryType];
 
-    public InventoryPresenter(IInventoryView view, ItemType initialType)
+    public InventoryPresenter(IInventoryView view, Define.ItemType initialType)
     {
         _view = view;
         CurrentInventoryType = initialType;
@@ -74,7 +74,7 @@ public class InventoryPresenter
         UpdateInventoryTypeButtons();
         _view.SetSortButtonActive(!CurrentInventorySO.inventoryData.canAutoSort);
         _view.SetAutoSortToggle(CurrentInventorySO.inventoryData.canAutoSort);
-        _view.SetStackAllButtonActive(CurrentInventoryType != ItemType.Equipment);
+        _view.SetStackAllButtonActive(CurrentInventoryType != Define.ItemType.Equipment);
         _view.BlockInteraction(false);
 
         if (isInitialLoad)
@@ -91,20 +91,20 @@ public class InventoryPresenter
 
     private void UpdateSortTypeText()
     {
-        string sortTypeName = Enum.GetName(typeof(InventorySortType), CurrentInventorySO.inventoryData.sortType);
+        string sortTypeName = Enum.GetName(typeof(Define.InventorySortType), CurrentInventorySO.inventoryData.sortType);
         _view.SetSortTypeText($"Sort Type: {sortTypeName}");
     }
 
     private void UpdateInventoryTypeButtons()
     {
-        foreach (ItemType itemType in Enum.GetValues(typeof(ItemType)))
+        foreach (Define.ItemType itemType in Enum.GetValues(typeof(Define.ItemType)))
         {
             _view.SetInventoryTypeSelected(itemType, itemType == CurrentInventoryType);
         }
     }
 
 
-    public void ChangeInventoryType(ItemType newType)
+    public void ChangeInventoryType(Define.ItemType newType)
     {
         if (newType == CurrentInventoryType) return;
 
@@ -145,9 +145,9 @@ public class InventoryPresenter
     private void HandleChangeSortTypeClicked()
     {
         int current = (int)CurrentInventorySO.inventoryData.sortType;
-        current = (current + 1) % Enum.GetValues(typeof(InventorySortType)).Length;
+        current = (current + 1) % Enum.GetValues(typeof(Define.InventorySortType)).Length;
 
-        CurrentInventorySO.inventoryData.sortType = (InventorySortType)current; // Model 업데이트
+        CurrentInventorySO.inventoryData.sortType = (Define.InventorySortType)current; // Model 업데이트
         UpdateSortTypeText();
 
         if (CurrentInventorySO.inventoryData.canAutoSort)

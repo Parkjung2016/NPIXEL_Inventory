@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using MemoryPack;
 using PJH.Utility.Extensions;
+using PJH.Utility.Managers;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

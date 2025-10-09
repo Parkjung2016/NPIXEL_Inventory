@@ -29,7 +29,7 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
     [SerializeField] protected SoundDataSO unequipSound;
     [Inject] protected ItemRankColorMappingSO _rankColorMappingSO;
     [Inject] protected ItemManagerSO _itemManagerSO;
-    [Inject] protected PlayerStatus _playerStatus;
+    [Inject] protected IPlayerStatus _playerStatus;
 
     protected GameEventChannelSO _uiEventChannelSO;
     protected ItemSlotTooltipHandler _slotTooltipHandler;
@@ -171,7 +171,7 @@ public abstract class BaseItemSlotUI : UIBase, IItemSlotUI
             else
             {
                 ItemDataBase prevCurrentItemData = CurrentItemData;
-                if (_playerStatus.playerStatusData.equippedItems.TryGetValue(CurrentItemData.detailType,
+                if (_playerStatus.PlayerStatusData.equippedItems.TryGetValue(CurrentItemData.detailType,
                         out ItemDataBase equippedItem))
                 {
                     if (equippedItem != null)

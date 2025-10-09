@@ -22,7 +22,7 @@ public partial class InventoryData
     [MemoryPackIgnore, HideInInspector] public bool canSettingData = true;
 
     public int inventorySlotCapacity = 10;
-    public InventorySortType sortType;
+    public Define.InventorySortType sortType;
     public bool canAutoSort = true;
 
     [HideInInspector] public int currentInventorySlotCount;
@@ -158,11 +158,11 @@ public partial class InventoryData
         if (emptySlotIndex < 0) return null;
 
         ItemDataBase dataInstance = itemData.Clone();
-        AttributeInjector.Inject(dataInstance, SceneManager.GetActiveScene().GetSceneContainer());
+        if (Application.isPlaying)
+            AttributeInjector.Inject(dataInstance, SceneManager.GetActiveScene().GetSceneContainer());
         dataInstance.uniqueID = Guid.NewGuid();
 
-        IStackable newStackable = dataInstance as IStackable;
-        if (newStackable != null)
+        if (dataInstance is IStackable newStackable)
         {
             newStackable.StackCount = 1;
             _stackableLookup.Add(dataInstance.ItemID, emptySlotIndex, newStackable);
@@ -255,25 +255,26 @@ public partial class InventoryData
         }
     }
 
-    public void SplitItem(ItemDataBase itemData, int splitCount)
+    public bool SplitItem(ItemDataBase itemData, int splitCount)
     {
-        if (!canSettingData) return;
+        if (!canSettingData) return false;
 
         if (itemData is not IStackable stackable || splitCount <= 0 || splitCount >= stackable.StackCount || IsFull())
         {
             PJHDebug.LogWarning("Split failed: Invalid item, count, or inventory full.", tag: "InventorySO");
-            return;
+            return false;
         }
 
         ItemDataBase newItem = itemData.DeepCopy();
-        AttributeInjector.Inject(newItem, SceneManager.GetActiveScene().GetSceneContainer());
+        if (Application.isPlaying)
+            AttributeInjector.Inject(newItem, SceneManager.GetActiveScene().GetSceneContainer());
         IStackable newStackable = newItem as IStackable;
 
         newStackable.StackCount = splitCount;
         stackable.StackCount -= splitCount;
 
         int emptySlotIndex = FindEmptySlotIndex();
-        if (emptySlotIndex < 0) return;
+        if (emptySlotIndex < 0) return false;
 
         currentInventoryDataList[emptySlotIndex] = newItem;
         _emptySlotPriorityQueue.TryRemove(emptySlotIndex);
@@ -289,6 +290,7 @@ public partial class InventoryData
         if (canAutoSort) SortData();
 
         OnChangedInventoryData?.Invoke(currentInventoryDataList, true);
+        return true;
     }
 
     public bool RemoveItem(ItemDataBase dataToRemove)
@@ -403,11 +405,11 @@ public partial class InventoryData
 
         IInventoryComparer comparer = sortType switch
         {
-            InventorySortType.ByName => new NameComparer(),
-            InventorySortType.ByRank => new RankComparer(),
-            InventorySortType.ByCount => new CountComparer(),
-            InventorySortType.ByType => new TypeComparer(),
-            InventorySortType.ByAll => new AllComparer(),
+            Define.InventorySortType.ByName => new NameComparer(),
+            Define.InventorySortType.ByRank => new RankComparer(),
+            Define.InventorySortType.ByCount => new CountComparer(),
+            Define.InventorySortType.ByType => new TypeComparer(),
+            Define.InventorySortType.ByAll => new AllComparer(),
             _ => new NameComparer()
         };
 

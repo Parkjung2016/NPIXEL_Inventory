@@ -1,0 +1,24 @@
+{
+    "name": "Game.UI.EquipPanel",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1530a967b84cfb44dbdd5e8a1989764f",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:d3a2ecf1e8c2af34993e36bdd5e5848f",
+        "GUID:c97bba0413f588649a2987f82b00a0d1",
+        "GUID:1986e5684707a3e4ea6439ad21c3639d",
+        "GUID:0542e73a9cc85d545918a8d52b0a161c",
+        "GUID:e88da0336f17d2c4cb36443d1c49bb57",
+        "GUID:aa9db46ae02845c4abb6be0bd0e1acd1",
+        "GUID:a658069527f1c7f4ea7735122ffeea77"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

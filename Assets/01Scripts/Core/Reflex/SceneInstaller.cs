@@ -16,14 +16,14 @@ public class SceneInstaller : MonoBehaviour, IInstaller
         ItemManagerSO itemManagerSO = AddressableManager.Load<ItemManagerSO>("ItemManagerSO");
         ItemRankColorMappingSO itemRankColorMappingSO =
             AddressableManager.Load<ItemRankColorMappingSO>("ItemRankColorMappingSO");
-        PlayerStatus playerStatus = FindAnyObjectByType<PlayerStatus>();
+        IPlayerStatus playerStatus = FindAnyObjectByType<PlayerStatus>() as IPlayerStatus;
         SaveManagerSO saveManagerSO = AddressableManager.Load<SaveManagerSO>("SaveManagerSO");
         containerBuilder.AddSingleton(enumStringMappingSO);
         containerBuilder.AddSingleton(itemDataListSo);
         containerBuilder.AddSingleton(inventoryListSO);
         containerBuilder.AddSingleton(itemManagerSO);
         containerBuilder.AddSingleton(itemRankColorMappingSO);
-        containerBuilder.AddSingleton(playerStatus);
+        containerBuilder.AddSingleton(playerStatus, contracts: typeof(IPlayerStatus));
         containerBuilder.AddSingleton(saveManagerSO);
 
         ItemTooltipFormatter.Initialize(enumStringMappingSO, itemRankColorMappingSO);

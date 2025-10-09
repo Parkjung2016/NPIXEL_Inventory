@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Codice.CM.Common.Checkin.Partial.DifferencesApplier;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
@@ -48,9 +49,9 @@ public static class AIItemGenerator
     private static string BuildPrompt(string prompt, ItemAttributeListSO list)
     {
         string attrNames = string.Join("|", list.itemAttributes.Select(a => a.name));
-        string detail = string.Join("|", Enum.GetNames(typeof(ItemDetailType)));
-        string types = string.Join("|", Enum.GetNames(typeof(ItemType)));
-        string ranks = string.Join("|", Enum.GetNames(typeof(ItemRank)));
+        string detail = string.Join("|", Enum.GetNames(typeof(Define.ItemDetailType)));
+        string types = string.Join("|", Enum.GetNames(typeof(Define.ItemType)));
+        string ranks = string.Join("|", Enum.GetNames(typeof(Define.ItemRank)));
         string opTypes = string.Join("|", Enum.GetNames(typeof(OperationType)));
 
         return $@"

@@ -4,11 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Item/ItemRankColorMappingSO")]
 public class ItemRankColorMappingSO : ScriptableObject
 {
-    public SerializableDictionary<ItemRank, Color> rankColorMapping;
+    public SerializableDictionary<Define.ItemRank, Color> rankColorMapping;
 
-    public Color this[ItemRank rank] => rankColorMapping[rank];
+    public Color this[Define.ItemRank rank] => rankColorMapping[rank];
 
-    public Color GetOutlineColor(ItemRank rank)
+    public Color GetOutlineColor(Define.ItemRank rank)
     {
         Color rankColor = rankColorMapping[rank];
         Color.RGBToHSV(rankColor, out float h, out float s, out float v);

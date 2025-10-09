@@ -42,15 +42,15 @@ public class InventoryUI : UIBase, IInventoryView
         BlockInteraction
     }
 
-    private readonly Dictionary<ItemType, ChangeInventoryTypeButton> _changeInventoryTypeButtons =
-        new Dictionary<ItemType, ChangeInventoryTypeButton>();
+    private readonly Dictionary<Define.ItemType, ChangeInventoryTypeButton> _changeInventoryTypeButtons =
+        new Dictionary<Define.ItemType, ChangeInventoryTypeButton>();
 
     [SerializeField] private SoundDataSO buttonClickSound;
     [SerializeField] private SoundDataSO reloadingSound;
     [SerializeField] private ChangeInventoryTypeButton changeInventoryTypeButtonPrefab;
     [SerializeField] private InventoryScrollRectDataSourceSO scrollRectDataSourceSO;
     [SerializeField] private ItemDragSlotUI itemDragSlotUIPrefab;
-    [SerializeField] private ItemType inventoryType;
+    [SerializeField] private Define.ItemType inventoryType;
 
     private InventoryPresenter _presenter;
     private OptimizeScrollRect _optimizeScrollRect;
@@ -61,13 +61,13 @@ public class InventoryUI : UIBase, IInventoryView
     public event Action OnStackAllClicked;
     public event Action OnGoToTopClicked;
     public event Action OnGoToBottomClicked;
-    public event Action<ItemType> OnInventoryTypeChanged;
+    public event Action<Define.ItemType> OnInventoryTypeChanged;
     public event Action<PointerEventData> OnViewportDrop;
     public event Action<bool> OnBlocked;
     public event Action OnViewportClicked;
     public event Action<Vector2> OnScrollValueChanged;
 
-    public ItemType InventoryType => _presenter.CurrentInventoryType;
+    public Define.ItemType InventoryType => _presenter.CurrentInventoryType;
 
     private void SetPresenter(InventoryPresenter presenter)
     {
@@ -91,7 +91,7 @@ public class InventoryUI : UIBase, IInventoryView
         if (changeInventoryTypeButtonPrefab != null)
         {
             Transform topGroups = GetObject((byte)Objects.TopGroups).transform;
-            foreach (ItemType itemType in Enum.GetValues(typeof(ItemType)))
+            foreach (Define.ItemType itemType in Enum.GetValues(typeof(Define.ItemType)))
             {
                 ChangeInventoryTypeButton changeInventoryTypeButton =
                     Instantiate(changeInventoryTypeButtonPrefab, topGroups);
@@ -180,7 +180,7 @@ public class InventoryUI : UIBase, IInventoryView
         GetToggle((byte)Toggles.Toggle_AutoSort).SetIsOnWithoutNotify(isOn);
     }
 
-    public void SetInventoryTypeSelected(ItemType type, bool isSelected)
+    public void SetInventoryTypeSelected(Define.ItemType type, bool isSelected)
     {
         if (_changeInventoryTypeButtons.TryGetValue(type, out var button))
         {

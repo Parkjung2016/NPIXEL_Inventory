@@ -1,0 +1,14 @@
+{
+    "name": "Game.UI.SlotUI.Interfaces",
+    "rootNamespace": "",
+    "references": ["GUID:a658069527f1c7f4ea7735122ffeea77"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

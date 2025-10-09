@@ -6,35 +6,6 @@ using PJH.Utility.Managers;
 using Reflex.Attributes;
 using UnityEngine;
 
-
-public enum ItemRank
-{
-    Common,
-    Uncommon,
-    Rare,
-    Epic,
-    Legendary
-}
-
-public enum ItemType
-{
-    Equipment,
-    Consumable,
-    Material
-}
-
-public enum ItemDetailType
-{
-    Armor,
-    Boots,
-    Helmet,
-    Leggings,
-    MeleeWeapon,
-    Shield,
-    Potion,
-    Material
-}
-
 [MemoryPackable]
 [MemoryPackUnion(0, typeof(ItemData))]
 [MemoryPackUnion(1, typeof(PotionItemData))]
@@ -47,18 +18,15 @@ public abstract partial class ItemDataBase
     public string description;
     [field: SerializeField, ReadOnly] public int ItemID { get; set; }
 
-    public ItemType itemType;
-    public ItemDetailType detailType;
+    public Define.ItemType itemType;
+    public Define.ItemDetailType detailType;
 
     [HideInInspector] public string iconKey;
-    public ItemRank rank;
+    public Define.ItemRank rank;
     public Guid uniqueID;
     [HideInInspector] public List<ItemAttribute> baseAttributes = new();
     [HideInInspector] public List<AdditionalItemAttribute> additionalAttributes = new();
-
-    [NonSerialized] [MemoryPackIgnore] [Inject]
-    private EnumStringMappingSO _enumStringMappingSO;
-
+    
     public Sprite GetIcon()
     {
         return AddressableManager.Load<Sprite>(iconKey);

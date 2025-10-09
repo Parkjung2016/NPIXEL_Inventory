@@ -29,5 +29,4 @@ MonoBehaviour:
       attributeValue: 5
     additionalAttributes: []
     <MaxStackCount>k__BackingField: 5
-    usableItemEffectSOList:
-    - {fileID: 11400000, guid: cfcff29cce729db498c3b86e93b6b997, type: 2}
+  usableItemEffectSOList: []

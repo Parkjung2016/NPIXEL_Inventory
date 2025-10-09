@@ -1,16 +1,5 @@
-using System;
-using MemoryPack;
 using UnityEditor;
 using UnityEngine;
-
-[Serializable]
-[MemoryPackable]
-public partial struct ItemAttribute
-{
-    [Delayed] public string attributeName;
-    public float attributeValue;
-}
-
 [CreateAssetMenu(menuName = "SO/Item/Attribute/AttributeSO")]
 public class ItemAttributeSO : ScriptableObject
 {
