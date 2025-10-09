@@ -163,6 +163,7 @@ public class PlayerStatus : MonoBehaviour, ISaveable
         playerStatusData = await MemoryPackSerializer.DeserializeAsync<PlayerStatusData>(stream);
         foreach (ItemDataBase itemData in playerStatusData.equippedItems.Values)
         {
+            if (itemData == null) continue;
             AttributeInjector.Inject(itemData, SceneManager.GetActiveScene().GetSceneContainer());
         }
     }

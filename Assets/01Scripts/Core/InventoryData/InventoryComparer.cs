@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 
-// InventorySortType은 기존 코드에 정의되어 있다고 가정합니다.
-// public enum InventorySortType { ByName, ByRank, ByCount, ByType, ByAll }
-
+/// <summary>
+/// 인벤토리 내 아이템 정렬을 위한 비교자 인터페이스
+/// </summary>
 public interface IInventoryComparer : IComparer<ItemDataBase>
 {
-    // InventoryData의 SortData 메서드에서 사용됩니다.
 }
 
 public struct NameComparer : IInventoryComparer
@@ -57,7 +56,7 @@ public struct TypeComparer : IInventoryComparer
         if (a == null && b == null) return 0;
         if (a == null) return 1;
         if (b == null) return -1;
-        return a.itemType.CompareTo(b.itemType);
+        return a.detailType.CompareTo(b.detailType);
     }
 }
 

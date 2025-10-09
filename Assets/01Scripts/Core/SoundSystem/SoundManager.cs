@@ -11,6 +11,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
     public readonly LinkedList<SoundEmitter> frequentSoundEmitters = new();
 
     [SerializeField] SoundEmitter soundEmitterPrefab;
+    // 인스턴스가 이미 ObjectPool에 있는 경우 예외 처리 할건지
     [SerializeField] bool collectionCheck = true;
     [SerializeField] int defaultCapacity = 10;
     [SerializeField] int maxPoolSize = 100;

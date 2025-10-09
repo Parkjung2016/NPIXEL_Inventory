@@ -36,7 +36,7 @@ public class ItemSlotUI : BaseItemSlotUI, ICell
 
             if (Keyboard.current.ctrlKey.isPressed && CurrentItemData is IStackable { StackCount: > 1 } stackable)
             {
-                SoundManager.CreateSoundBuilder().Play(equipSound);
+                SoundManager.CreateSoundBuilder().Play(splitSound);
                 _inventoryListSO.SplitItem(CurrentItemData, stackable.StackCount / 2);
                 ResetClickEvent();
                 return;

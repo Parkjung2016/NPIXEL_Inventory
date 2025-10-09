@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79767db0c56fcf5448f0a591d8061923, type: 3}
+  m_Name: EquipmentItemDataSO_Shadowstride Leggings
+  m_EditorClassIdentifier: 
+  attributes:
+  - itemAttribute: {fileID: 11400000, guid: 9f98c245b7bdca347a91f988eb5859f0, type: 2}
+    value: 45
+  - itemAttribute: {fileID: 11400000, guid: 40ca36a830409b24faa80fa3bacfc2d5, type: 2}
+    value: 8
+  additionalAttributes: []
+  itemData:
+    displayName: Shadowstride Leggings
+    description: Dark leather leggings that allow for silent movement and enhanced
+      agility in combat.
+    <ItemID>k__BackingField: 21
+    itemType: 0
+    detailType: 3
+    iconKey: Falmer_Armored_cuisses_51.sprite
+    rank: 2
+    baseAttributes:
+    - attributeName: Defnece
+      attributeValue: 45
+    - attributeName: Speed
+      attributeValue: 8
+    additionalAttributes: []

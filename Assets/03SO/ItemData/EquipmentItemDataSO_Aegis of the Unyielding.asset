@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79767db0c56fcf5448f0a591d8061923, type: 3}
+  m_Name: EquipmentItemDataSO_Aegis of the Unyielding
+  m_EditorClassIdentifier: 
+  attributes:
+  - itemAttribute: {fileID: 11400000, guid: 9f98c245b7bdca347a91f988eb5859f0, type: 2}
+    value: 45
+  additionalAttributes:
+  - additionalAttribute: {fileID: 11400000, guid: 1d6cd36c35a7525488aaea6ef3cb85d0, type: 2}
+    value: 100
+    operationType: 0
+  itemData:
+    displayName: Aegis of the Unyielding
+    description: An ancient shield forged from a fallen star. It pulses with a protective
+      energy that fortifies its wielder against all harm.
+    <ItemID>k__BackingField: 26
+    itemType: 0
+    detailType: 5
+    iconKey: Circular_Oval_Falmer_Shield_22.sprite
+    rank: 3
+    baseAttributes:
+    - attributeName: Defnece
+      attributeValue: 45
+    additionalAttributes:
+    - additionalAttribute:
+        attributeName: MaxHealth
+        attributeValue: 3
+      value: 100
+      operationType: 0

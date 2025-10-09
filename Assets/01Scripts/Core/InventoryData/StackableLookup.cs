@@ -8,10 +8,8 @@ using MemoryPack;
 [Serializable]
 public partial class StackableLookup
 {
-    // itemID -> slotIndex -> IStackable
     private Dictionary<int, SortedList<int, IStackable>> _stackableLookup = new();
-
-    // IStackable -> slotIndex
+    
     private Dictionary<IStackable, int> _stackableToSlotIndex = new();
 
     public IStackable FindStackable(int itemID)
@@ -34,17 +32,14 @@ public partial class StackableLookup
                 list = new SortedList<int, IStackable> { { slotIndex, stackable } };
                 _stackableLookup[itemID] = list;
             }
-
-            // 안전하게 추가/갱신 (TryAdd 대신 덮어쓰기)
+            
             list[slotIndex] = stackable;
         }
         else
         {
-            // 꽉 찼다면 목록에서 제거
             RemoveFromLookup(itemID, slotIndex);
         }
 
-        // 스택 가능 여부와 상관없이 항상 슬롯 인덱스를 매핑
         _stackableToSlotIndex[stackable] = slotIndex;
     }
 
