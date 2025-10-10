@@ -34,7 +34,9 @@ public class InventoryPresenter
         _view.OnViewportClicked += HandleViewportClicked;
         _view.OnScrollValueChanged += HandleScrollValueChanged;
         _view.OnBlocked += HandleBlocked;
+        _uiEventChannelSO.AddListener<ClickItemSlotEvent>(HandleClickItemSlotEvent);
     }
+
 
     public void Init()
     {
@@ -46,6 +48,7 @@ public class InventoryPresenter
     public void OnDestroy()
     {
         UnsubscribeInventoryDataEvents();
+        _uiEventChannelSO.RemoveListener<ClickItemSlotEvent>(HandleClickItemSlotEvent);
         _itemManagerSO.OnUsedItemWithStackable -= HandleUsedItemWithStackable;
     }
 
@@ -130,6 +133,12 @@ public class InventoryPresenter
     {
         CurrentInventorySO.inventoryData.SortData();
         _view.ReloadScrollData(false);
+    }
+
+    private void HandleClickItemSlotEvent(ClickItemSlotEvent evt)
+    {
+        if (evt.isClicked && evt.itemSlot?.CurrentItemData != null)
+            _view.StopMovement();
     }
 
     private void HandleStackAllClicked()

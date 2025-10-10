@@ -26,6 +26,6 @@ MonoBehaviour:
     iconKey: pants_silver.sprite
     rank: 1
     baseAttributes:
-    - attributeName: Defnece
+    - attributeName: Defence
       attributeValue: 8
     additionalAttributes: []

@@ -31,7 +31,7 @@ MonoBehaviour:
     iconKey: Falmer_Tunics_74.sprite
     rank: 4
     baseAttributes:
-    - attributeName: Defnece
+    - attributeName: Defence
       attributeValue: 100
     - attributeName: MaxHealth
       attributeValue: 50

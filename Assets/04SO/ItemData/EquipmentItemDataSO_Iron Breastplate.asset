@@ -28,7 +28,7 @@ MonoBehaviour:
     iconKey: armor_silver.sprite
     rank: 0
     baseAttributes:
-    - attributeName: Defnece
+    - attributeName: Defence
       attributeValue: 15
     - attributeName: MaxHealth
       attributeValue: 5

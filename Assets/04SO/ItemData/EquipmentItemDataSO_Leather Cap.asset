@@ -29,6 +29,6 @@ MonoBehaviour:
     baseAttributes:
     - attributeName: MaxHealth
       attributeValue: 5
-    - attributeName: Defnece
+    - attributeName: Defence
       attributeValue: 7
     additionalAttributes: []

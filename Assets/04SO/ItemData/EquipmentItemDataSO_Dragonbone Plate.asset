@@ -31,7 +31,7 @@ MonoBehaviour:
     iconKey: armor_iron.sprite
     rank: 2
     baseAttributes:
-    - attributeName: Defnece
+    - attributeName: Defence
       attributeValue: 70
     - attributeName: MaxHealth
       attributeValue: 70

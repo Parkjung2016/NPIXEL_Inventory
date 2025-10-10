@@ -15,6 +15,7 @@ public interface IInventoryView
     void GoToTop();
     void GoToBottom();
     void ChangeInventoryType(InventorySO inventorySO);
+    void StopMovement();
 
     Action<bool> OnAutoSortToggled { get; set; }
     event Action OnChangeSortTypeClicked;

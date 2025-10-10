@@ -29,7 +29,7 @@ MonoBehaviour:
     iconKey: Circular_Oval_Falmer_Shield_22.sprite
     rank: 3
     baseAttributes:
-    - attributeName: Defnece
+    - attributeName: Defence
       attributeValue: 45
     additionalAttributes:
     - additionalAttribute:

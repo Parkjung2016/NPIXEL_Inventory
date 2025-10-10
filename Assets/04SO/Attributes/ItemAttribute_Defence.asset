@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3eb4dbbb05e14c67af10be3127f9a145, type: 3}
-  m_Name: ItemAttribute_Defnece
+  m_Name: ItemAttribute_Defence
   m_EditorClassIdentifier: 
   attribute:
-    attributeName: Defnece
+    attributeName: Defence
     attributeValue: 3

@@ -32,7 +32,7 @@ MonoBehaviour:
     baseAttributes:
     - attributeName: Speed
       attributeValue: 5
-    - attributeName: Defnece
+    - attributeName: Defence
       attributeValue: 8
     additionalAttributes:
     - additionalAttribute:

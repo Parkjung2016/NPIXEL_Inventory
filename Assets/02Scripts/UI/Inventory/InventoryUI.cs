@@ -42,18 +42,8 @@ public class InventoryUI : UIBase, IInventoryView
         BlockInteraction
     }
 
-    private readonly Dictionary<Define.ItemType, ChangeInventoryTypeButton> _changeInventoryTypeButtons =
-        new Dictionary<Define.ItemType, ChangeInventoryTypeButton>();
-
-    [SerializeField] private SoundDataSO buttonClickSound;
-    [SerializeField] private SoundDataSO reloadingSound;
-    [SerializeField] private ChangeInventoryTypeButton changeInventoryTypeButtonPrefab;
-    [SerializeField] private InventoryScrollRectDataSourceSO scrollRectDataSourceSO;
-    [SerializeField] private ItemDragSlotUI itemDragSlotUIPrefab;
-    [SerializeField] private Define.ItemType inventoryType;
-
-    private InventoryPresenter _presenter;
     private OptimizeScrollRect _optimizeScrollRect;
+
 
     public Action<bool> OnAutoSortToggled { get; set; }
     public event Action OnChangeSortTypeClicked;
@@ -68,6 +58,19 @@ public class InventoryUI : UIBase, IInventoryView
     public event Action<Vector2> OnScrollValueChanged;
 
     public Define.ItemType InventoryType => _presenter.CurrentInventoryType;
+
+    private readonly Dictionary<Define.ItemType, ChangeInventoryTypeButton> _changeInventoryTypeButtons =
+        new Dictionary<Define.ItemType, ChangeInventoryTypeButton>();
+
+    [SerializeField] private SoundDataSO buttonClickSound;
+    [SerializeField] private SoundDataSO reloadingSound;
+    [SerializeField] private ChangeInventoryTypeButton changeInventoryTypeButtonPrefab;
+    [SerializeField] private InventoryScrollRectDataSourceSO scrollRectDataSourceSO;
+    [SerializeField] private ItemDragSlotUI itemDragSlotUIPrefab;
+    [SerializeField] private Define.ItemType inventoryType;
+
+    private InventoryPresenter _presenter;
+
 
     private void SetPresenter(InventoryPresenter presenter)
     {
@@ -148,6 +151,11 @@ public class InventoryUI : UIBase, IInventoryView
     protected override void OnDestroy()
     {
         _presenter?.OnDestroy();
+    }
+
+    public void StopMovement()
+    {
+        _optimizeScrollRect.StopMovement();
     }
 
     public void ChangeInventoryType(InventorySO inventorySO)

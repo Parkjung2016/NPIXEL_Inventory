@@ -15,6 +15,18 @@ namespace PJH.Editor
 
         static EditorStartInit()
         {
+            Init();
+        }
+
+        private static void Init()
+        {
+            GetEditorStartInitSetting();
+
+            ApplyPlayModeStartScene();
+        }
+
+        private static void GetEditorStartInitSetting()
+        {
             if (AssetDatabase.AssetPathExists(editorStartInitSettingSOFilePath))
                 editorStartInitSetting =
                     AssetDatabase.LoadAssetAtPath<EditorStartInitSettingSO>(editorStartInitSettingSOFilePath);
@@ -27,8 +39,6 @@ namespace PJH.Editor
                 AssetDatabase.Refresh();
                 editorStartInitSetting = editorStartInitSettingInstance;
             }
-
-            ApplyPlayModeStartScene();
         }
 
         [MenuItem("SetupScene/Use Setup Scene")]
@@ -41,6 +51,11 @@ namespace PJH.Editor
         [MenuItem("SetupScene/Use Setup Scene", true)]
         private static bool ToggleUseSetupSceneValidate()
         {
+            if (editorStartInitSetting == null)
+            {
+                Init();
+            }
+
             Menu.SetChecked("SetupScene/Use Setup Scene", editorStartInitSetting.useSetupScene);
             return true;
         }

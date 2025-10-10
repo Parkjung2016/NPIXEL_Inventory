@@ -53,7 +53,7 @@ MonoBehaviour:
       value: 25
       operationType: 0
     - additionalAttribute:
-        attributeName: Defnece
+        attributeName: Defence
         attributeValue: 3
       value: 15
       operationType: 0
