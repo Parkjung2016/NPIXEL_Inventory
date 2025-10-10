@@ -1,10 +1,12 @@
-#if UNITY_EDITOR
 using UnityEngine;
 using System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace PJH.Attributes
 {
+#if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute), true)]
     public class ReadOnlyAttributeDrawer : PropertyDrawer
     {
@@ -20,7 +22,7 @@ namespace PJH.Attributes
             GUI.enabled = true;
         }
     }
-
+#endif
     [AttributeUsage(AttributeTargets.Field)]
     public class ReadOnlyAttribute : PropertyAttribute
     {
@@ -32,4 +34,3 @@ namespace PJH.Attributes
         }
     }
 }
-#endif

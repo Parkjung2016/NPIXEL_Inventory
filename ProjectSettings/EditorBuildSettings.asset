@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/05Scenes/Bootstrap.unity
+    path: Assets/01.Scenes/Bootstrap.unity
     guid: 3e53ccab71906cb409ca9c4c200427b6
   - enabled: 1
-    path: Assets/05Scenes/InventoryScene.unity
+    path: Assets/01.Scenes/InventoryScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 5cae467a445ba20499eb719ffd549df9, type: 2}
