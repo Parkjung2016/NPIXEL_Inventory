@@ -17,7 +17,7 @@ public static class ItemDataListWindowUtility
         itemData.displayName = type.Name;
         itemData.ItemID = targetSO.ItemDataList.Count;
 
-        string path = $"Assets/03SO/ItemData/{newItem.name}_{Guid.NewGuid()}.asset";
+        string path = $"Assets/04SO/ItemData/{newItem.name}_{Guid.NewGuid()}.asset";
         AssetDatabase.CreateAsset(newItem, path);
         AssetDatabase.SaveAssets();
 

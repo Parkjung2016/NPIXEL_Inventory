@@ -13,7 +13,7 @@ public class ItemAttributeListSO : ScriptableObject
     [ContextMenu("Auto Fill From Folder")]
     private void OnValidate()
     {
-        string folderPath = "Assets/03SO/Attributes";
+        string folderPath = "Assets/04SO/Attributes";
 
         string[] guids = AssetDatabase.FindAssets("t:ItemAttributeSO", new[] { folderPath });
         itemAttributes = guids

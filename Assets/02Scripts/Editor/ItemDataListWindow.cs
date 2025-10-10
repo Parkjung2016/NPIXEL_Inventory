@@ -40,8 +40,8 @@ public class ItemDataListWindow : EditorWindow
 
     private void OnEnable()
     {
-        _attributeListSO = ItemDataListWindowUtility.LoadAsset<ItemAttributeListSO>("03SO/ItemAttributeListSO.asset");
-        _targetSO = ItemDataListWindowUtility.LoadAsset<ItemDataListSO>("03SO/ItemDataListSO.asset");
+        _attributeListSO = ItemDataListWindowUtility.LoadAsset<ItemAttributeListSO>("04SO/ItemAttributeListSO.asset");
+        _targetSO = ItemDataListWindowUtility.LoadAsset<ItemDataListSO>("04SO/ItemDataListSO.asset");
 
         _itemTypes = Assembly.GetAssembly(typeof(BaseItemDataSO))
             .GetTypes()

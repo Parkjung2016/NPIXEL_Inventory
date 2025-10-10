@@ -16,7 +16,7 @@ public static class AIItemGenerator
         Action onFinish)
     {
         if (_apiSO == null)
-            _apiSO = AssetDatabase.LoadAssetAtPath<AIAPISO>("Assets/03SO/API/AIAPISO.asset");
+            _apiSO = AssetDatabase.LoadAssetAtPath<AIAPISO>("Assets/04SO/API/AIAPISO.asset");
         EditorUtility.DisplayProgressBar("AI Item Generation", "Generating item...", 0f);
 
         string jsonPrompt = BuildPrompt(prompt, attrList);
